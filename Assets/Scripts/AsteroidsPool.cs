@@ -1,3 +1,4 @@
+using Assets.Scripts.Asteroids;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,8 @@ public class AsteroidsPool
     private GameObject _poolObject;
     private Transform _poolContainer;
 
-    private List<GameObject> _available = new List<GameObject>();
-    private List<GameObject> _inUse = new List<GameObject>();
+    private List<AsteroidController> _available = new List<AsteroidController>();
+    private List<AsteroidController> _inUse = new List<AsteroidController>();
 
     public AsteroidsPool(GameObject prefab, Transform poolContainer, int initialCount)
     {
@@ -21,9 +22,9 @@ public class AsteroidsPool
         }
     }
 
-    public GameObject Get()
+    public AsteroidController Get()
     {
-        GameObject instance = null;
+        AsteroidController instance = null;
 
         if (_available.Count > 0)
         {
@@ -35,7 +36,7 @@ public class AsteroidsPool
         return instance;
     }
 
-    public void ReturnToPool(GameObject instance)
+    public void ReturnToPool(AsteroidController instance)
     {
         if (!_inUse.Remove(instance))
             return;
@@ -44,9 +45,10 @@ public class AsteroidsPool
         _available.Add(instance);
     }
 
-    private GameObject Create()
+    private AsteroidController Create()
     {
-        var instance = Object.Instantiate(_poolObject, _poolContainer);
+        GameObject asteroid = Object.Instantiate(_poolObject, _poolContainer);
+        AsteroidController instance = new AsteroidController(asteroid);
         instance.SetActive(false);
 
         return instance;

@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -25,6 +20,13 @@ namespace Assets.Scripts
         public void Start()
         {
             _asteroidsPool = new AsteroidsPool(_prefab, _prefabContainer, _initialCount);
+
+            for (int i = 0; i < _initialCount; i++)
+            {
+                var asteroid = _asteroidsPool.Get();
+                asteroid?.Init();
+                asteroid.SetActive(true);
+            }
         }
     }
 }
