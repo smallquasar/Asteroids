@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Assets.Scripts.Asteroids
 {
@@ -12,20 +7,30 @@ namespace Assets.Scripts.Asteroids
         private GameObject _asteroid;
         private AsteroidView _asteroidView;
 
+        private Vector3 _direction;
+        private float _speed = 0.5f;
+
         public AsteroidController(GameObject asteroid)
         {
             _asteroid = asteroid;
-            //_asteroidView = _asteroid.GetComponent<AsteroidView>();
+            _asteroidView = _asteroid.GetComponent<AsteroidView>();            
         }
 
         public void Init()
         {
             _asteroid.transform.position = GenerationUtils.GenerateLocation();
+            _direction = GenerationUtils.GetRandomDirection();
+            _asteroidView.OnAsteroidUpdate += Update;
         }
 
         public void SetActive(bool isActive)
         {
             _asteroid.SetActive(isActive);
+        }
+
+        private void Update()
+        {
+            _asteroid.transform.position += _direction * _speed * Time.deltaTime;
         }
     }
 }
