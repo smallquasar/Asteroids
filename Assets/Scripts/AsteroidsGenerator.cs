@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Generation;
+using UnityEngine;
 
 namespace Assets.Scripts
 {
@@ -8,7 +10,7 @@ namespace Assets.Scripts
         private Transform _prefabContainer;
         private int _initialCount;
 
-        private AsteroidsPool _asteroidsPool;
+        private Pool<AsteroidController> _asteroidsPool;
 
         public AsteroidsGenerator(GameObject prefab, Transform prefabContainer, int initialCount)
         {
@@ -19,14 +21,21 @@ namespace Assets.Scripts
 
         public void Start()
         {
-            _asteroidsPool = new AsteroidsPool(_prefab, _prefabContainer, _initialCount);
+            _asteroidsPool = new Pool<AsteroidController>(_prefab, _prefabContainer, _initialCount);
 
             for (int i = 0; i < _initialCount; i++)
             {
                 var asteroid = _asteroidsPool.Get();
-                asteroid?.Init();
+                asteroid?.Start();
                 asteroid.SetActive(true);
             }
+        }
+
+        public void SpawnNew()
+        {
+            var asteroid = _asteroidsPool.Get();
+            asteroid?.Start();
+            asteroid.SetActive(true);
         }
     }
 }

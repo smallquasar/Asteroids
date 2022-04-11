@@ -285,7 +285,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 4914109159351014337, guid: eb025019b390102488f291f56d4440a4, type: 3}
   asteroidPrefab: {fileID: 6730954748657685325, guid: fff0246ee215cf64181188f2d238da21, type: 3}
   asteroidsContainer: {fileID: 515540428}
-  asteroidsInitialCount: 20
+  asteroidsInitialCount: 5
   _spawnZones:
   - {fileID: 11400000, guid: 36307c4235eed2045904579eefc61855, type: 2}
   - {fileID: 11400000, guid: c3677c0c618c76f4db75270903228826, type: 2}

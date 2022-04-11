@@ -2,7 +2,7 @@
 
 namespace Assets.Scripts.Asteroids
 {
-    public class AsteroidController
+    public class AsteroidController : ICanSetActive, ICanSetGameObject
     {
         private GameObject _asteroid;
         private AsteroidView _asteroidView;
@@ -10,13 +10,13 @@ namespace Assets.Scripts.Asteroids
         private Vector3 _direction;
         private float _speed = 0.5f;
 
-        public AsteroidController(GameObject asteroid)
+        public void SetGameObject(GameObject asteroid)
         {
             _asteroid = asteroid;
-            _asteroidView = _asteroid.GetComponent<AsteroidView>();            
+            _asteroidView = _asteroid.GetComponent<AsteroidView>();
         }
 
-        public void Init()
+        public void Start()
         {
             _asteroid.transform.position = GenerationUtils.GenerateLocation();
             _direction = GenerationUtils.GetRandomDirection();
