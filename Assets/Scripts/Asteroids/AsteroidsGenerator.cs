@@ -21,19 +21,17 @@ namespace Assets.Scripts
 
         public void Start()
         {
-            _asteroidsPool = new Pool<AsteroidController>(_prefab, _prefabContainer, _initialCount);
+            _asteroidsPool = new Pool<AsteroidController>(_prefab, _prefabContainer, _initialCount, canExpandPool: true);
 
             for (int i = 0; i < _initialCount; i++)
             {
-                var asteroid = _asteroidsPool.Get();
-                asteroid?.Start();
-                asteroid.SetActive(true);
+                SpawnNew();
             }
         }
 
         public void SpawnNew()
         {
-            var asteroid = _asteroidsPool.Get();
+            AsteroidController asteroid = _asteroidsPool.Get();
             asteroid?.Start();
             asteroid.SetActive(true);
         }

@@ -14,13 +14,14 @@ namespace Assets.Scripts.Asteroids
         {
             _asteroid = asteroid;
             _asteroidView = _asteroid.GetComponent<AsteroidView>();
+            _asteroidView.OnAsteroidUpdate += Update;
+
         }
 
         public void Start()
         {
             _asteroid.transform.position = GenerationUtils.GenerateLocation();
             _direction = GenerationUtils.GetRandomDirection();
-            _asteroidView.OnAsteroidUpdate += Update;
         }
 
         public void SetActive(bool isActive)

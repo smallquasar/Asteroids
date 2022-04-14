@@ -9,12 +9,16 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject asteroidPrefab;
     [SerializeField] Transform asteroidsContainer;
+
+    [SerializeField] GameObject laserProjectilePrefab;
     [SerializeField] int asteroidsInitialCount = 5;
+    [SerializeField] int laserAmmunitionInitialCount = 10;
     
     [SerializeField] private List<SpawnZones> _spawnZones;
 
     private AsteroidsGenerator _asteroidsGenerator;
     private PlayerController _playerController;
+    private LaserController _laserController;
 
     public void Start()
     {
@@ -28,21 +32,32 @@ public class GameManager : MonoBehaviour
 
         GameObject player = Instantiate(playerPrefab);
         _playerController = new PlayerController(player, worldHeight, worldWidth);
+        Transform weaponTransform = _playerController.WeaponTransform;
 
-        StartCoroutine(Spawn());
+        _laserController = new LaserController(laserProjectilePrefab, weaponTransform, laserAmmunitionInitialCount);
+
+        _playerController.OnLaserShot += _laserController.OnLaserShot;
+
+        StartCoroutine(SpawnEnemies());
+        StartCoroutine(CheckLaserAmmunition());
     }
 
-    public void Update()
-    {
-        
-    }
-
-    private IEnumerator Spawn()
+    private IEnumerator SpawnEnemies()
     {
         while (true)
         {
             _asteroidsGenerator.SpawnNew();
             yield return new WaitForSeconds(5);
+        }
+    }
+
+    private IEnumerator CheckLaserAmmunition()
+    {
+        while (true)
+        {
+            _laserController.CheckLaserAmmunition();
+
+            yield return new WaitForSeconds(3);
         }
     }
 }

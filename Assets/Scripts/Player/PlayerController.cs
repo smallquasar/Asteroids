@@ -1,12 +1,17 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
     public class PlayerController
     {
+        public Action<Vector3> OnLaserShot;
+        public Transform WeaponTransform => _weaponTransform;
+
         private GameObject _playerObject;
         private Transform _playerTransform;
         private Player _player;
+        private Transform _weaponTransform;
 
         private float _speed = 0f;
         private float _maxSpeed = 4f;
@@ -26,6 +31,8 @@ namespace Assets.Scripts.Player
             _playerTransform = _playerObject.transform;
             _player = playerObject.GetComponent<Player>();
 
+            _weaponTransform = _player.WeaponTransform;
+
             _maxSpeed = _player.MaxSpeed;
             _rotationSpeed = _player.RotationSpeed;
             _acceleration = _player.Acceleration;
@@ -41,6 +48,40 @@ namespace Assets.Scripts.Player
         {
             CheckLevelBounds();
 
+            CalculateSpeed();
+
+            Rotate();
+
+            _playerTransform.position += _playerTransform.up * _speed * Time.deltaTime;
+
+            Shoot(_playerTransform.up);
+        }        
+
+        private void CheckLevelBounds()
+        {
+            float currentX = _playerTransform.position.x;
+            float currentY = _playerTransform.position.y;
+
+            if (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) + _halfPlayer))
+            {
+                float newY = (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) - _delta))
+                    ? -currentY
+                    : currentY;
+
+                _playerTransform.position = new Vector3(-currentX, newY, 0);
+            }
+            else if (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) + _halfPlayer))
+            {
+                float newX = (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) - _delta))
+                    ? -currentX
+                    : currentX;
+
+                _playerTransform.position = new Vector3(newX, -currentY, 0);
+            }
+        }
+
+        private void CalculateSpeed()
+        {
             if (Input.GetKey(KeyCode.W) && _speed < _maxSpeed)
             {
                 _speed += _acceleration * Time.deltaTime;
@@ -65,7 +106,10 @@ namespace Assets.Scripts.Player
                 }
 
             }
+        }
 
+        private void Rotate()
+        {
             if (Input.GetKey(KeyCode.A))
             {
                 _playerTransform.Rotate(_playerTransform.forward * _rotationSpeed * Time.deltaTime);
@@ -74,30 +118,13 @@ namespace Assets.Scripts.Player
             {
                 _playerTransform.Rotate(-_playerTransform.forward * _rotationSpeed * Time.deltaTime);
             }
-
-            _playerTransform.position += _playerTransform.up * _speed * Time.deltaTime;
         }
 
-        private void CheckLevelBounds()
+        private void Shoot(Vector3 playerDirection)
         {
-            float currentX = _playerTransform.position.x;
-            float currentY = _playerTransform.position.y;
-
-            if (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) + _halfPlayer))
+            if (Input.GetButtonUp("Fire1"))
             {
-                float newY = (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) - _delta))
-                    ? -currentY
-                    : currentY;
-
-                _playerTransform.position = new Vector3(-currentX, newY, 0);
-            }
-            else if (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) + _halfPlayer))
-            {
-                float newX = (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) - _delta))
-                    ? -currentX
-                    : currentX;
-
-                _playerTransform.position = new Vector3(newX, -currentY, 0);
+                OnLaserShot?.Invoke(playerDirection);
             }
         }
     }

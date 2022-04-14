@@ -9,6 +9,7 @@ namespace Assets.Scripts.Player
         [SerializeField] private float rotationSpeed = 40f;
         [SerializeField] private float acceleration = 2f;
         [SerializeField] private float deceleration = 3f;
+        [SerializeField] private Transform weaponTransform;
 
         public Action OnPlayerUpdate;
 
@@ -16,6 +17,7 @@ namespace Assets.Scripts.Player
         public float RotationSpeed => rotationSpeed;
         public float Acceleration => acceleration;
         public float Deceleration => deceleration;
+        public Transform WeaponTransform => weaponTransform;
 
         public void Update()
         {

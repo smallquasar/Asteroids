@@ -11,10 +11,13 @@ namespace Assets.Scripts.Generation
         private List<T> _available = new List<T>();
         private List<T> _inUse = new List<T>();
 
-        public Pool(GameObject prefab, Transform poolContainer, int initialCount)
+        private bool _canExpandPool;
+
+        public Pool(GameObject prefab, Transform poolContainer, int initialCount, bool canExpandPool)
         {
             _poolObject = prefab;
             _poolContainer = poolContainer;
+            _canExpandPool = canExpandPool;
 
             for (int i = 0; i < initialCount; i++)
             {
@@ -31,13 +34,13 @@ namespace Assets.Scripts.Generation
             {
                 instance = _available[0];
                 _available.Remove(instance);
+                _inUse.Add(instance);
             }
-            else
+            else if (_canExpandPool)
             {
                 instance = Create();
-            }
-
-            _inUse.Add(instance);
+                _inUse.Add(instance);
+            }            
 
             return instance;
         }
