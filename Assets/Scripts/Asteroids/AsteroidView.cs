@@ -7,9 +7,14 @@ namespace Assets.Scripts.Asteroids
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private BoxCollider2D asteroidCollider;
+        [SerializeField] private float speed = 0.5f;
+        [SerializeField] private float maxLifeTime = 30f;
 
         public Action OnAsteroidUpdate;
         public Action OnAsteroidDestroy;
+
+        public float Speed => speed;
+        public float MaxLifeTime => maxLifeTime;
 
         public void SetAsteroidImage(Sprite sprite)
         {

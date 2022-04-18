@@ -148,3 +148,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 6730954748657685324}
   asteroidCollider: {fileID: 8077553983341126904}
+  speed: 0.5
+  maxLifeTime: 30

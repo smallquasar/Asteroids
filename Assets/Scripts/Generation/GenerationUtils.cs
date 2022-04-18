@@ -22,7 +22,6 @@ namespace Assets.Scripts
 
         public static Sprite GetAsteroidSpriteForType(AsteroidType asteroidType)
         {
-            Debug.Log($"AsteroidType: {asteroidType}");
             AsteroidTypeInfo asteroidInfo = _asteroidTypes.FirstOrDefault(x => x.AsteroidType == asteroidType);
             return asteroidInfo?.AsteroidSprite ?? null;
         }

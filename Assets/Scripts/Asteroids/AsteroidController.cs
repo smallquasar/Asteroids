@@ -12,12 +12,10 @@ namespace Assets.Scripts.Asteroids
         private AsteroidType _asteroidType;
 
         private Vector3 _direction;
-        private float _speed = 0.5f;
+        private float _speed;
 
-        public AsteroidController()
-        {
-
-        }
+        private float _maxLifeTime;
+        private float _timeLeft = 0;
 
         public AsteroidController(AsteroidType asteroidType)
         {
@@ -30,6 +28,8 @@ namespace Assets.Scripts.Asteroids
             _asteroidView = _asteroid.GetComponent<AsteroidView>();
             Sprite asteroidSprite = GenerationUtils.GetAsteroidSpriteForType(_asteroidType);
             _asteroidView.SetAsteroidImage(asteroidSprite);
+            _speed = _asteroidView.Speed;
+            _maxLifeTime = _asteroidView.MaxLifeTime;
 
             _asteroidView.OnAsteroidUpdate += Update;
             _asteroidView.OnAsteroidDestroy += OnAsteroidDestroy;
@@ -45,10 +45,23 @@ namespace Assets.Scripts.Asteroids
         public void SetActive(bool isActive)
         {
             _asteroid.SetActive(isActive);
+
+            if (isActive)
+            {
+                _timeLeft = _maxLifeTime;
+            }
         }
 
         private void Update()
         {
+            _timeLeft -= Time.deltaTime;
+
+            if (_timeLeft < 0)
+            {
+                OnDestroy?.Invoke(this);
+                return;
+            }
+
             _asteroid.transform.position += _direction * _speed * Time.deltaTime;
         }
 
