@@ -21,7 +21,8 @@ namespace Assets.Scripts
 
         public void Start()
         {
-            _asteroidsPool = new Pool<AsteroidController>(_prefab, _prefabContainer, _initialCount, canExpandPool: true);
+            _asteroidsPool =
+                new Pool<AsteroidController>(new AsteroidCreator(AsteroidType.Asteroid), _prefab, _prefabContainer, _initialCount, canExpandPool: true);
 
             for (int i = 0; i < _initialCount; i++)
             {
@@ -32,8 +33,15 @@ namespace Assets.Scripts
         public void SpawnNew()
         {
             AsteroidController asteroid = _asteroidsPool.Get();
+            asteroid.OnDestroy += DestroyAsteroid;
             asteroid?.Start();
             asteroid.SetActive(true);
+        }
+
+        public void DestroyAsteroid(AsteroidController asteroid)
+        {
+            _asteroidsPool.ReturnToPool(asteroid);
+            asteroid.OnDestroy -= DestroyAsteroid;
         }
     }
 }

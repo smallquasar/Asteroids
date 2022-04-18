@@ -1,4 +1,5 @@
 using Assets.Scripts;
+using Assets.Scripts.Asteroids;
 using Assets.Scripts.Player;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] int laserAmmunitionInitialCount = 10;
     
     [SerializeField] private List<SpawnZones> _spawnZones;
+    [SerializeField] private List<AsteroidTypeInfo> _asteroidTypes;
 
     private AsteroidsGenerator _asteroidsGenerator;
     private PlayerController _playerController;
@@ -23,6 +25,7 @@ public class GameManager : MonoBehaviour
     public void Start()
     {
         GenerationUtils.SetSpawnZones(_spawnZones);
+        GenerationUtils.SetAsteroidTypes(_asteroidTypes);
         _asteroidsGenerator = new AsteroidsGenerator(asteroidPrefab, asteroidsContainer, asteroidsInitialCount);
         _asteroidsGenerator.Start();
 

@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxSpeed: 4
-  rotationSpeed: 40
+  rotationSpeed: 80
   acceleration: 2
   deceleration: 3
   weaponTransform: {fileID: 7477505788060618914}

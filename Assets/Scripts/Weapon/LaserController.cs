@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Generation;
+using Assets.Scripts.Weapon;
 using UnityEngine;
 
 namespace Assets.Scripts.Player
@@ -22,7 +23,8 @@ namespace Assets.Scripts.Player
             _ammunitionMaxCount = initialCount;
             _ammunitionCurrentCount = initialCount;
 
-            _laserPool = new Pool<ProjectileController>(_projectilePrefab, _prefabContainer, _ammunitionMaxCount, canExpandPool: false);
+            _laserPool =
+                new Pool<ProjectileController>(new ProjectileCreator(), _projectilePrefab, _prefabContainer, _ammunitionMaxCount, canExpandPool: false);
         }
 
         public void OnLaserShot(Vector3 direction)

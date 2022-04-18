@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using UnityEngine;
 
 namespace Assets.Scripts.Weapon
@@ -13,12 +9,19 @@ namespace Assets.Scripts.Weapon
         [SerializeField] private float maxLifeTime = 5f;
 
         public Action OnProjectileUpdate;
+        public Action<Collider2D> OnProjectileCrossObject;
+
         public float Speed => speed;
         public float MaxLifeTime => maxLifeTime;
 
         public void Update()
         {
             OnProjectileUpdate?.Invoke();
+        }
+
+        public void OnTriggerEnter2D(Collider2D collision)
+        {
+            OnProjectileCrossObject?.Invoke(collision);
         }
     }
 }

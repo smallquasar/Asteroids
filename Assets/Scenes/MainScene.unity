@@ -293,3 +293,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c3677c0c618c76f4db75270903228826, type: 2}
   - {fileID: 11400000, guid: 19510ab3171aac048b643a0222e90b6d, type: 2}
   - {fileID: 11400000, guid: 53e7c5a8ec4964a4b9b6c428cc2c9784, type: 2}
+  _asteroidTypes:
+  - {fileID: 11400000, guid: 14a21632437836244b34dd736e09cf0d, type: 2}
+  - {fileID: 11400000, guid: 8a11e73556d9f6c40b2ea87b42d48569, type: 2}

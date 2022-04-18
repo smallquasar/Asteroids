@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Weapon;
+﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Weapon;
 using System;
 using UnityEngine;
 
@@ -24,6 +25,7 @@ namespace Assets.Scripts.Player
             _maxLifeTime = _projectile.MaxLifeTime;
 
             _projectile.OnProjectileUpdate += Update;
+            _projectile.OnProjectileCrossObject += OnProjectileCrossObject;
         }
 
         public void SetActive(bool isActive)
@@ -47,12 +49,24 @@ namespace Assets.Scripts.Player
 
             if (_timeLeft < 0)
             {
-                Debug.Log("Time is over!");
                 OnDestroy?.Invoke(this);
                 return;
             }
 
             _projectileObject.transform.position += Direction * _speed * Time.deltaTime;
+        }
+
+        private void OnProjectileCrossObject(Collider2D collisionObject)
+        {
+            if (collisionObject.CompareTag("Asteroid"))
+            {
+                if (collisionObject.TryGetComponent(out AsteroidView asteroid))
+                {
+                    asteroid.DestroyAsteroid();
+                }
+
+                OnDestroy?.Invoke(this);
+            }
         }
     }
 }

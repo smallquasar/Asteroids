@@ -6,7 +6,7 @@ namespace Assets.Scripts.Player
     public class Player : MonoBehaviour
     {
         [SerializeField] private float maxSpeed = 4f;
-        [SerializeField] private float rotationSpeed = 40f;
+        [SerializeField] private float rotationSpeed = 80f;
         [SerializeField] private float acceleration = 2f;
         [SerializeField] private float deceleration = 3f;
         [SerializeField] private Transform weaponTransform;
