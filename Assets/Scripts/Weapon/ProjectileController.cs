@@ -12,15 +12,24 @@ namespace Assets.Scripts.Player
 
         private GameObject _projectileObject;
         private Projectile _projectile;
+        private WeaponType _weaponType;
+
         private float _speed;
 
         private float _maxLifeTime;
         private float _timeLeft = 0;
 
+        public ProjectileController(WeaponType weaponType)
+        {
+            _weaponType = weaponType;
+        }
+
         public void SetGameObject(GameObject projectile)
         {
             _projectileObject = projectile;
             _projectile = projectile.GetComponent<Projectile>();
+            Sprite projectileSprite = GameData.GetWeaponProjectileSpriteForType(_weaponType);
+            _projectile.SetProjectileImage(projectileSprite);
             _speed = _projectile.Speed;
             _maxLifeTime = _projectile.MaxLifeTime;
 
@@ -41,6 +50,11 @@ namespace Assets.Scripts.Player
         public void SetPosition(Vector3 position)
         {
             _projectileObject.transform.position = position;
+        }
+
+        public void SetRotation(Vector3 rotation)
+        {
+            _projectileObject.transform.eulerAngles = rotation;
         }
 
         private void Update()

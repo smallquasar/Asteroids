@@ -1,12 +1,14 @@
-﻿using System;
+﻿using Assets.Scripts.Weapon;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
     public class PlayerController
     {
-        public Action<Vector3> OnLaserShot;
+        public Action<Vector3, WeaponType> OnWeaponShot;
         public Transform WeaponTransform => _weaponTransform;
+        public Transform PlayerTransform => _playerTransform;
 
         private GameObject _playerObject;
         private Transform _playerTransform;
@@ -124,7 +126,11 @@ namespace Assets.Scripts.Player
         {
             if (Input.GetButtonUp("Fire1"))
             {
-                OnLaserShot?.Invoke(playerDirection);
+                OnWeaponShot?.Invoke(playerDirection, WeaponType.MachineGun);
+            }
+            if (Input.GetButtonUp("Fire2"))
+            {
+                OnWeaponShot?.Invoke(playerDirection, WeaponType.Laser);
             }
         }
     }

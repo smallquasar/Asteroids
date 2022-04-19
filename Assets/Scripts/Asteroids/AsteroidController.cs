@@ -26,7 +26,7 @@ namespace Assets.Scripts.Asteroids
         {
             _asteroid = asteroid;
             _asteroidView = _asteroid.GetComponent<AsteroidView>();
-            Sprite asteroidSprite = GenerationUtils.GetAsteroidSpriteForType(_asteroidType);
+            Sprite asteroidSprite = GameData.GetAsteroidSpriteForType(_asteroidType);
             _asteroidView.SetAsteroidImage(asteroidSprite);
             _speed = _asteroidView.Speed;
             _maxLifeTime = _asteroidView.MaxLifeTime;

@@ -4,41 +4,38 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
-    public class LaserController
+    public class LaserController : WeaponController
     {
         public int AmmunitionCurrentCount => _ammunitionCurrentCount;
-
-        private GameObject _projectilePrefab;
-        private Transform _prefabContainer;
 
         private int _ammunitionMaxCount;
         private int _ammunitionCurrentCount;
 
-        private Pool<ProjectileController> _laserPool;
+        private Transform _playerPosition;
 
-        public LaserController(GameObject projectilePrefab, Transform prefabContainer, int initialCount)
+        public LaserController(GameObject projectilePrefab, Transform prefabContainer, Transform weaponPosition, Transform playerPosition, int initialCount)
+            :base(projectilePrefab, prefabContainer, weaponPosition)
         {
-            _projectilePrefab = projectilePrefab;
-            _prefabContainer = prefabContainer;
             _ammunitionMaxCount = initialCount;
             _ammunitionCurrentCount = initialCount;
+            _playerPosition = playerPosition;
 
-            _laserPool =
-                new Pool<ProjectileController>(new ProjectileCreator(), _projectilePrefab, _prefabContainer, _ammunitionMaxCount, canExpandPool: false);
+            _projectilesPool =
+                new Pool<ProjectileController>(new ProjectileCreator(WeaponType.Laser), _projectilePrefab, _prefabContainer, _ammunitionMaxCount, canExpandPool: false);
         }
 
-        public void OnLaserShot(Vector3 direction)
+        public override void OnWeaponShot(Vector3 direction)
         {
             if (_ammunitionCurrentCount > 0)
             {
-                ProjectileController projectile = _laserPool.Get();
+                ProjectileController projectile = _projectilesPool.Get();
                 if (projectile == null)
                 {
                     return;
                 }
 
-                projectile.SetPosition(_prefabContainer.position);
-                projectile.Direction = direction;
+                InitProjectile(projectile, direction);
+
                 projectile.SetActive(true);
                 projectile.OnDestroy += DestroyProjectile;
                 _ammunitionCurrentCount--;
@@ -53,9 +50,19 @@ namespace Assets.Scripts.Player
             }
         }
 
+        private void InitProjectile(ProjectileController projectile, Vector3 direction)
+        {
+            projectile.SetPosition(_weaponPosition.position);
+            projectile.Direction = direction;
+
+            Vector3 currentEulerAngles = _playerPosition.transform.eulerAngles;
+            Vector3 newRotation = new Vector3(currentEulerAngles.x, currentEulerAngles.y, currentEulerAngles.z);
+            projectile.SetRotation(newRotation);
+        }
+
         private void DestroyProjectile(ProjectileController projectile)
         {
-            _laserPool.ReturnToPool(projectile);
+            _projectilesPool.ReturnToPool(projectile);
             projectile.OnDestroy -= DestroyProjectile;
         }
     }

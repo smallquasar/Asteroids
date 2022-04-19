@@ -8,22 +8,10 @@ namespace Assets.Scripts
     public static class GenerationUtils
     {
         private static List<SpawnZones> _spawnZones = new List<SpawnZones>();
-        private static List<AsteroidTypeInfo> _asteroidTypes = new List<AsteroidTypeInfo>();
 
         public static void SetSpawnZones(List<SpawnZones> spawnZones)
         {
             _spawnZones = spawnZones;
-        }
-
-        public static void SetAsteroidTypes(List<AsteroidTypeInfo> asteroidTypes)
-        {
-            _asteroidTypes = asteroidTypes;
-        }
-
-        public static Sprite GetAsteroidSpriteForType(AsteroidType asteroidType)
-        {
-            AsteroidTypeInfo asteroidInfo = _asteroidTypes.FirstOrDefault(x => x.AsteroidType == asteroidType);
-            return asteroidInfo?.AsteroidSprite ?? null;
         }
 
         public static Vector2 GenerateLocation()
