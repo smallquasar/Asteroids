@@ -11,7 +11,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] GameObject playerPrefab;
     [SerializeField] GameObject asteroidPrefab;
 
-    [SerializeField] Transform asteroidsContainer;
+    [SerializeField] Transform wholeAsteroidsContainer;
+    [SerializeField] Transform asteroidFragmentsContainer;
     [SerializeField] Transform machineGunContainer;
     [SerializeField] Transform laserContainer;
 
@@ -36,7 +37,7 @@ public class GameManager : MonoBehaviour
         GameData.SetAsteroidTypes(_asteroidTypes);
         GameData.SetWeaponTypes(weaponTypes);
 
-        _asteroidsGenerator = new AsteroidsGenerator(asteroidPrefab, asteroidsContainer, asteroidsInitialCount);
+        _asteroidsGenerator = new AsteroidsGenerator(asteroidPrefab, wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount);
         _asteroidsGenerator.Start();
 
         Camera mainCamera = UnityEngine.Camera.main;
@@ -74,7 +75,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            _asteroidsGenerator.SpawnNew();
+            _asteroidsGenerator.SpawnNewAsteroid();
             yield return new WaitForSeconds(5);
         }
     }

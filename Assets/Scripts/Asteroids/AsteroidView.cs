@@ -11,7 +11,9 @@ namespace Assets.Scripts.Asteroids
         [SerializeField] private float maxLifeTime = 30f;
 
         public Action OnAsteroidUpdate;
-        public Action OnAsteroidDestroy;
+        public Action<bool> OnAsteroidDestroy;
+
+        public AsteroidType AsteroidType { get; set; }
 
         public float Speed => speed;
         public float MaxLifeTime => maxLifeTime;
@@ -30,9 +32,9 @@ namespace Assets.Scripts.Asteroids
             OnAsteroidUpdate?.Invoke();
         }
 
-        public void DestroyAsteroid()
+        public void DestroyAsteroid(bool isTotallyDestroy)
         {
-            OnAsteroidDestroy?.Invoke();
+            OnAsteroidDestroy?.Invoke(isTotallyDestroy);
         }
     }
 }

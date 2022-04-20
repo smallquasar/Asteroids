@@ -5,7 +5,10 @@ namespace Assets.Scripts.Asteroids
 {
     public class AsteroidController : ICanSetActive, ICanSetGameObject
     {
-        public Action<AsteroidController> OnDestroy;
+        public Action<AsteroidController, bool> OnDestroy;
+
+        public Vector3 CurrentPosition => _asteroid.transform.position;
+        public AsteroidType AsteroidType => _asteroidType;
 
         private GameObject _asteroid;
         private AsteroidView _asteroidView;
@@ -28,17 +31,18 @@ namespace Assets.Scripts.Asteroids
             _asteroidView = _asteroid.GetComponent<AsteroidView>();
             Sprite asteroidSprite = GameData.GetAsteroidSpriteForType(_asteroidType);
             _asteroidView.SetAsteroidImage(asteroidSprite);
-            _speed = _asteroidView.Speed;
+            _speed = _asteroidType == AsteroidType.Asteroid ? _asteroidView.Speed : _asteroidView.Speed * 2;
             _maxLifeTime = _asteroidView.MaxLifeTime;
+            _asteroidView.AsteroidType = _asteroidType;
 
             _asteroidView.OnAsteroidUpdate += Update;
             _asteroidView.OnAsteroidDestroy += OnAsteroidDestroy;
 
         }
 
-        public void Start()
+        public void Init(Vector3 initPosition)
         {
-            _asteroid.transform.position = GenerationUtils.GenerateLocation();
+            _asteroid.transform.position = initPosition;
             _direction = GenerationUtils.GetRandomDirection();
         }
 
@@ -58,16 +62,16 @@ namespace Assets.Scripts.Asteroids
 
             if (_timeLeft < 0)
             {
-                OnDestroy?.Invoke(this);
+                OnDestroy?.Invoke(this, true);
                 return;
             }
 
             _asteroid.transform.position += _direction * _speed * Time.deltaTime;
         }
 
-        private void OnAsteroidDestroy()
+        private void OnAsteroidDestroy(bool isTotallyDestroy)
         {
-            OnDestroy?.Invoke(this);
+            OnDestroy?.Invoke(this, isTotallyDestroy);
         }
     }
 }

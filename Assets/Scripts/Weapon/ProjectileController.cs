@@ -76,7 +76,8 @@ namespace Assets.Scripts.Player
             {
                 if (collisionObject.TryGetComponent(out AsteroidView asteroid))
                 {
-                    asteroid.DestroyAsteroid();
+                    bool isTotallyDestroy = !(_weaponType == WeaponType.MachineGun && asteroid.AsteroidType == AsteroidType.Asteroid);
+                    asteroid.DestroyAsteroid(isTotallyDestroy);
                 }
 
                 OnDestroy?.Invoke(this);
