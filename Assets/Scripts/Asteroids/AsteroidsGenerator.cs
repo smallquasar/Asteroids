@@ -1,11 +1,14 @@
 ﻿using Assets.Scripts.Asteroids;
 using Assets.Scripts.Generation;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts
 {
     public class AsteroidsGenerator
     {
+        public Action<Achievement> OnGotAchievement;
+
         private GameObject _prefab;
         private Transform _asteroidsContainer;
         private Transform _fragmentsContainer;
@@ -29,6 +32,11 @@ namespace Assets.Scripts
             _asteroidFragmentsPool =
                 new Pool<AsteroidController>(new AsteroidCreator(AsteroidType.AsteroidFragment), _prefab, _fragmentsContainer, _initialCount * 2, canExpandPool: true);
 
+            SpawnInitialAsteroidsCount();
+        }
+
+        public void SpawnInitialAsteroidsCount()
+        {
             for (int i = 0; i < _initialCount; i++)
             {
                 SpawnNewAsteroid();
@@ -40,24 +48,53 @@ namespace Assets.Scripts
             SpawnNew(_asteroidsPool, GenerationUtils.GenerateLocation());
         }
 
-        public void DestroyAsteroid(AsteroidController asteroid, bool isTotallyDestroy)
+        public void DestroyAsteroid(AsteroidController asteroid, AsteroidDisappearingType asteroidDisappearingType)
         {
-            if (asteroid.AsteroidType == AsteroidType.Asteroid)
+            AsteroidType asteroidType = asteroid.AsteroidType;
+            if (asteroidType == AsteroidType.Asteroid)
             {
                 _asteroidsPool.ReturnToPool(asteroid);
             }
-            else if (asteroid.AsteroidType == AsteroidType.AsteroidFragment)
+            else if (asteroidType == AsteroidType.AsteroidFragment)
             {
                 _asteroidFragmentsPool.ReturnToPool(asteroid);
             }
             
             asteroid.OnDestroy -= DestroyAsteroid;
 
-            if (!isTotallyDestroy)
+            if (asteroidDisappearingType == AsteroidDisappearingType.Shaterred)
             {
                 Vector3 asteroidPosition = asteroid.CurrentPosition;
                 SpawnAsteroidFragments(asteroidPosition);
             }
+
+            Achievement achievement = DefineAchievement(asteroidType, asteroidDisappearingType);
+            if (achievement != Achievement.None)
+            {
+                OnGotAchievement?.Invoke(achievement);
+            }
+        }
+
+        private Achievement DefineAchievement(AsteroidType asteroidType, AsteroidDisappearingType asteroidDisappearingType)
+        {
+            if (asteroidDisappearingType == AsteroidDisappearingType.GotAway)
+            {
+                return Achievement.None;
+            }
+
+            if (asteroidType == AsteroidType.Asteroid)
+            {
+                return asteroidDisappearingType == AsteroidDisappearingType.TotallyDestroyed
+                    ? Achievement.DestroyAsteroid
+                    : Achievement.BreakAsteroid;
+            }
+
+            if (asteroidType == AsteroidType.AsteroidFragment)
+            {
+                return Achievement.DestroyAsteroidFragment;
+            }
+
+            return Achievement.None;
         }
 
         private void SpawnNew(Pool<AsteroidController> pool, Vector3 initPosition)

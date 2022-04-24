@@ -5,25 +5,30 @@ using Assets.Scripts.Weapon;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] GameObject playerPrefab;
+    [SerializeField] Vector3 playerStartPosition;
+    [SerializeField] Vector3 playerStartRotation;
+
     [SerializeField] GameObject asteroidPrefab;
+    [SerializeField] int asteroidsInitialCount = 5;
 
     [SerializeField] Transform wholeAsteroidsContainer;
     [SerializeField] Transform asteroidFragmentsContainer;
     [SerializeField] Transform machineGunContainer;
     [SerializeField] Transform laserContainer;
 
-    [SerializeField] GameObject projectilePrefab;
-    [SerializeField] int asteroidsInitialCount = 5;
+    [SerializeField] GameObject projectilePrefab;    
     [SerializeField] int machineGunAmmunitionCount = 30;
     [SerializeField] int laserAmmunitionInitialCount = 10;
     
     [SerializeField] private List<SpawnZones> _spawnZones;
     [SerializeField] private List<AsteroidTypeInfo> _asteroidTypes;
     [SerializeField] private List<WeaponTypeInfo> weaponTypes;
+    [SerializeField] private List<DestroyPoints> destroyPoints;
 
     private AsteroidsGenerator _asteroidsGenerator;
     private PlayerController _playerController;
@@ -31,14 +36,20 @@ public class GameManager : MonoBehaviour
     private MachineGunController _machineGunController;
     private LaserController _laserController;
 
+    private PointsController _pointsController;
+
     public void Start()
     {
         GenerationUtils.SetSpawnZones(_spawnZones);
         GameData.SetAsteroidTypes(_asteroidTypes);
         GameData.SetWeaponTypes(weaponTypes);
+        GameData.SetDestroyPoints(destroyPoints);
 
         _asteroidsGenerator = new AsteroidsGenerator(asteroidPrefab, wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount);
+        _asteroidsGenerator.OnGotAchievement += OnGotAchievement;
         _asteroidsGenerator.Start();
+
+        _pointsController = new PointsController();
 
         Camera mainCamera = UnityEngine.Camera.main;
         float worldHeight = mainCamera.orthographicSize * 2;
@@ -46,6 +57,7 @@ public class GameManager : MonoBehaviour
 
         GameObject player = Instantiate(playerPrefab);
         _playerController = new PlayerController(player, worldHeight, worldWidth);
+        _playerController.SetPlayerPosition(playerStartPosition, playerStartRotation);
         Transform weaponTransform = _playerController.WeaponTransform;
         Transform playerTransform = _playerController.PlayerTransform;
 
@@ -53,7 +65,13 @@ public class GameManager : MonoBehaviour
         _laserController = new LaserController(projectilePrefab, laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount);
 
         _playerController.OnWeaponShot += OnWeaponShot;
+        _playerController.OnDie += GameOver;
 
+        StartGameTimers();
+    }
+
+    private void StartGameTimers()
+    {
         StartCoroutine(SpawnEnemies());
         StartCoroutine(CheckLaserAmmunition());
     }
@@ -88,5 +106,16 @@ public class GameManager : MonoBehaviour
 
             yield return new WaitForSeconds(3);
         }
+    }
+
+    private void OnGotAchievement(Achievement achievement)
+    {
+        _pointsController.CalculatePoints(achievement);
+    }
+
+    private void GameOver()
+    {
+        Debug.Log($"Game Over! {_pointsController.Points}");
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

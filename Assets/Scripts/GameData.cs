@@ -10,6 +10,7 @@ namespace Assets.Scripts
     {
         private static List<AsteroidTypeInfo> _asteroidTypes = new List<AsteroidTypeInfo>();
         private static List<WeaponTypeInfo> _weaponTypes = new List<WeaponTypeInfo>();
+        private static List<DestroyPoints> _destroyPoints = new List<DestroyPoints>();
 
         public static void SetAsteroidTypes(List<AsteroidTypeInfo> asteroidTypes)
         {
@@ -31,6 +32,17 @@ namespace Assets.Scripts
         {
             WeaponTypeInfo weaponInfo = _weaponTypes.FirstOrDefault(x => x.WeaponType == weaponType);
             return weaponInfo?.ProjectileSprite ?? null;
+        }
+
+        public static void SetDestroyPoints(List<DestroyPoints> destroyPoints)
+        {
+            _destroyPoints = destroyPoints;
+        }
+
+        public static int GetDestroyPointsForAchievement(Achievement achievement)
+        {
+            DestroyPoints destroyPoints = _destroyPoints.FirstOrDefault(x => x.Achievement == achievement);
+            return destroyPoints?.Points ?? 0;
         }
     }
 }

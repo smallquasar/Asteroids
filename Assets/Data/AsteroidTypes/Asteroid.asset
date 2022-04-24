@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   asteroidSprite: {fileID: 21300000, guid: d94332e15106fd64fb160ab157877d10, type: 3}
   asteroidType: 0
+  destroyPoints: 15

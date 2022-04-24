@@ -56,6 +56,14 @@ namespace Assets.Scripts.Generation
             _available.Add(instance);
         }
 
+        //public void ReturnAllObjectsToPool()
+        //{
+        //    foreach (var instance in _inUse)
+        //    {
+        //        ReturnToPool(instance);
+        //    }
+        //}
+
         private T Create()
         {
             GameObject obj = Object.Instantiate(_poolObject, _poolContainer); //перенести в creator?

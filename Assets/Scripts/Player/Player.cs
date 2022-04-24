@@ -12,6 +12,7 @@ namespace Assets.Scripts.Player
         [SerializeField] private Transform weaponTransform;
 
         public Action OnPlayerUpdate;
+        public Action<Collider2D> OnPlayerCrossObject;
 
         public float MaxSpeed => maxSpeed;
         public float RotationSpeed => rotationSpeed;
@@ -22,6 +23,11 @@ namespace Assets.Scripts.Player
         public void Update()
         {
             OnPlayerUpdate?.Invoke();
+        }
+
+        public void OnTriggerEnter2D(Collider2D collision)
+        {
+            OnPlayerCrossObject?.Invoke(collision);
         }
     }
 }

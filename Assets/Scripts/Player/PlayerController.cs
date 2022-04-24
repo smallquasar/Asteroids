@@ -7,8 +7,14 @@ namespace Assets.Scripts.Player
     public class PlayerController
     {
         public Action<Vector3, WeaponType> OnWeaponShot;
+        public Action OnDie;
+
         public Transform WeaponTransform => _weaponTransform;
         public Transform PlayerTransform => _playerTransform;
+
+        public Vector2 Coordinates => _playerTransform.position;
+        public float Velocity => _speed;
+        public float Angle => _playerTransform.eulerAngles.z;
 
         private GameObject _playerObject;
         private Transform _playerTransform;
@@ -44,6 +50,13 @@ namespace Assets.Scripts.Player
             _worldWidth = worldWidth;
 
             _player.OnPlayerUpdate += Update;
+            _player.OnPlayerCrossObject += OnPlayerCrossObject;
+        }
+
+        public void SetPlayerPosition(Vector3 newPosition, Vector3 newRotation)
+        {
+            _playerTransform.position = newPosition;
+            _playerTransform.eulerAngles = newRotation;
         }
 
         private void Update()
@@ -131,6 +144,14 @@ namespace Assets.Scripts.Player
             if (Input.GetButtonUp("Fire2"))
             {
                 OnWeaponShot?.Invoke(playerDirection, WeaponType.Laser);
+            }
+        }
+
+        private void OnPlayerCrossObject(Collider2D collisionObject)
+        {
+            if (collisionObject.CompareTag("Asteroid"))
+            {
+                OnDie?.Invoke();
             }
         }
     }

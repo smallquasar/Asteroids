@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Generation;
 using Assets.Scripts.Weapon;
 using System;
 using UnityEngine;
@@ -77,7 +78,7 @@ namespace Assets.Scripts.Player
                 if (collisionObject.TryGetComponent(out AsteroidView asteroid))
                 {
                     bool isTotallyDestroy = !(_weaponType == WeaponType.MachineGun && asteroid.AsteroidType == AsteroidType.Asteroid);
-                    asteroid.DestroyAsteroid(isTotallyDestroy);
+                    asteroid.DestroyAsteroid(isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);
                 }
 
                 OnDestroy?.Invoke(this);

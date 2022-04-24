@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Assets.Scripts.Generation;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Asteroids
 {
     public class AsteroidController : ICanSetActive, ICanSetGameObject
     {
-        public Action<AsteroidController, bool> OnDestroy;
+        public Action<AsteroidController, AsteroidDisappearingType> OnDestroy;
 
         public Vector3 CurrentPosition => _asteroid.transform.position;
         public AsteroidType AsteroidType => _asteroidType;
@@ -62,16 +63,16 @@ namespace Assets.Scripts.Asteroids
 
             if (_timeLeft < 0)
             {
-                OnDestroy?.Invoke(this, true);
+                OnDestroy?.Invoke(this, AsteroidDisappearingType.GotAway);
                 return;
             }
 
             _asteroid.transform.position += _direction * _speed * Time.deltaTime;
         }
 
-        private void OnAsteroidDestroy(bool isTotallyDestroy)
+        private void OnAsteroidDestroy(AsteroidDisappearingType asteroidDisappearingType)
         {
-            OnDestroy?.Invoke(this, isTotallyDestroy);
+            OnDestroy?.Invoke(this, asteroidDisappearingType);
         }
     }
 }
