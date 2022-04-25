@@ -30,6 +30,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private List<WeaponTypeInfo> weaponTypes;
     [SerializeField] private List<DestroyPoints> destroyPoints;
 
+    [SerializeField] private GameUIView gameUIView;
+
     private AsteroidsGenerator _asteroidsGenerator;
     private PlayerController _playerController;
 
@@ -37,6 +39,9 @@ public class GameManager : MonoBehaviour
     private LaserController _laserController;
 
     private PointsController _pointsController;
+    private StatisticsCollector _statisticsCollector;
+
+    private GameUIController _gameUIController;
 
     public void Start()
     {
@@ -64,10 +69,21 @@ public class GameManager : MonoBehaviour
         _machineGunController = new MachineGunController(projectilePrefab, machineGunContainer, weaponTransform, machineGunAmmunitionCount);
         _laserController = new LaserController(projectilePrefab, laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount);
 
+        _statisticsCollector = new StatisticsCollector(_playerController, _laserController);
+
+        _gameUIController = new GameUIController(gameUIView);
+        _gameUIController.OnContinueGame += ContinueGame;
+        _gameUIController.OnExitGame += ExitGame;
+
         _playerController.OnWeaponShot += OnWeaponShot;
         _playerController.OnDie += GameOver;
 
         StartGameTimers();
+    }
+
+    public void Update()
+    {
+        _gameUIController.Update(_statisticsCollector.GetStatistics());
     }
 
     private void StartGameTimers()
@@ -115,7 +131,23 @@ public class GameManager : MonoBehaviour
 
     private void GameOver()
     {
-        Debug.Log($"Game Over! {_pointsController.Points}");
+        Time.timeScale = 0;
+        _gameUIController.PlayerDie(_pointsController.Points);
+    }
+
+    private void ReloadGame()
+    {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+
+    private void ContinueGame()
+    {
+        Time.timeScale = 1;
+        ReloadGame();
+    }
+
+    private void ExitGame()
+    {
+        Application.Quit();
+    }    
 }

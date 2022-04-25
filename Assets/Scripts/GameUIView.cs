@@ -1,24 +1,54 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TMPro;
+﻿using TMPro;
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.UI;
 
 namespace Assets.Scripts
 {
     public class GameUIView : MonoBehaviour
     {
-        [SerializeField] private TextMeshPro coordsText;
-        [SerializeField] private TextMeshPro angleText;
-        [SerializeField] private TextMeshPro velocityText;
-        [SerializeField] private TextMeshPro laserCountText;
-        [SerializeField] private TextMeshPro cooldownText;
+        [SerializeField] private TextMeshProUGUI coordsText;
+        [SerializeField] private TextMeshProUGUI angleText;
+        [SerializeField] private TextMeshProUGUI velocityText;
+        [SerializeField] private TextMeshProUGUI laserCountText;
+        [SerializeField] private TextMeshProUGUI cooldownText;
+
+        [SerializeField] private GameObject gameOverPanel;
+        [SerializeField] private TextMeshProUGUI pointsText;
+
+        [SerializeField] private Button continueButton;
+        [SerializeField] private Button exitButton;
+
+        public PlayerStatistics PlayerStatistics { get; set; }
 
         public void Update()
         {
-            
+            if (gameOverPanel.activeSelf)
+            {
+                return;
+            }
+
+            coordsText.text = PlayerStatistics.Coordinates.ToString();
+            angleText.text = PlayerStatistics.Angle.ToString();
+            velocityText.text = PlayerStatistics.Velocity.ToString();
+            laserCountText.text = PlayerStatistics.LaserAmmunitionCount.ToString();
+            cooldownText.text = PlayerStatistics.LaserCooldown.ToString();
+        }
+
+        public void ShowGameOverPanel(int points)
+        {
+            gameOverPanel.SetActive(true);
+            pointsText.text = points.ToString();
+        }
+
+        public void AddListenerToContinueButton(UnityAction unityAction)
+        {
+            continueButton.onClick.AddListener(unityAction);
+        }
+
+        public void AddListenerToExitButton(UnityAction unityAction)
+        {
+            exitButton.onClick.AddListener(unityAction);
         }
     }
 }
