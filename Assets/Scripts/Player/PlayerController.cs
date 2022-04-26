@@ -149,7 +149,7 @@ namespace Assets.Scripts.Player
 
         private void OnPlayerCrossObject(Collider2D collisionObject)
         {
-            if (collisionObject.CompareTag("Asteroid"))
+            if (collisionObject.CompareTag("Enemy"))
             {
                 OnDie?.Invoke();
             }

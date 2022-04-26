@@ -1,5 +1,4 @@
-﻿using Assets.Scripts.Generation;
-using System;
+﻿using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Asteroids
@@ -38,7 +37,6 @@ namespace Assets.Scripts.Asteroids
 
             _asteroidView.OnAsteroidUpdate += Update;
             _asteroidView.OnAsteroidDestroy += OnAsteroidDestroy;
-
         }
 
         public void Init(Vector3 initPosition)

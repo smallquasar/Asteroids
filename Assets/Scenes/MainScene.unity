@@ -3095,6 +3095,37 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
+--- !u!1 &1215770877
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1215770878}
+  m_Layer: 0
+  m_Name: Spaceships
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1215770878
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1215770877}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 5
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1231048434
 GameObject:
   m_ObjectHideFlags: 0
@@ -3316,7 +3347,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1421768449
 GameObject:
@@ -3554,8 +3585,11 @@ MonoBehaviour:
   playerStartRotation: {x: 0, y: 0, z: 0}
   asteroidPrefab: {fileID: 6730954748657685325, guid: fff0246ee215cf64181188f2d238da21, type: 3}
   asteroidsInitialCount: 20
+  spaceshipPrefab: {fileID: 9159750129815019420, guid: 98b60686820fc434e98f8b684b2806e1, type: 3}
+  spaceshipsInitialCount: 2
   wholeAsteroidsContainer: {fileID: 322945751}
   asteroidFragmentsContainer: {fileID: 110681439}
+  spaceshipsContainer: {fileID: 1215770878}
   machineGunContainer: {fileID: 1640364295}
   laserContainer: {fileID: 570991515}
   projectilePrefab: {fileID: 8221882641898817585, guid: 0f830da80203d0940b841454ae50ec50, type: 3}

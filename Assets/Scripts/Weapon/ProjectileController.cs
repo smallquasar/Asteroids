@@ -1,5 +1,5 @@
 ﻿using Assets.Scripts.Asteroids;
-using Assets.Scripts.Generation;
+using Assets.Scripts.Spaceships;
 using Assets.Scripts.Weapon;
 using System;
 using UnityEngine;
@@ -73,12 +73,17 @@ namespace Assets.Scripts.Player
 
         private void OnProjectileCrossObject(Collider2D collisionObject)
         {
-            if (collisionObject.CompareTag("Asteroid"))
+            if (collisionObject.CompareTag("Enemy"))
             {
                 if (collisionObject.TryGetComponent(out AsteroidView asteroid))
                 {
                     bool isTotallyDestroy = !(_weaponType == WeaponType.MachineGun && asteroid.AsteroidType == AsteroidType.Asteroid);
                     asteroid.DestroyAsteroid(isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);
+                }
+
+                if (collisionObject.TryGetComponent(out Spaceship spaceship))
+                {
+                    spaceship.DestroySpaceship();
                 }
 
                 OnDestroy?.Invoke(this);

@@ -9,7 +9,6 @@ namespace Assets.Scripts
         public void CalculatePoints(Achievement achievement)
         {
             int points = GameData.GetDestroyPointsForAchievement(achievement);
-            Debug.Log($"{points}");
             Points += points;
         }
     }

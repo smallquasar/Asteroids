@@ -1,6 +1,7 @@
 using Assets.Scripts;
 using Assets.Scripts.Asteroids;
 using Assets.Scripts.Player;
+using Assets.Scripts.Spaceships;
 using Assets.Scripts.Weapon;
 using System.Collections;
 using System.Collections.Generic;
@@ -15,9 +16,12 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] GameObject asteroidPrefab;
     [SerializeField] int asteroidsInitialCount = 5;
+    [SerializeField] GameObject spaceshipPrefab;
+    [SerializeField] int spaceshipsInitialCount = 2;
 
     [SerializeField] Transform wholeAsteroidsContainer;
     [SerializeField] Transform asteroidFragmentsContainer;
+    [SerializeField] Transform spaceshipsContainer;
     [SerializeField] Transform machineGunContainer;
     [SerializeField] Transform laserContainer;
 
@@ -33,6 +37,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private GameUIView gameUIView;
 
     private AsteroidsGenerator _asteroidsGenerator;
+    private SpaceshipsGenerator _spaceshipsGenerator;
     private PlayerController _playerController;
 
     private MachineGunController _machineGunController;
@@ -52,7 +57,7 @@ public class GameManager : MonoBehaviour
 
         _asteroidsGenerator = new AsteroidsGenerator(asteroidPrefab, wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount);
         _asteroidsGenerator.OnGotAchievement += OnGotAchievement;
-        _asteroidsGenerator.Start();
+        _asteroidsGenerator.Start();        
 
         _pointsController = new PointsController();
 
@@ -65,6 +70,10 @@ public class GameManager : MonoBehaviour
         _playerController.SetPlayerPosition(playerStartPosition, playerStartRotation);
         Transform weaponTransform = _playerController.WeaponTransform;
         Transform playerTransform = _playerController.PlayerTransform;
+
+        _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipPrefab, spaceshipsContainer, playerTransform, spaceshipsInitialCount);
+        _spaceshipsGenerator.OnGotAchievement += OnGotAchievement;
+        _spaceshipsGenerator.Start();
 
         _machineGunController = new MachineGunController(projectilePrefab, machineGunContainer, weaponTransform, machineGunAmmunitionCount);
         _laserController = new LaserController(projectilePrefab, laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount);
@@ -88,8 +97,9 @@ public class GameManager : MonoBehaviour
 
     private void StartGameTimers()
     {
-        StartCoroutine(SpawnEnemies());
+        StartCoroutine(SpawnAsteroids());
         StartCoroutine(CheckLaserAmmunition());
+        StartCoroutine(SpawnSpaceships());
     }
 
     private void OnWeaponShot(Vector3 direction, WeaponType weaponType)
@@ -105,12 +115,23 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    private IEnumerator SpawnEnemies()
+    private IEnumerator SpawnAsteroids()
     {
         while (true)
         {
             _asteroidsGenerator.SpawnNewAsteroid();
             yield return new WaitForSeconds(5);
+        }
+    }
+
+    private IEnumerator SpawnSpaceships()
+    {
+        while (true)
+        {
+            int timeForWait = Random.Range(7, 25);            
+            yield return new WaitForSeconds(timeForWait);
+
+            _spaceshipsGenerator.SpawnNewShip();
         }
     }
 
