@@ -81,7 +81,6 @@ public class GameManager : MonoBehaviour
 
         _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipPrefab, spaceshipsContainer, playerTransform, spaceshipsInitialCount);
         _spaceshipsGenerator.OnGotAchievement += OnGotAchievement;
-        _spaceshipsGenerator.Start();
 
         _machineGunController = new MachineGunController(projectilePrefab, machineGunContainer, weaponTransform, machineGunAmmunitionCount);
         _laserController = new LaserController(projectilePrefab, laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount);

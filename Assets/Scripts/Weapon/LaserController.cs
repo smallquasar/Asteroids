@@ -21,7 +21,7 @@ namespace Assets.Scripts.Player
             _playerPosition = playerPosition;
 
             _projectilesPool =
-                new Pool<ProjectileController>(new ProjectileCreator(WeaponType.Laser), _projectilePrefab, _prefabContainer, _ammunitionMaxCount, canExpandPool: false);
+                new Pool<ProjectileController>(new ProjectileCreator(WeaponType.Laser, _projectilePrefab, _prefabContainer), _ammunitionMaxCount, canExpandPool: false);
         }
 
         public override void OnWeaponShot(Vector3 direction)

@@ -9,9 +9,6 @@ namespace Assets.Scripts
     {
         public Action<Achievement> OnGotAchievement;
 
-        private GameObject _prefab;
-        private Transform _asteroidsContainer;
-        private Transform _fragmentsContainer;
         private int _initialCount;
 
         private Pool<AsteroidController> _asteroidsPool;
@@ -19,19 +16,17 @@ namespace Assets.Scripts
 
         public AsteroidsGenerator(GameObject prefab, Transform asteroidsContainer, Transform fragmentsContainer, int initialCount)
         {
-            _prefab = prefab;
-            _asteroidsContainer = asteroidsContainer;
-            _fragmentsContainer = fragmentsContainer;
             _initialCount = initialCount;
+
+            AsteroidCreator asteroidsCreator = new AsteroidCreator(AsteroidType.Asteroid, prefab, asteroidsContainer);
+            AsteroidCreator asteroidFragments = new AsteroidCreator(AsteroidType.AsteroidFragment, prefab, fragmentsContainer);
+
+            _asteroidsPool = new Pool<AsteroidController>(asteroidsCreator, _initialCount, canExpandPool: true);
+            _asteroidFragmentsPool = new Pool<AsteroidController>(asteroidFragments, _initialCount * 2, canExpandPool: true);
         }
 
         public void Start()
         {
-            _asteroidsPool =
-                new Pool<AsteroidController>(new AsteroidCreator(AsteroidType.Asteroid), _prefab, _asteroidsContainer, _initialCount, canExpandPool: true);
-            _asteroidFragmentsPool =
-                new Pool<AsteroidController>(new AsteroidCreator(AsteroidType.AsteroidFragment), _prefab, _fragmentsContainer, _initialCount * 2, canExpandPool: true);
-
             SpawnInitialAsteroidsCount();
         }
 

@@ -6,7 +6,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Player
 {
-    public class ProjectileController : ICanSetActive, ICanSetGameObject
+    public class ProjectileController : ICanSetActive
     {
         public Vector3 Direction { get; set; }
         public Action<ProjectileController> OnDestroy;
@@ -20,15 +20,12 @@ namespace Assets.Scripts.Player
         private float _maxLifeTime;
         private float _timeLeft = 0;
 
-        public ProjectileController(WeaponType weaponType)
+        public ProjectileController(WeaponType weaponType, GameObject prefab, Transform poolContainer)
         {
+            _projectileObject = UnityEngine.Object.Instantiate(prefab, poolContainer);
             _weaponType = weaponType;
-        }
 
-        public void SetGameObject(GameObject projectile)
-        {
-            _projectileObject = projectile;
-            _projectile = projectile.GetComponent<Projectile>();
+            _projectile = _projectileObject.GetComponent<Projectile>();
             Sprite projectileSprite = GameData.GetWeaponProjectileSpriteForType(_weaponType);
             _projectile.SetProjectileImage(projectileSprite);
             _speed = _projectile.Speed;

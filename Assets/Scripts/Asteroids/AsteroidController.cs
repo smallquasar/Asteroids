@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Asteroids
 {
-    public class AsteroidController : ICanSetActive, ICanSetGameObject
+    public class AsteroidController : ICanSetActive
     {
         public Action<AsteroidController, AsteroidDisappearingType> OnDestroy;
 
@@ -20,14 +20,11 @@ namespace Assets.Scripts.Asteroids
         private float _maxLifeTime;
         private float _timeLeft = 0;
 
-        public AsteroidController(AsteroidType asteroidType)
+        public AsteroidController(AsteroidType asteroidType, GameObject prefab, Transform parentContainer)
         {
+            _asteroid = UnityEngine.Object.Instantiate(prefab, parentContainer);
             _asteroidType = asteroidType;
-        }
 
-        public void SetGameObject(GameObject asteroid)
-        {
-            _asteroid = asteroid;
             _asteroidView = _asteroid.GetComponent<AsteroidView>();
             Sprite asteroidSprite = GameData.GetAsteroidSpriteForType(_asteroidType);
             _asteroidView.SetAsteroidImage(asteroidSprite);

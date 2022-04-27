@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Spaceships
 {
-    public class SpaceshipController : ICanSetActive, ICanSetGameObject
+    public class SpaceshipController : ICanSetActive
     {
         public Action<SpaceshipController, bool> OnDestroy; //true - уничтожен игроком
 
@@ -18,14 +18,11 @@ namespace Assets.Scripts.Spaceships
 
         private Transform _playerTransform;
 
-        public SpaceshipController(Transform playerTransform)
+        public SpaceshipController(Transform playerTransform, GameObject prefab, Transform parentContainer)
         {
+            _spaceshipObject = UnityEngine.Object.Instantiate(prefab, parentContainer);
             _playerTransform = playerTransform;
-        }
 
-        public void SetGameObject(GameObject spaceship)
-        {
-            _spaceshipObject = spaceship;
             _spaceshipTransform = _spaceshipObject.transform;
             _spaceship = _spaceshipObject.GetComponent<Spaceship>();
 
