@@ -6,6 +6,7 @@ using Assets.Scripts.Weapon;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
@@ -48,6 +49,13 @@ public class GameManager : MonoBehaviour
 
     private GameUIController _gameUIController;
 
+    private PlayerInput _playerInput;
+
+    public void Awake()
+    {
+        _playerInput = new PlayerInput();
+    }
+
     public void Start()
     {
         GenerationUtils.SetSpawnZones(_spawnZones);
@@ -66,7 +74,7 @@ public class GameManager : MonoBehaviour
         float worldWidth = worldHeight * mainCamera.aspect;
 
         GameObject player = Instantiate(playerPrefab);
-        _playerController = new PlayerController(player, worldHeight, worldWidth);
+        _playerController = new PlayerController(player, _playerInput, worldHeight, worldWidth);
         _playerController.SetPlayerPosition(playerStartPosition, playerStartRotation);
         Transform weaponTransform = _playerController.WeaponTransform;
         Transform playerTransform = _playerController.PlayerTransform;
@@ -170,5 +178,15 @@ public class GameManager : MonoBehaviour
     private void ExitGame()
     {
         Application.Quit();
-    }    
+    }
+
+    private void OnEnable()
+    {
+        _playerInput.Gameplay.Enable();
+    }
+
+    private void OnDisable()
+    {
+        _playerInput.Gameplay.Disable();
+    }
 }

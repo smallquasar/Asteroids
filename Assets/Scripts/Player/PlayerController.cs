@@ -1,6 +1,7 @@
 ﻿using Assets.Scripts.Weapon;
 using System;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace Assets.Scripts.Player
 {
@@ -15,6 +16,9 @@ namespace Assets.Scripts.Player
         public Vector2 Coordinates => _playerTransform.position;
         public float Velocity => _speed;
         public float Angle => _playerTransform.eulerAngles.z;
+
+        private PlayerInput _playerInput;
+        private Vector2 _currentMovement = Vector2.zero;
 
         private GameObject _playerObject;
         private Transform _playerTransform;
@@ -33,7 +37,7 @@ namespace Assets.Scripts.Player
         private float _halfPlayer = 0.25f;
         private float _delta = 0.5f;
 
-        public PlayerController(GameObject playerObject, float worldHeight, float worldWidth)
+        public PlayerController(GameObject playerObject, PlayerInput playerInput, float worldHeight, float worldWidth)
         {
             _playerObject = playerObject;
             _playerTransform = _playerObject.transform;
@@ -45,6 +49,12 @@ namespace Assets.Scripts.Player
             _rotationSpeed = _player.RotationSpeed;
             _acceleration = _player.Acceleration;
             _deceleration = _player.Deceleration;
+
+            _playerInput = playerInput;
+            _playerInput.Gameplay.Move.performed += OnMovementInput;
+            _playerInput.Gameplay.Move.canceled += OnMovementInput;
+            _playerInput.Gameplay.Shoot_MachineGun.performed += OnMachineGunShoot;
+            _playerInput.Gameplay.Shoot_Laser.performed += OnLaserShoot;
 
             _worldHeight = worldHeight;
             _worldWidth = worldWidth;
@@ -59,6 +69,21 @@ namespace Assets.Scripts.Player
             _playerTransform.eulerAngles = newRotation;
         }
 
+        public void OnMovementInput(InputAction.CallbackContext context)
+        {
+            _currentMovement = context.ReadValue<Vector2>();
+        }
+
+        public void OnMachineGunShoot(InputAction.CallbackContext context)
+        {
+            Shoot(_playerTransform.up, WeaponType.MachineGun);
+        }
+
+        public void OnLaserShoot(InputAction.CallbackContext context)
+        {
+            Shoot(_playerTransform.up, WeaponType.Laser);
+        }
+
         private void Update()
         {
             CheckLevelBounds();
@@ -68,8 +93,6 @@ namespace Assets.Scripts.Player
             Rotate();
 
             _playerTransform.position += _playerTransform.up * _speed * Time.deltaTime;
-
-            Shoot(_playerTransform.up);
         }        
 
         private void CheckLevelBounds()
@@ -97,11 +120,11 @@ namespace Assets.Scripts.Player
 
         private void CalculateSpeed()
         {
-            if (Input.GetKey(KeyCode.W) && _speed < _maxSpeed)
+            if (_currentMovement.y > 0 && _speed < _maxSpeed)
             {
                 _speed += _acceleration * Time.deltaTime;
             }
-            else if (Input.GetKey(KeyCode.S) && _speed > -_maxSpeed)
+            else if (_currentMovement.y < 0 && _speed > -_maxSpeed)
             {
                 _speed -= _acceleration * Time.deltaTime;
             }
@@ -125,26 +148,19 @@ namespace Assets.Scripts.Player
 
         private void Rotate()
         {
-            if (Input.GetKey(KeyCode.A))
+            if (_currentMovement.x < 0)
             {
                 _playerTransform.Rotate(_playerTransform.forward * _rotationSpeed * Time.deltaTime);
             }
-            if (Input.GetKey(KeyCode.D))
+            if (_currentMovement.x > 0)
             {
                 _playerTransform.Rotate(-_playerTransform.forward * _rotationSpeed * Time.deltaTime);
             }
         }
 
-        private void Shoot(Vector3 playerDirection)
+        private void Shoot(Vector3 playerDirection, WeaponType weaponType)
         {
-            if (Input.GetButtonUp("Fire1"))
-            {
-                OnWeaponShot?.Invoke(playerDirection, WeaponType.MachineGun);
-            }
-            if (Input.GetButtonUp("Fire2"))
-            {
-                OnWeaponShot?.Invoke(playerDirection, WeaponType.Laser);
-            }
+            OnWeaponShot?.Invoke(playerDirection, weaponType);
         }
 
         private void OnPlayerCrossObject(Collider2D collisionObject)
