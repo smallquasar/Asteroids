@@ -26,7 +26,7 @@ namespace Assets.Scripts
             {
                 Coordinates = playerCoords,
                 Velocity = playerVelocity,
-                Angle = playerAngle,
+                Angle = Mathf.RoundToInt(playerAngle),
                 LaserAmmunitionCount = laserCount,
                 LaserCooldown = cooldown
             };

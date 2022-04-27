@@ -30,7 +30,7 @@ namespace Assets.Scripts
 
             coordsText.text = PlayerStatistics.Coordinates.ToString();
             angleText.text = PlayerStatistics.Angle.ToString();
-            velocityText.text = PlayerStatistics.Velocity.ToString();
+            velocityText.text = PlayerStatistics.Velocity.ToString("F1");
             laserCountText.text = PlayerStatistics.LaserAmmunitionCount.ToString();
             cooldownText.text = PlayerStatistics.LaserCooldown.ToString();
         }
