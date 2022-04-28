@@ -1,9 +1,9 @@
-﻿using Assets.Scripts.Asteroids;
-using Assets.Scripts.Generation;
+﻿using Assets.Scripts.Generation;
+using Assets.Scripts.PlayerInfo;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Asteroids
 {
     public class AsteroidsGenerator
     {

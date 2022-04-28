@@ -1,7 +1,8 @@
 ﻿using Assets.Scripts.Player;
+using Assets.Scripts.Weapon;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.PlayerInfo
 {
     public class StatisticsCollector
     {

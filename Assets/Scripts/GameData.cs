@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.PlayerInfo;
 using Assets.Scripts.Weapon;
 using System.Collections.Generic;
 using System.Linq;

@@ -1,8 +1,7 @@
 ﻿using Assets.Scripts.Generation;
-using Assets.Scripts.Weapon;
 using UnityEngine;
 
-namespace Assets.Scripts.Player
+namespace Assets.Scripts.Weapon
 {
     public class LaserController : WeaponController
     {

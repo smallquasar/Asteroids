@@ -1,41 +1,50 @@
 using Assets.Scripts;
 using Assets.Scripts.Asteroids;
+using Assets.Scripts.Generation;
 using Assets.Scripts.Player;
+using Assets.Scripts.PlayerInfo;
 using Assets.Scripts.Spaceships;
+using Assets.Scripts.UI;
 using Assets.Scripts.Weapon;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
-    [SerializeField] GameObject playerPrefab;
-    [SerializeField] Vector3 playerStartPosition;
-    [SerializeField] Vector3 playerStartRotation;
+    [Header("Player")]
+    [SerializeField] private GameObject playerPrefab;
+    [SerializeField] private Vector3 playerStartPosition;
+    [SerializeField] private Vector3 playerStartRotation;
 
-    [SerializeField] GameObject asteroidPrefab;
-    [SerializeField] int asteroidsInitialCount = 5;
-    [SerializeField] GameObject spaceshipPrefab;
-    [SerializeField] int spaceshipsInitialCount = 2;
+    [Header("Asteroids")]
+    [SerializeField] private GameObject asteroidPrefab;
+    [SerializeField] private int asteroidsInitialCount = 5;
+    [SerializeField] private Transform wholeAsteroidsContainer;
+    [SerializeField] private Transform asteroidFragmentsContainer;
 
-    [SerializeField] Transform wholeAsteroidsContainer;
-    [SerializeField] Transform asteroidFragmentsContainer;
-    [SerializeField] Transform spaceshipsContainer;
-    [SerializeField] Transform machineGunContainer;
-    [SerializeField] Transform laserContainer;
+    [Header("Spaceships")]
+    [SerializeField] private GameObject spaceshipPrefab;
+    [SerializeField] private int spaceshipsInitialCount = 2;    
+    [SerializeField] private Transform spaceshipsContainer;
 
-    [SerializeField] GameObject projectilePrefab;    
-    [SerializeField] int machineGunAmmunitionCount = 30;
-    [SerializeField] int laserAmmunitionInitialCount = 10;
+    [Header("Weapon")]
+    [SerializeField] private Transform machineGunContainer;
+    [SerializeField] private int machineGunAmmunitionCount = 30;
+    [SerializeField] private Transform laserContainer;
+    [SerializeField] private int laserAmmunitionInitialCount = 10;
+    [SerializeField] private GameObject projectilePrefab;    
     
-    [SerializeField] private List<SpawnZones> _spawnZones;
-    [SerializeField] private List<AsteroidTypeInfo> _asteroidTypes;
-    [SerializeField] private List<WeaponTypeInfo> weaponTypes;
-    [SerializeField] private List<DestroyPoints> destroyPoints;
-
+    [Header("UI")]
     [SerializeField] private GameUIView gameUIView;
+
+    [Header("Game Data")]
+    [Space(10)]
+    [SerializeField] private List<SpawnZones> spawnZones;
+    [SerializeField] private List<AsteroidTypeInfo> asteroidTypes;
+    [SerializeField] private List<WeaponTypeInfo> weaponTypes;
+    [SerializeField] private List<DestroyPoints> destroyPoints;    
 
     private AsteroidsGenerator _asteroidsGenerator;
     private SpaceshipsGenerator _spaceshipsGenerator;
@@ -58,8 +67,8 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        GenerationUtils.SetSpawnZones(_spawnZones);
-        GameData.SetAsteroidTypes(_asteroidTypes);
+        GenerationUtils.SetSpawnZones(spawnZones);
+        GameData.SetAsteroidTypes(asteroidTypes);
         GameData.SetWeaponTypes(weaponTypes);
         GameData.SetDestroyPoints(destroyPoints);
 

@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.PlayerInfo
 {
     [CreateAssetMenu(fileName = "DestroyPoints_", menuName = "ScriptableObjects/DestroyPoints")]
     public class DestroyPoints : ScriptableObject

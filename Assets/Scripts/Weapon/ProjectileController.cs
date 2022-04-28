@@ -1,10 +1,10 @@
 ﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Generation;
 using Assets.Scripts.Spaceships;
-using Assets.Scripts.Weapon;
 using System;
 using UnityEngine;
 
-namespace Assets.Scripts.Player
+namespace Assets.Scripts.Weapon
 {
     public class ProjectileController : ICanSetActive
     {

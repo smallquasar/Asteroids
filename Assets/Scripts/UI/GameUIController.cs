@@ -1,6 +1,7 @@
-﻿using System;
+﻿using Assets.Scripts.PlayerInfo;
+using System;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.UI
 {
     public class GameUIController
     {

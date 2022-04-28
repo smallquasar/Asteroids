@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Generation;
+using Assets.Scripts.PlayerInfo;
 using System;
 using UnityEngine;
 

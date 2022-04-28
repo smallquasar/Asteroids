@@ -1,9 +1,10 @@
-﻿using TMPro;
+﻿using Assets.Scripts.PlayerInfo;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.UI
 {
     public class GameUIView : MonoBehaviour
     {

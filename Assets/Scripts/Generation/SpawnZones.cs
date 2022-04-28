@@ -1,18 +1,18 @@
 ﻿using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Generation
 {
     [CreateAssetMenu(fileName = "SpawnZone_", menuName = "ScriptableObjects/SpawnZone")]
     public class SpawnZones : ScriptableObject
     {
-        [SerializeField] private float _minX;
-        [SerializeField] private float _maxX;
-        [SerializeField] private float _minY;
-        [SerializeField] private float _maxY;
+        [SerializeField] private float minX;
+        [SerializeField] private float maxX;
+        [SerializeField] private float minY;
+        [SerializeField] private float maxY;
 
-        public float MinX => _minX;
-        public float MaxX => _maxX;
-        public float MinY => _minY;
-        public float MaxY => _maxY;
+        public float MinX => minX;
+        public float MaxX => maxX;
+        public float MinY => minY;
+        public float MaxY => maxY;
     }
 }

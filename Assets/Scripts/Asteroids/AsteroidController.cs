@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Assets.Scripts.Generation;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Asteroids

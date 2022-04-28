@@ -1,9 +1,7 @@
-﻿using Assets.Scripts.Asteroids;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
-namespace Assets.Scripts
+namespace Assets.Scripts.Generation
 {
     public static class GenerationUtils
     {
