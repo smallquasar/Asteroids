@@ -3,7 +3,7 @@ using UnityEngine;
 
 namespace Assets.Scripts.Weapon
 {
-    public class Projectile : MonoBehaviour
+    public class ProjectileView : MonoBehaviour
     {
         [SerializeField] private SpriteRenderer spriteRenderer;
         [SerializeField] private BoxCollider2D projectileCollider;

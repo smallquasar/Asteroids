@@ -11,8 +11,8 @@ namespace Assets.Scripts.Weapon
         public Vector3 Direction { get; set; }
         public Action<ProjectileController> OnDestroy;
 
-        private GameObject _projectileObject;
-        private Projectile _projectile;
+        private GameObject _projectile;
+        private ProjectileView _projectileView;
         private WeaponType _weaponType;
 
         private float _speed;
@@ -22,22 +22,22 @@ namespace Assets.Scripts.Weapon
 
         public ProjectileController(WeaponType weaponType, GameObject prefab, Transform poolContainer)
         {
-            _projectileObject = UnityEngine.Object.Instantiate(prefab, poolContainer);
+            _projectile = UnityEngine.Object.Instantiate(prefab, poolContainer);
             _weaponType = weaponType;
 
-            _projectile = _projectileObject.GetComponent<Projectile>();
+            _projectileView = _projectile.GetComponent<ProjectileView>();
             Sprite projectileSprite = GameData.GetWeaponProjectileSpriteForType(_weaponType);
-            _projectile.SetProjectileImage(projectileSprite);
-            _speed = _projectile.Speed;
-            _maxLifeTime = _projectile.MaxLifeTime;
+            _projectileView.SetProjectileImage(projectileSprite);
+            _speed = _projectileView.Speed;
+            _maxLifeTime = _projectileView.MaxLifeTime;
 
-            _projectile.OnProjectileUpdate += Update;
-            _projectile.OnProjectileCrossObject += OnProjectileCrossObject;
+            _projectileView.OnProjectileUpdate += Update;
+            _projectileView.OnProjectileCrossObject += OnProjectileCrossObject;
         }
 
         public void SetActive(bool isActive)
         {
-            _projectileObject.SetActive(isActive);
+            _projectile.SetActive(isActive);
 
             if (isActive)
             {
@@ -47,12 +47,12 @@ namespace Assets.Scripts.Weapon
 
         public void SetPosition(Vector3 position)
         {
-            _projectileObject.transform.position = position;
+            _projectile.transform.position = position;
         }
 
         public void SetRotation(Vector3 rotation)
         {
-            _projectileObject.transform.eulerAngles = rotation;
+            _projectile.transform.eulerAngles = rotation;
         }
 
         private void Update()
@@ -65,7 +65,7 @@ namespace Assets.Scripts.Weapon
                 return;
             }
 
-            _projectileObject.transform.position += Direction * _speed * Time.deltaTime;
+            _projectile.transform.position += Direction * _speed * Time.deltaTime;
         }
 
         private void OnProjectileCrossObject(Collider2D collisionObject)
