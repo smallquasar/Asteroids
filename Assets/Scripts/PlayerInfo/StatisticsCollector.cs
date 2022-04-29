@@ -21,7 +21,7 @@ namespace Assets.Scripts.PlayerInfo
             float playerVelocity = _playerController.Velocity;
             float playerAngle = _playerController.Angle;
             int laserCount = _laserController.AmmunitionCurrentCount;
-            int cooldown = 3; //HARDCODE!
+            float cooldown = _laserController.LaserOneShotRefillTimeCounter;
 
             return new PlayerStatistics()
             {

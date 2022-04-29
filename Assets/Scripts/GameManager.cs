@@ -32,10 +32,13 @@ public class GameManager : MonoBehaviour
     [Header("Weapon")]
     [SerializeField] private Transform machineGunContainer;
     [SerializeField] private int machineGunAmmunitionCount = 30;
+    [Space(10)]
     [SerializeField] private Transform laserContainer;
-    [SerializeField] private int laserAmmunitionInitialCount = 10;
-    [SerializeField] private GameObject projectilePrefab;    
-    
+    [SerializeField] private int laserAmmunitionInitialCount = 10;    
+    [SerializeField] private int laserOneShotRefillTime = 3;
+    [Space(10)]
+    [SerializeField] private GameObject projectilePrefab;
+
     [Header("UI")]
     [SerializeField] private GameUIView gameUIView;
 
@@ -92,7 +95,7 @@ public class GameManager : MonoBehaviour
         _spaceshipsGenerator.OnGotAchievement += OnGotAchievement;
 
         _machineGunController = new MachineGunController(projectilePrefab, machineGunContainer, weaponTransform, machineGunAmmunitionCount);
-        _laserController = new LaserController(projectilePrefab, laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount);
+        _laserController = new LaserController(projectilePrefab, laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount, laserOneShotRefillTime);
 
         _statisticsCollector = new StatisticsCollector(_playerController, _laserController);
 
@@ -108,13 +111,13 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
+        _laserController.LaserAmmunitionCounterUpdate();
         _gameUIController.Update(_statisticsCollector.GetStatistics());
     }
 
     private void StartGameTimers()
     {
         StartCoroutine(SpawnAsteroids());
-        StartCoroutine(CheckLaserAmmunition());
         StartCoroutine(SpawnSpaceships());
     }
 
@@ -148,16 +151,6 @@ public class GameManager : MonoBehaviour
             yield return new WaitForSeconds(timeForWait);
 
             _spaceshipsGenerator.SpawnNewShip();
-        }
-    }
-
-    private IEnumerator CheckLaserAmmunition()
-    {
-        while (true)
-        {
-            _laserController.CheckLaserAmmunition();
-
-            yield return new WaitForSeconds(3);
         }
     }
 

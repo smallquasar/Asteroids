@@ -33,7 +33,7 @@ namespace Assets.Scripts.UI
             angleText.text = PlayerStatistics.Angle.ToString();
             velocityText.text = PlayerStatistics.Velocity.ToString("F1");
             laserCountText.text = PlayerStatistics.LaserAmmunitionCount.ToString();
-            cooldownText.text = PlayerStatistics.LaserCooldown.ToString();
+            cooldownText.text = PlayerStatistics.LaserCooldown.ToString("F2") + " сек";
         }
 
         public void ShowGameOverPanel(int points)

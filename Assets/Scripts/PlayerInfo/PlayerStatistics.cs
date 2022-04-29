@@ -8,6 +8,6 @@ namespace Assets.Scripts.PlayerInfo
         public int Angle { get; set; }
         public float Velocity { get; set; }
         public int LaserAmmunitionCount { get; set; }
-        public int LaserCooldown { get; set; }
+        public float LaserCooldown { get; set; }
     }
 }

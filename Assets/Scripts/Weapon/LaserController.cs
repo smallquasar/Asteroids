@@ -5,22 +5,47 @@ namespace Assets.Scripts.Weapon
 {
     public class LaserController : WeaponController
     {
+        public int AmmunitionMaxCount => _ammunitionMaxCount;
         public int AmmunitionCurrentCount => _ammunitionCurrentCount;
+
+        public float LaserOneShotRefillTimeCounter => Mathf.Max(0, _ammunitionMaxCount - _ammunitionCurrentCount - 1) * 3 + _laserOneShotRefillTimeCounter;
 
         private int _ammunitionMaxCount;
         private int _ammunitionCurrentCount;
+        private int _laserOneShotRefillTime;
 
         private Transform _playerPosition;
 
-        public LaserController(GameObject projectilePrefab, Transform prefabContainer, Transform weaponPosition, Transform playerPosition, int initialCount)
+        private float _laserOneShotRefillTimeCounter;
+
+        public LaserController(GameObject projectilePrefab, Transform prefabContainer, Transform weaponPosition, Transform playerPosition, int initialCount, int laserOneShotRefillTime)
             :base(projectilePrefab, prefabContainer, weaponPosition)
         {
             _ammunitionMaxCount = initialCount;
             _ammunitionCurrentCount = initialCount;
             _playerPosition = playerPosition;
+            _laserOneShotRefillTime = laserOneShotRefillTime;
 
             _projectilesPool =
                 new Pool<ProjectileController>(new ProjectileCreator(WeaponType.Laser, _projectilePrefab, _prefabContainer), _ammunitionMaxCount, canExpandPool: false);
+        }
+
+        public void LaserAmmunitionCounterUpdate()
+        {
+            if (_laserOneShotRefillTimeCounter < float.Epsilon)
+            {
+                return;
+            }
+
+            _laserOneShotRefillTimeCounter -= Time.deltaTime;
+            if (_laserOneShotRefillTimeCounter < 0)
+            {
+                SetAmmunitionCurrentCount(_ammunitionCurrentCount + 1);
+                if (_ammunitionCurrentCount < _ammunitionMaxCount)
+                {
+                    _laserOneShotRefillTimeCounter = _laserOneShotRefillTime;
+                }
+            }
         }
 
         public override void OnWeaponShot(Vector3 direction)
@@ -37,15 +62,23 @@ namespace Assets.Scripts.Weapon
 
                 projectile.SetActive(true);
                 projectile.OnDestroy += DestroyProjectile;
-                _ammunitionCurrentCount--;
+                SetAmmunitionCurrentCount(_ammunitionCurrentCount - 1);
             }
         }
 
-        public void CheckLaserAmmunition()
+        private void SetAmmunitionCurrentCount(int newValue)
         {
-            if (_ammunitionCurrentCount < _ammunitionMaxCount)
+            //только начали стрелять из лазера, максимально заполненного снарядами
+            //поэтому инициализируем счётчик восстановления одного заряда лазера
+            if (_ammunitionCurrentCount == _ammunitionMaxCount && newValue < _ammunitionCurrentCount)
             {
-                _ammunitionCurrentCount++;
+                _laserOneShotRefillTimeCounter = _laserOneShotRefillTime;
+            }
+
+            _ammunitionCurrentCount = Mathf.Min(newValue, _ammunitionMaxCount);
+            if (_ammunitionCurrentCount == _ammunitionMaxCount)
+            {
+                _laserOneShotRefillTimeCounter = 0;
             }
         }
 
