@@ -26,8 +26,8 @@ namespace Assets.Scripts.Weapon
             _weaponType = weaponType;
 
             _projectileView = _projectile.GetComponent<ProjectileView>();
-            Sprite projectileSprite = GameData.GetWeaponProjectileSpriteForType(_weaponType);
-            _projectileView.SetProjectileImage(projectileSprite);
+            //Sprite projectileSprite = GameData.GetWeaponProjectileSpriteForType(_weaponType);
+            //_projectileView.SetProjectileImage(projectileSprite);
             _speed = _projectileView.Speed;
             _maxLifeTime = _projectileView.MaxLifeTime;
 

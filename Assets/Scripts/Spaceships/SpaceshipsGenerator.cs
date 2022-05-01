@@ -11,9 +11,9 @@ namespace Assets.Scripts.Spaceships
 
         private Pool<SpaceshipController> _spaceshipsPool;
 
-        public SpaceshipsGenerator(GameObject prefab, Transform spaceshipsContainer, Transform playerTransform, int initialCount)
+        public SpaceshipsGenerator(Transform spaceshipsContainer, Transform playerTransform, int initialCount)
         {
-            SpaceshipCreator creator = new SpaceshipCreator(playerTransform, prefab, spaceshipsContainer);
+            SpaceshipCreator creator = new SpaceshipCreator(playerTransform, spaceshipsContainer);
             _spaceshipsPool = new Pool<SpaceshipController>(creator, initialCount, canExpandPool: true);
         }
 

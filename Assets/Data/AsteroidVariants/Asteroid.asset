@@ -9,8 +9,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d4e6bdda2e179a24c9b752f2bc5c31a4, type: 3}
-  m_Name: Weapon_MachineGun
+  m_Script: {fileID: 11500000, guid: bc8e69d716b95734fae03c8c8ab0c16f, type: 3}
+  m_Name: Asteroid
   m_EditorClassIdentifier: 
-  projectilePrefab: {fileID: 8221882641898817585, guid: 0f830da80203d0940b841454ae50ec50, type: 3}
-  weaponType: 0
+  variants:
+  - {fileID: 6730954748657685325, guid: fff0246ee215cf64181188f2d238da21, type: 3}
+  asteroidType: 0

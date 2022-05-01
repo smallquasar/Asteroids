@@ -5,11 +5,11 @@ namespace Assets.Scripts.Weapon
 {
     public class MachineGunController : WeaponController
     {
-        public MachineGunController(GameObject projectilePrefab, Transform prefabContainer, Transform weaponPosition, int initialCount)
-            :base(projectilePrefab, prefabContainer, weaponPosition)
+        public MachineGunController(Transform prefabContainer, Transform weaponPosition, int initialCount)
+            :base(prefabContainer, weaponPosition)
         {
             _projectilesPool =
-                new Pool<ProjectileController>(new ProjectileCreator(WeaponType.MachineGun, _projectilePrefab, _prefabContainer), initialCount, canExpandPool: true);
+                new Pool<ProjectileController>(new ProjectileCreator(WeaponType.MachineGun, _prefabContainer), initialCount, canExpandPool: true);
         }
 
         public override void OnWeaponShot(Vector3 direction)

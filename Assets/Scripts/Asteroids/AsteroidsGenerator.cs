@@ -14,12 +14,12 @@ namespace Assets.Scripts.Asteroids
         private Pool<AsteroidController> _asteroidsPool;
         private Pool<AsteroidController> _asteroidFragmentsPool;
 
-        public AsteroidsGenerator(GameObject prefab, Transform asteroidsContainer, Transform fragmentsContainer, int initialCount)
+        public AsteroidsGenerator(Transform asteroidsContainer, Transform fragmentsContainer, int initialCount)
         {
             _initialCount = initialCount;
 
-            AsteroidCreator asteroidsCreator = new AsteroidCreator(AsteroidType.Asteroid, prefab, asteroidsContainer);
-            AsteroidCreator asteroidFragments = new AsteroidCreator(AsteroidType.AsteroidFragment, prefab, fragmentsContainer);
+            AsteroidCreator asteroidsCreator = new AsteroidCreator(AsteroidType.Asteroid, asteroidsContainer);
+            AsteroidCreator asteroidFragments = new AsteroidCreator(AsteroidType.AsteroidFragment, fragmentsContainer);
 
             _asteroidsPool = new Pool<AsteroidController>(asteroidsCreator, _initialCount, canExpandPool: true);
             _asteroidFragmentsPool = new Pool<AsteroidController>(asteroidFragments, _initialCount * 2, canExpandPool: true);

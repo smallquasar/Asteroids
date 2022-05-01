@@ -9,16 +9,21 @@ namespace Assets.Scripts.Spaceships
         private GameObject _prefab;
         private Transform _parentContainer;
 
-        public SpaceshipCreator(Transform playerTransform, GameObject prefab, Transform parentContainer)
+        public SpaceshipCreator(Transform playerTransform, Transform parentContainer)
         {
             _playerTransform = playerTransform;
-            _prefab = prefab;
+            _prefab = GetPrefab();
             _parentContainer = parentContainer;
         }
 
         public SpaceshipController Create()
         {
             return new SpaceshipController(_playerTransform, _prefab, _parentContainer);
+        }
+
+        private GameObject GetPrefab()
+        {
+            return GameData.GetSpaceshipPrefab();
         }
     }
 }

@@ -12,5 +12,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e6bdda2e179a24c9b752f2bc5c31a4, type: 3}
   m_Name: Weapon_Laser
   m_EditorClassIdentifier: 
-  projectileSprite: {fileID: 21300000, guid: 7ec6b9de11fa46f46b45a3a4272170a4, type: 3}
+  projectilePrefab: {fileID: 8221882641898817585, guid: 7e3ab7496da152c43bd38d0264ae6dd8, type: 3}
   weaponType: 1

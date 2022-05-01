@@ -9,16 +9,21 @@ namespace Assets.Scripts.Asteroids
         private GameObject _prefab;
         private Transform _parentContainer;
 
-        public AsteroidCreator(AsteroidType type, GameObject prefab, Transform parentContainer)
+        public AsteroidCreator(AsteroidType type, Transform parentContainer)
         {
             _asteroidType = type;
-            _prefab = prefab;
+            _prefab = GetPrefab();
             _parentContainer = parentContainer;
         }
 
         public AsteroidController Create()
         {
             return new AsteroidController(_asteroidType, _prefab, _parentContainer);
+        }
+
+        private GameObject GetPrefab()
+        {
+            return GameData.GetAsteroidVariantForType(_asteroidType);
         }
     }
 }
