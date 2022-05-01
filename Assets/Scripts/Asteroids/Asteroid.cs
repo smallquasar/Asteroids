@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Asteroids
 {
-    public class AsteroidView : MonoBehaviour
+    public class Asteroid : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private BoxCollider2D asteroidCollider;
         [SerializeField] private float speed = 0.5f;
         [SerializeField] private float maxLifeTime = 30f;
 
@@ -17,15 +15,6 @@ namespace Assets.Scripts.Asteroids
 
         public float Speed => speed;
         public float MaxLifeTime => maxLifeTime;
-
-        public void SetAsteroidImage(Sprite sprite)
-        {
-            if (sprite == null)
-                return;
-
-            spriteRenderer.sprite = sprite;
-            asteroidCollider.size = spriteRenderer.bounds.size;
-        }
 
         public void Update()
         {

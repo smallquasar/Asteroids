@@ -68,43 +68,24 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        GenerationUtils.SetSpawnZones(spawnZones);
+        SetGameData();
 
-        GameData.SetSpaceshipVariants(spaceshipVariants);
-        GameData.SetAsteroidVariants(asteroidVariants);
-        GameData.SetWeaponTypes(weaponTypes);
-        GameData.SetDestroyPoints(destroyPoints);
+        CreatePlayer();
 
-        _asteroidsGenerator = new AsteroidsGenerator(wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount);
-        _asteroidsGenerator.OnGotAchievement += OnGotAchievement;
-        _asteroidsGenerator.Start();        
-
-        _pointsController = new PointsController();
-
-        Camera mainCamera = UnityEngine.Camera.main;
-        float worldHeight = mainCamera.orthographicSize * 2;
-        float worldWidth = worldHeight * mainCamera.aspect;
-
-        GameObject player = Instantiate(playerPrefab);
-        _playerController = new PlayerController(player, _playerInput, worldHeight, worldWidth);
-        _playerController.SetPlayerPosition(playerStartPosition, playerStartRotation);
         Transform weaponTransform = _playerController.WeaponTransform;
         Transform playerTransform = _playerController.PlayerTransform;
 
-        _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipsContainer, playerTransform, spaceshipsInitialCount);
-        _spaceshipsGenerator.OnGotAchievement += OnGotAchievement;
+        _pointsController = new PointsController();
 
-        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionCount);
-        _laserController = new LaserController(laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount, laserOneShotRefillTime);
+        CreateSpaceObjectGenerators(playerTransform);
+        CreateWeapon(playerTransform, weaponTransform);  
 
         _statisticsCollector = new StatisticsCollector(_playerController, _laserController);
 
-        _gameUIController = new GameUIController(gameUIView);
-        _gameUIController.OnContinueGame += ContinueGame;
-        _gameUIController.OnExitGame += ExitGame;
+        CreateGameUI();
 
         _playerController.OnWeaponShot += OnWeaponShot;
-        _playerController.OnDie += GameOver;
+        _playerController.OnDie += GameOver;        
 
         StartGameTimers();
     }
@@ -115,24 +96,55 @@ public class GameManager : MonoBehaviour
         _gameUIController.Update(_statisticsCollector.GetStatistics());
     }
 
+    private void SetGameData()
+    {
+        GenerationUtils.SetSpawnZones(spawnZones);
+
+        GameData.SetSpaceshipVariants(spaceshipVariants);
+        GameData.SetAsteroidVariants(asteroidVariants);
+        GameData.SetWeaponTypes(weaponTypes);
+        GameData.SetDestroyPoints(destroyPoints);
+    }
+
+    private void CreatePlayer()
+    {
+        Camera mainCamera = UnityEngine.Camera.main;
+        float worldHeight = mainCamera.orthographicSize * 2;
+        float worldWidth = worldHeight * mainCamera.aspect;
+
+        GameObject player = Instantiate(playerPrefab);
+        _playerController = new PlayerController(player, _playerInput, worldHeight, worldWidth);
+        _playerController.SetPlayerPosition(playerStartPosition, playerStartRotation);        
+    }
+
+    private void CreateSpaceObjectGenerators(Transform playerTransform)
+    {
+        _asteroidsGenerator = new AsteroidsGenerator(wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount);
+        _asteroidsGenerator.OnGotAchievement += OnGotAchievement;
+        _asteroidsGenerator.Start();
+
+        _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipsContainer, playerTransform, spaceshipsInitialCount);
+        _spaceshipsGenerator.OnGotAchievement += OnGotAchievement;
+    }
+
+    private void CreateWeapon(Transform playerTransform, Transform weaponTransform)
+    {
+        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionCount);
+        _laserController = new LaserController(laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount, laserOneShotRefillTime);
+    }
+
+    private void CreateGameUI()
+    {
+        _gameUIController = new GameUIController(gameUIView);
+        _gameUIController.OnContinueGame += ContinueGame;
+        _gameUIController.OnExitGame += ExitGame;
+    }
+
     private void StartGameTimers()
     {
         StartCoroutine(SpawnAsteroids());
         StartCoroutine(SpawnSpaceships());
-    }
-
-    private void OnWeaponShot(Vector3 direction, WeaponType weaponType)
-    {
-        switch (weaponType)
-        {
-            case WeaponType.MachineGun:
-                _machineGunController.OnWeaponShot(direction);
-                break;
-            case WeaponType.Laser:
-                _laserController.OnWeaponShot(direction);
-                break;
-        }
-    }
+    }    
 
     private IEnumerator SpawnAsteroids()
     {
@@ -157,6 +169,19 @@ public class GameManager : MonoBehaviour
     private void OnGotAchievement(Achievement achievement)
     {
         _pointsController.CalculatePoints(achievement);
+    }
+
+    private void OnWeaponShot(Vector3 direction, WeaponType weaponType)
+    {
+        switch (weaponType)
+        {
+            case WeaponType.MachineGun:
+                _machineGunController.OnWeaponShot(direction);
+                break;
+            case WeaponType.Laser:
+                _laserController.OnWeaponShot(direction);
+                break;
+        }
     }
 
     private void GameOver()

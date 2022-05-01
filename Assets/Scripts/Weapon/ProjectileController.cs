@@ -11,8 +11,8 @@ namespace Assets.Scripts.Weapon
         public Vector3 Direction { get; set; }
         public Action<ProjectileController> OnDestroy;
 
-        private GameObject _projectile;
-        private ProjectileView _projectileView;
+        private GameObject _projectileObject;
+        private Projectile _projectile;
         private WeaponType _weaponType;
 
         private float _speed;
@@ -22,22 +22,20 @@ namespace Assets.Scripts.Weapon
 
         public ProjectileController(WeaponType weaponType, GameObject prefab, Transform poolContainer)
         {
-            _projectile = UnityEngine.Object.Instantiate(prefab, poolContainer);
+            _projectileObject = UnityEngine.Object.Instantiate(prefab, poolContainer);
             _weaponType = weaponType;
 
-            _projectileView = _projectile.GetComponent<ProjectileView>();
-            //Sprite projectileSprite = GameData.GetWeaponProjectileSpriteForType(_weaponType);
-            //_projectileView.SetProjectileImage(projectileSprite);
-            _speed = _projectileView.Speed;
-            _maxLifeTime = _projectileView.MaxLifeTime;
+            _projectile = _projectileObject.GetComponent<Projectile>();
+            _speed = _projectile.Speed;
+            _maxLifeTime = _projectile.MaxLifeTime;
 
-            _projectileView.OnProjectileUpdate += Update;
-            _projectileView.OnProjectileCrossObject += OnProjectileCrossObject;
+            _projectile.OnProjectileUpdate += Update;
+            _projectile.OnProjectileCrossObject += OnProjectileCrossObject;
         }
 
         public void SetActive(bool isActive)
         {
-            _projectile.SetActive(isActive);
+            _projectileObject.SetActive(isActive);
 
             if (isActive)
             {
@@ -47,12 +45,12 @@ namespace Assets.Scripts.Weapon
 
         public void SetPosition(Vector3 position)
         {
-            _projectile.transform.position = position;
+            _projectileObject.transform.position = position;
         }
 
         public void SetRotation(Vector3 rotation)
         {
-            _projectile.transform.eulerAngles = rotation;
+            _projectileObject.transform.eulerAngles = rotation;
         }
 
         private void Update()
@@ -65,14 +63,14 @@ namespace Assets.Scripts.Weapon
                 return;
             }
 
-            _projectile.transform.position += Direction * _speed * Time.deltaTime;
+            _projectileObject.transform.position += Direction * _speed * Time.deltaTime;
         }
 
         private void OnProjectileCrossObject(Collider2D collisionObject)
         {
             if (collisionObject.CompareTag("Enemy"))
             {
-                if (collisionObject.TryGetComponent(out AsteroidView asteroid))
+                if (collisionObject.TryGetComponent(out Asteroid asteroid))
                 {
                     bool isTotallyDestroy = !(_weaponType == WeaponType.MachineGun && asteroid.AsteroidType == AsteroidType.Asteroid);
                     asteroid.DestroyAsteroid(isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);

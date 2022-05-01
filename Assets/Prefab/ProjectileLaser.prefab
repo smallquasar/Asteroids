@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8221882641898817587}
   - component: {fileID: 8221882641898817586}
   - component: {fileID: 8221882641898817588}
-  - component: {fileID: -9113011111192867570}
+  - component: {fileID: 4433476237131307104}
   m_Layer: 0
   m_Name: ProjectileLaser
   m_TagString: Untagged
@@ -112,7 +112,7 @@ BoxCollider2D:
   serializedVersion: 2
   m_Size: {x: 0.08039719, y: 0.6401979}
   m_EdgeRadius: 0
---- !u!114 &-9113011111192867570
+--- !u!114 &4433476237131307104
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -121,10 +121,8 @@ MonoBehaviour:
   m_GameObject: {fileID: 8221882641898817585}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b13292dd1c2dd32458a591740690e4d7, type: 3}
+  m_Script: {fileID: 11500000, guid: f1dbd4cc6d0386f4290fbb9b6c172a5d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  spriteRenderer: {fileID: 8221882641898817586}
-  projectileCollider: {fileID: 8221882641898817588}
   speed: 5
   maxLifeTime: 5

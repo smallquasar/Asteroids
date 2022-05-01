@@ -3,10 +3,8 @@ using UnityEngine;
 
 namespace Assets.Scripts.Weapon
 {
-    public class ProjectileView : MonoBehaviour
+    public class Projectile : MonoBehaviour
     {
-        [SerializeField] private SpriteRenderer spriteRenderer;
-        [SerializeField] private BoxCollider2D projectileCollider;
         [SerializeField] private float speed = 5f;
         [SerializeField] private float maxLifeTime = 5f;
 
@@ -15,15 +13,6 @@ namespace Assets.Scripts.Weapon
 
         public float Speed => speed;
         public float MaxLifeTime => maxLifeTime;
-
-        public void SetProjectileImage(Sprite sprite)
-        {
-            if (sprite == null)
-                return;
-
-            spriteRenderer.sprite = sprite;
-            projectileCollider.size = spriteRenderer.bounds.size;
-        }
 
         public void Update()
         {

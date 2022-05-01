@@ -8,11 +8,11 @@ namespace Assets.Scripts.Asteroids
     {
         public Action<AsteroidController, AsteroidDisappearingType> OnDestroy;
 
-        public Vector3 CurrentPosition => _asteroid.transform.position;
+        public Vector3 CurrentPosition => _asteroidObject.transform.position;
         public AsteroidType AsteroidType => _asteroidType;
 
-        private GameObject _asteroid;
-        private AsteroidView _asteroidView;
+        private GameObject _asteroidObject;
+        private Asteroid _asteroid;
         private AsteroidType _asteroidType;
 
         private Vector3 _direction;
@@ -23,30 +23,27 @@ namespace Assets.Scripts.Asteroids
 
         public AsteroidController(AsteroidType asteroidType, GameObject prefab, Transform parentContainer)
         {
-            _asteroid = UnityEngine.Object.Instantiate(prefab, parentContainer);
+            _asteroidObject = UnityEngine.Object.Instantiate(prefab, parentContainer);
             _asteroidType = asteroidType;
 
-            _asteroidView = _asteroid.GetComponent<AsteroidView>();
-            //Sprite asteroidSprite = GameData.GetAsteroidSpriteForType(_asteroidType);
-            //_asteroidView.SetAsteroidImage(asteroidSprite);
-            //_speed = _asteroidType == AsteroidType.Asteroid ? _asteroidView.Speed : _asteroidView.Speed * 2;
-            _speed = _asteroidView.Speed;
-            _maxLifeTime = _asteroidView.MaxLifeTime;
-            _asteroidView.AsteroidType = _asteroidType;
+            _asteroid = _asteroidObject.GetComponent<Asteroid>();
+            _speed = _asteroid.Speed;
+            _maxLifeTime = _asteroid.MaxLifeTime;
+            _asteroid.AsteroidType = _asteroidType;
 
-            _asteroidView.OnAsteroidUpdate += Update;
-            _asteroidView.OnAsteroidDestroy += OnAsteroidDestroy;
+            _asteroid.OnAsteroidUpdate += Update;
+            _asteroid.OnAsteroidDestroy += OnAsteroidDestroy;
         }
 
         public void Init(Vector3 initPosition)
         {
-            _asteroid.transform.position = initPosition;
+            _asteroidObject.transform.position = initPosition;
             _direction = GenerationUtils.GetRandomDirection();
         }
 
         public void SetActive(bool isActive)
         {
-            _asteroid.SetActive(isActive);
+            _asteroidObject.SetActive(isActive);
 
             if (isActive)
             {
@@ -64,7 +61,7 @@ namespace Assets.Scripts.Asteroids
                 return;
             }
 
-            _asteroid.transform.position += _direction * _speed * Time.deltaTime;
+            _asteroidObject.transform.position += _direction * _speed * Time.deltaTime;
         }
 
         private void OnAsteroidDestroy(AsteroidDisappearingType asteroidDisappearingType)
