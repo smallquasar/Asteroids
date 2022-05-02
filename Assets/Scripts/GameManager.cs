@@ -1,6 +1,6 @@
-using Assets.Scripts;
 using Assets.Scripts.Asteroids;
 using Assets.Scripts.Generation;
+using Assets.Scripts.LevelInfo;
 using Assets.Scripts.Player;
 using Assets.Scripts.PlayerInfo;
 using Assets.Scripts.SpaceObjectsInfo;

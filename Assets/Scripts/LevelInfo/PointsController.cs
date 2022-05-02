@@ -1,7 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using Assets.Scripts.PlayerInfo;
+using System.Collections.Generic;
 using System.Linq;
 
-namespace Assets.Scripts.PlayerInfo
+namespace Assets.Scripts.LevelInfo
 {
     public class PointsController
     {

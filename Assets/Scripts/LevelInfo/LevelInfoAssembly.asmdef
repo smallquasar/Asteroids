@@ -1,0 +1,18 @@
+{
+    "name": "LevelInfoAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ec7c2a035f5a86f479d1c316f88dbe87",
+        "GUID:024604d180dc80e4eb4c3ad4718bc764",
+        "GUID:415f9e6185a985043a68b71b73ab4821"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
