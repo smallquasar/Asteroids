@@ -3593,11 +3593,13 @@ MonoBehaviour:
   playerStartPosition: {x: 0, y: 0, z: 0}
   playerStartRotation: {x: 0, y: 0, z: 0}
   asteroidsInitialCount: 20
+  asteroidAppearanceTime: 5
   wholeAsteroidsContainer: {fileID: 322945751}
   asteroidFragmentsContainer: {fileID: 110681439}
-  spaceshipPrefab: {fileID: 9159750129815019420, guid: 98b60686820fc434e98f8b684b2806e1, type: 3}
   spaceshipsInitialCount: 2
   spaceshipsContainer: {fileID: 1215770878}
+  spaceshipAppearanceTimeFrom: 7
+  spaceshipAppearanceTimeTo: 25
   machineGunContainer: {fileID: 1640364295}
   machineGunAmmunitionCount: 30
   laserContainer: {fileID: 570991515}
@@ -3605,11 +3607,6 @@ MonoBehaviour:
   laserOneShotRefillTime: 3
   gameUIView: {fileID: 1023105893}
   spaceshipVariants: {fileID: 11400000, guid: 59b1e211cbb93b5408614ed023bdf9a7, type: 2}
-  spawnZones:
-  - {fileID: 11400000, guid: 19510ab3171aac048b643a0222e90b6d, type: 2}
-  - {fileID: 11400000, guid: 36307c4235eed2045904579eefc61855, type: 2}
-  - {fileID: 11400000, guid: c3677c0c618c76f4db75270903228826, type: 2}
-  - {fileID: 11400000, guid: 53e7c5a8ec4964a4b9b6c428cc2c9784, type: 2}
   asteroidVariants:
   - {fileID: 11400000, guid: 2a606f0d9dc112844bf869a6d2880337, type: 2}
   - {fileID: 11400000, guid: 29b971b980375f6418cf2cec821fbf35, type: 2}
@@ -3621,6 +3618,16 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 19401ff80c995234e8f7d6e5dacc9412, type: 2}
   - {fileID: 11400000, guid: e4cc3e9c2396e164986437132212eff2, type: 2}
   - {fileID: 11400000, guid: cb03427f43d11274faf2ab131cf551bd, type: 2}
+  spawnZones:
+  - {fileID: 11400000, guid: 19510ab3171aac048b643a0222e90b6d, type: 2}
+  - {fileID: 11400000, guid: 36307c4235eed2045904579eefc61855, type: 2}
+  - {fileID: 11400000, guid: c3677c0c618c76f4db75270903228826, type: 2}
+  - {fileID: 11400000, guid: 53e7c5a8ec4964a4b9b6c428cc2c9784, type: 2}
+  initSpawnZones:
+  - {fileID: 11400000, guid: 947a53b9a028ce3498a52f73294ee6be, type: 2}
+  - {fileID: 11400000, guid: fae4b90a707e68c49940af7540673c3c, type: 2}
+  - {fileID: 11400000, guid: 65688937adb9d40428fa2b90046ae136, type: 2}
+  - {fileID: 11400000, guid: 925bf9e2d1733974281cc0f8cf24cf34, type: 2}
 --- !u!1 &1705267510
 GameObject:
   m_ObjectHideFlags: 0

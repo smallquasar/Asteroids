@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8286b33ffa8a324418fb1f421f30b0b5, type: 3}
   m_Name: SpawnZone_Down
   m_EditorClassIdentifier: 
-  minX: -7
-  maxX: 7
-  minY: -3
-  maxY: -6
+  minX: -10
+  maxX: 10
+  minY: -6
+  maxY: -7

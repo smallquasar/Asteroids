@@ -21,7 +21,7 @@ namespace Assets.Scripts.Spaceships
         {
             SpaceshipController spaceship = _spaceshipsPool.Get();
             spaceship.OnDestroy += DestroySpaceship;
-            spaceship?.Init(GenerationUtils.GenerateLocation());
+            spaceship?.Init(GenerationUtils.GenerateLocation(isInitSpawn: false));
             spaceship.SetActive(true);
         }
 

@@ -34,13 +34,13 @@ namespace Assets.Scripts.Asteroids
         {
             for (int i = 0; i < _initialCount; i++)
             {
-                SpawnNewAsteroid();
+                SpawnNewAsteroid(isInitSpawn: true);
             }
         }
 
-        public void SpawnNewAsteroid()
+        public void SpawnNewAsteroid(bool isInitSpawn)
         {
-            SpawnNew(_asteroidsPool, GenerationUtils.GenerateLocation());
+            SpawnNew(_asteroidsPool, GenerationUtils.GenerateLocation(isInitSpawn));
         }
 
         private void DestroyAsteroid(AsteroidController asteroid, AsteroidDisappearingType asteroidDisappearingType)

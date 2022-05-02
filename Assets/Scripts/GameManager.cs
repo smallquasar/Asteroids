@@ -45,11 +45,13 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Data")]
     [Space(10)]
-    [SerializeField] private SpaceObjectVariants spaceshipVariants;
-    [SerializeField] private List<SpawnZones> spawnZones;
+    [SerializeField] private SpaceObjectVariants spaceshipVariants;    
     [SerializeField] private List<AsteroidVariants> asteroidVariants;
     [SerializeField] private List<WeaponTypeInfo> weaponTypes;
-    [SerializeField] private List<DestroyPoints> destroyPoints;    
+    [SerializeField] private List<DestroyPoints> destroyPoints;
+    [Space(10)]
+    [SerializeField] private List<SpawnZones> spawnZones;
+    [SerializeField] private List<SpawnZones> initSpawnZones;
 
     private AsteroidsGenerator _asteroidsGenerator;
     private SpaceshipsGenerator _spaceshipsGenerator;
@@ -102,7 +104,7 @@ public class GameManager : MonoBehaviour
 
     private void SetGameData()
     {
-        GenerationUtils.SetSpawnZones(spawnZones);
+        GenerationUtils.SetSpawnZones(initSpawnZones, spawnZones);
 
         GameData.SetSpaceshipVariants(spaceshipVariants);
         GameData.SetAsteroidVariants(asteroidVariants);
@@ -154,7 +156,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            _asteroidsGenerator.SpawnNewAsteroid();
+            _asteroidsGenerator.SpawnNewAsteroid(isInitSpawn: false);
             yield return new WaitForSeconds(asteroidAppearanceTime);
         }
     }
