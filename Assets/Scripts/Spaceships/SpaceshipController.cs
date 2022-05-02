@@ -13,17 +13,15 @@ namespace Assets.Scripts.Spaceships
         private Transform _spaceshipTransform;
 
         private float _speed;
-
         private float _maxLifeTime;
-        private float _timeLeft = 0;
-
         private Transform _playerTransform;
+
+        private float _timeLeft = 0;
 
         public SpaceshipController(Transform playerTransform, GameObject prefab, Transform parentContainer)
         {
             _spaceshipObject = UnityEngine.Object.Instantiate(prefab, parentContainer);
             _playerTransform = playerTransform;
-
             _spaceshipTransform = _spaceshipObject.transform;
             _spaceship = _spaceshipObject.GetComponent<Spaceship>();
 

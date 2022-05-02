@@ -17,23 +17,23 @@ namespace Assets.Scripts.Player
         public float Velocity => _speed;
         public float Angle => _playerTransform.eulerAngles.z;
 
-        private PlayerInput _playerInput;
-        private Vector2 _currentMovement = Vector2.zero;
+        private PlayerInput _playerInput;        
 
         private GameObject _playerObject;
         private Transform _playerTransform;
         private Player _player;
-        private Transform _weaponTransform;
+        private Transform _weaponTransform;        
 
-        private float _speed = 0f;
-        private float _maxSpeed = 4f;
-        private float _rotationSpeed = 40f;
-        private float _acceleration = 2f;
-        private float _deceleration = 3f;
+        private float _maxSpeed;
+        private float _rotationSpeed;
+        private float _acceleration;
+        private float _deceleration;
 
         private float _worldHeight;
         private float _worldWidth;
 
+        private Vector2 _currentMovement = Vector2.zero;
+        private float _speed = 0f;
         private float _halfPlayer = 0.25f;
         private float _delta = 0.5f;
 
@@ -67,22 +67,7 @@ namespace Assets.Scripts.Player
         {
             _playerTransform.position = newPosition;
             _playerTransform.eulerAngles = newRotation;
-        }
-
-        public void OnMovementInput(InputAction.CallbackContext context)
-        {
-            _currentMovement = context.ReadValue<Vector2>();
-        }
-
-        public void OnMachineGunShoot(InputAction.CallbackContext context)
-        {
-            Shoot(_playerTransform.up, WeaponType.MachineGun);
-        }
-
-        public void OnLaserShoot(InputAction.CallbackContext context)
-        {
-            Shoot(_playerTransform.up, WeaponType.Laser);
-        }
+        }        
 
         private void Update()
         {
@@ -156,6 +141,21 @@ namespace Assets.Scripts.Player
             {
                 _playerTransform.Rotate(-_playerTransform.forward * _rotationSpeed * Time.deltaTime);
             }
+        }
+
+        private void OnMovementInput(InputAction.CallbackContext context)
+        {
+            _currentMovement = context.ReadValue<Vector2>();
+        }
+
+        private void OnMachineGunShoot(InputAction.CallbackContext context)
+        {
+            Shoot(_playerTransform.up, WeaponType.MachineGun);
+        }
+
+        private void OnLaserShoot(InputAction.CallbackContext context)
+        {
+            Shoot(_playerTransform.up, WeaponType.Laser);
         }
 
         private void Shoot(Vector3 playerDirection, WeaponType weaponType)

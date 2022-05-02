@@ -13,10 +13,9 @@ namespace Assets.Scripts.Weapon
         private int _ammunitionMaxCount;
         private int _ammunitionCurrentCount;
         private int _laserOneShotRefillTime;
-
-        private Transform _playerPosition;
-
         private float _laserOneShotRefillTimeCounter;
+
+        private Transform _playerPosition;        
 
         public LaserController(Transform prefabContainer, Transform weaponPosition, Transform playerPosition, int initialCount, int laserOneShotRefillTime)
             :base(prefabContainer, weaponPosition)
@@ -26,8 +25,8 @@ namespace Assets.Scripts.Weapon
             _playerPosition = playerPosition;
             _laserOneShotRefillTime = laserOneShotRefillTime;
 
-            _projectilesPool =
-                new Pool<ProjectileController>(new ProjectileCreator(WeaponType.Laser, _prefabContainer), _ammunitionMaxCount, canExpandPool: false);
+            ProjectileCreator creator = new ProjectileCreator(WeaponType.Laser, _prefabContainer);
+            _projectilesPool = new Pool<ProjectileController>(creator, _ammunitionMaxCount, canExpandPool: false);
         }
 
         public void LaserAmmunitionCounterUpdate()

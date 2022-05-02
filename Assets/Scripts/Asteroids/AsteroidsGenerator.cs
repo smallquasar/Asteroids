@@ -43,7 +43,7 @@ namespace Assets.Scripts.Asteroids
             SpawnNew(_asteroidsPool, GenerationUtils.GenerateLocation());
         }
 
-        public void DestroyAsteroid(AsteroidController asteroid, AsteroidDisappearingType asteroidDisappearingType)
+        private void DestroyAsteroid(AsteroidController asteroid, AsteroidDisappearingType asteroidDisappearingType)
         {
             AsteroidType asteroidType = asteroid.AsteroidType;
             if (asteroidType == AsteroidType.Asteroid)

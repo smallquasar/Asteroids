@@ -16,18 +16,18 @@ namespace Assets.Scripts.Weapon
         private WeaponType _weaponType;
 
         private float _speed;
-
         private float _maxLifeTime;
+
         private float _timeLeft = 0;
 
         public ProjectileController(WeaponType weaponType, GameObject prefab, Transform poolContainer)
         {
             _projectileObject = UnityEngine.Object.Instantiate(prefab, poolContainer);
-            _weaponType = weaponType;
-
             _projectile = _projectileObject.GetComponent<Projectile>();
             _speed = _projectile.Speed;
             _maxLifeTime = _projectile.MaxLifeTime;
+
+            _weaponType = weaponType;
 
             _projectile.OnProjectileUpdate += Update;
             _projectile.OnProjectileCrossObject += OnProjectileCrossObject;

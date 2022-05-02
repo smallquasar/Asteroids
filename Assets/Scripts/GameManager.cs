@@ -21,12 +21,16 @@ public class GameManager : MonoBehaviour
 
     [Header("Asteroids")]
     [SerializeField] private int asteroidsInitialCount = 5;
+    [SerializeField] private int asteroidAppearanceTime = 5;
     [SerializeField] private Transform wholeAsteroidsContainer;
     [SerializeField] private Transform asteroidFragmentsContainer;
 
     [Header("Spaceships")]
     [SerializeField] private int spaceshipsInitialCount = 2;    
     [SerializeField] private Transform spaceshipsContainer;
+    [Space(10)]
+    [SerializeField] private int spaceshipAppearanceTimeFrom = 7;
+    [SerializeField] private int spaceshipAppearanceTimeTo = 25;
 
     [Header("Weapon")]
     [SerializeField] private Transform machineGunContainer;
@@ -151,7 +155,7 @@ public class GameManager : MonoBehaviour
         while (true)
         {
             _asteroidsGenerator.SpawnNewAsteroid();
-            yield return new WaitForSeconds(5);
+            yield return new WaitForSeconds(asteroidAppearanceTime);
         }
     }
 
@@ -159,7 +163,7 @@ public class GameManager : MonoBehaviour
     {
         while (true)
         {
-            int timeForWait = Random.Range(7, 25);            
+            int timeForWait = Random.Range(spaceshipAppearanceTimeFrom, spaceshipAppearanceTimeTo + 1);            
             yield return new WaitForSeconds(timeForWait);
 
             _spaceshipsGenerator.SpawnNewShip();

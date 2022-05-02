@@ -8,8 +8,8 @@ namespace Assets.Scripts.Weapon
         public MachineGunController(Transform prefabContainer, Transform weaponPosition, int initialCount)
             :base(prefabContainer, weaponPosition)
         {
-            _projectilesPool =
-                new Pool<ProjectileController>(new ProjectileCreator(WeaponType.MachineGun, _prefabContainer), initialCount, canExpandPool: true);
+            ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer);
+            _projectilesPool = new Pool<ProjectileController>(creator, initialCount, canExpandPool: true);
         }
 
         public override void OnWeaponShot(Vector3 direction)

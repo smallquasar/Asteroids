@@ -8,15 +8,16 @@ namespace Assets.Scripts.UI
 {
     public class GameUIView : MonoBehaviour
     {
+        [Header("Statistics")]
         [SerializeField] private TextMeshProUGUI coordsText;
         [SerializeField] private TextMeshProUGUI angleText;
         [SerializeField] private TextMeshProUGUI velocityText;
         [SerializeField] private TextMeshProUGUI laserCountText;
         [SerializeField] private TextMeshProUGUI cooldownText;
 
+        [Header("Game Over Panel")]
         [SerializeField] private GameObject gameOverPanel;
         [SerializeField] private TextMeshProUGUI pointsText;
-
         [SerializeField] private Button continueButton;
         [SerializeField] private Button exitButton;
 
@@ -29,11 +30,7 @@ namespace Assets.Scripts.UI
                 return;
             }
 
-            coordsText.text = PlayerStatistics.Coordinates.ToString();
-            angleText.text = PlayerStatistics.Angle.ToString();
-            velocityText.text = PlayerStatistics.Velocity.ToString("F1");
-            laserCountText.text = PlayerStatistics.LaserAmmunitionCount.ToString();
-            cooldownText.text = PlayerStatistics.LaserCooldown.ToString("F2") + " сек";
+            UpdateStatisticsPanel();
         }
 
         public void ShowGameOverPanel(int points)
@@ -50,6 +47,15 @@ namespace Assets.Scripts.UI
         public void AddListenerToExitButton(UnityAction unityAction)
         {
             exitButton.onClick.AddListener(unityAction);
+        }
+
+        private void UpdateStatisticsPanel()
+        {
+            coordsText.text = PlayerStatistics.Coordinates.ToString();
+            angleText.text = PlayerStatistics.Angle.ToString();
+            velocityText.text = PlayerStatistics.Velocity.ToString("F1");
+            laserCountText.text = PlayerStatistics.LaserAmmunitionCount.ToString();
+            cooldownText.text = PlayerStatistics.LaserCooldown.ToString("F2") + " сек";
         }
     }
 }

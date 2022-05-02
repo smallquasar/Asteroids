@@ -25,7 +25,7 @@ namespace Assets.Scripts.Spaceships
             spaceship.SetActive(true);
         }
 
-        public void DestroySpaceship(SpaceshipController spaceship, bool isDestroyedByPlayer)
+        private void DestroySpaceship(SpaceshipController spaceship, bool isDestroyedByPlayer)
         {
             _spaceshipsPool.ReturnToPool(spaceship);
 
