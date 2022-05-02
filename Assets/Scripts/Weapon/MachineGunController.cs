@@ -1,14 +1,15 @@
 ﻿using Assets.Scripts.Generation;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Weapon
 {
     public class MachineGunController : WeaponController
     {
-        public MachineGunController(Transform prefabContainer, Transform weaponPosition, int initialCount)
+        public MachineGunController(Transform prefabContainer, Transform weaponPosition, int initialCount, List<WeaponTypeInfo> weaponTypes)
             :base(prefabContainer, weaponPosition)
         {
-            ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer);
+            ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer, weaponTypes);
             _projectilesPool = new Pool<ProjectileController>(creator, initialCount, canExpandPool: true);
         }
 

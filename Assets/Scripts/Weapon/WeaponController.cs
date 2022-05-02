@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Generation;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Weapon

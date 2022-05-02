@@ -1,4 +1,6 @@
 ﻿using Assets.Scripts.Generation;
+using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Assets.Scripts.Weapon
@@ -6,24 +8,24 @@ namespace Assets.Scripts.Weapon
     public class ProjectileCreator : IPoolObjectCreator<ProjectileController>
     {
         public WeaponType _weaponType;
-        private GameObject _prefab;
         private Transform _parentContainer;
+        private WeaponTypeInfo _weaponInfo;
 
-        public ProjectileCreator(WeaponType weaponType, Transform parentContainer)
+        public ProjectileCreator(WeaponType weaponType, Transform parentContainer, List<WeaponTypeInfo> weaponTypes)
         {
             _weaponType = weaponType;
-            _prefab = GetPrefab();
             _parentContainer = parentContainer;
+            _weaponInfo = weaponTypes.FirstOrDefault(x => x.WeaponType == _weaponType);
         }
 
         public ProjectileController Create()
         {
-            return new ProjectileController(_weaponType, _prefab, _parentContainer);
+            return new ProjectileController(_weaponType, GetPrefab(), _parentContainer);
         }
 
         private GameObject GetPrefab()
         {
-            return GameData.GetWeaponProjectilePrefabForType(_weaponType);
+            return _weaponInfo?.ProjectilePrefab ?? null;
         }
     }
 }

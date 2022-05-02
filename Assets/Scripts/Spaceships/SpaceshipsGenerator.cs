@@ -1,5 +1,6 @@
 ﻿using Assets.Scripts.Generation;
 using Assets.Scripts.PlayerInfo;
+using Assets.Scripts.SpaceObjectsInfo;
 using System;
 using UnityEngine;
 
@@ -11,9 +12,9 @@ namespace Assets.Scripts.Spaceships
 
         private Pool<SpaceshipController> _spaceshipsPool;
 
-        public SpaceshipsGenerator(Transform spaceshipsContainer, Transform playerTransform, int initialCount)
+        public SpaceshipsGenerator(Transform spaceshipsContainer, Transform playerTransform, int initialCount, SpaceObjectVariants spaceshipVariants)
         {
-            SpaceshipCreator creator = new SpaceshipCreator(playerTransform, spaceshipsContainer);
+            SpaceshipCreator creator = new SpaceshipCreator(playerTransform, spaceshipsContainer, spaceshipVariants);
             _spaceshipsPool = new Pool<SpaceshipController>(creator, initialCount, canExpandPool: true);
         }
 

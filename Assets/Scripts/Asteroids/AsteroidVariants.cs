@@ -1,7 +1,7 @@
-﻿using Assets.Scripts.Asteroids;
+﻿using Assets.Scripts.SpaceObjectsInfo;
 using UnityEngine;
 
-namespace Assets.Scripts.SpaceObjectsInfo
+namespace Assets.Scripts.Asteroids
 {
     [CreateAssetMenu(fileName = "AsteroidVariants_", menuName = "ScriptableObjects/AsteroidVariants")]
     public class AsteroidVariants : SpaceObjectVariants

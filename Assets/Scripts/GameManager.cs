@@ -74,14 +74,14 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        SetGameData();
+        GenerationUtils.SetSpawnZones(initSpawnZones, spawnZones);
 
         CreatePlayer();
 
         Transform weaponTransform = _playerController.WeaponTransform;
         Transform playerTransform = _playerController.PlayerTransform;
 
-        _pointsController = new PointsController();
+        _pointsController = new PointsController(destroyPoints);
 
         CreateSpaceObjectGenerators(playerTransform);
         CreateWeapon(playerTransform, weaponTransform);  
@@ -102,16 +102,6 @@ public class GameManager : MonoBehaviour
         _gameUIController.Update(_statisticsCollector.GetStatistics());
     }
 
-    private void SetGameData()
-    {
-        GenerationUtils.SetSpawnZones(initSpawnZones, spawnZones);
-
-        GameData.SetSpaceshipVariants(spaceshipVariants);
-        GameData.SetAsteroidVariants(asteroidVariants);
-        GameData.SetWeaponTypes(weaponTypes);
-        GameData.SetDestroyPoints(destroyPoints);
-    }
-
     private void CreatePlayer()
     {
         Camera mainCamera = UnityEngine.Camera.main;
@@ -125,18 +115,18 @@ public class GameManager : MonoBehaviour
 
     private void CreateSpaceObjectGenerators(Transform playerTransform)
     {
-        _asteroidsGenerator = new AsteroidsGenerator(wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount);
+        _asteroidsGenerator = new AsteroidsGenerator(wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount, asteroidVariants);
         _asteroidsGenerator.OnGotAchievement += OnGotAchievement;
         _asteroidsGenerator.Start();
 
-        _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipsContainer, playerTransform, spaceshipsInitialCount);
+        _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipsContainer, playerTransform, spaceshipsInitialCount, spaceshipVariants);
         _spaceshipsGenerator.OnGotAchievement += OnGotAchievement;
     }
 
     private void CreateWeapon(Transform playerTransform, Transform weaponTransform)
     {
-        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionCount);
-        _laserController = new LaserController(laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount, laserOneShotRefillTime);
+        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionCount, weaponTypes);
+        _laserController = new LaserController(laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount, laserOneShotRefillTime, weaponTypes);
     }
 
     private void CreateGameUI()

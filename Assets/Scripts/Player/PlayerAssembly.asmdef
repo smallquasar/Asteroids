@@ -1,0 +1,17 @@
+{
+    "name": "PlayerAssembly",
+    "rootNamespace": "",
+    "references": [
+        "GUID:024604d180dc80e4eb4c3ad4718bc764",
+        "GUID:75469ad4d38634e559750d17036d5f7c"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}
