@@ -13,4 +13,4 @@ MonoBehaviour:
   m_Name: Spaceships
   m_EditorClassIdentifier: 
   variants:
-  - {fileID: 9159750129815019420, guid: 98b60686820fc434e98f8b684b2806e1, type: 3}
+  - {fileID: 9159750129815019420, guid: 32bdacfc4985b474e8ec7c304b857904, type: 3}

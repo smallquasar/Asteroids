@@ -34,7 +34,7 @@ namespace Assets.Scripts.Player
 
         private Vector2 _currentMovement = Vector2.zero;
         private float _speed = 0f;
-        private float _halfPlayer = 0.25f;
+        private float _playerHeightHalf;// = 0.25f;
         private float _delta = 0.5f;
 
         public PlayerController(GameObject playerObject, PlayerInput playerInput, float worldHeight, float worldWidth)
@@ -49,6 +49,8 @@ namespace Assets.Scripts.Player
             _rotationSpeed = _player.RotationSpeed;
             _acceleration = _player.Acceleration;
             _deceleration = _player.Deceleration;
+
+            _playerHeightHalf = _player.SpriteRenderer.bounds.extents.y;
 
             _playerInput = playerInput;
             _playerInput.Gameplay.Move.performed += OnMovementInput;
@@ -85,7 +87,7 @@ namespace Assets.Scripts.Player
             float currentX = _playerTransform.position.x;
             float currentY = _playerTransform.position.y;
 
-            if (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) + _halfPlayer))
+            if (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) + _playerHeightHalf))
             {
                 float newY = (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) - _delta))
                     ? -currentY
@@ -93,7 +95,7 @@ namespace Assets.Scripts.Player
 
                 _playerTransform.position = new Vector3(-currentX, newY, 0);
             }
-            else if (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) + _halfPlayer))
+            else if (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) + _playerHeightHalf))
             {
                 float newX = (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) - _delta))
                     ? -currentX

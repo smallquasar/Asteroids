@@ -13,5 +13,8 @@ MonoBehaviour:
   m_Name: Asteroid
   m_EditorClassIdentifier: 
   variants:
-  - {fileID: 6730954748657685325, guid: fff0246ee215cf64181188f2d238da21, type: 3}
+  - {fileID: 1940905615877726158, guid: 47c3c2f6e1ce6a0488c3c4c183130dcc, type: 3}
+  - {fileID: 199621830106606507, guid: bc9e8a6a9dd024a4ab4fa8bff102acc1, type: 3}
+  - {fileID: 4718925003995265865, guid: f4d8a99a303829e41a9e303034520624, type: 3}
+  - {fileID: 2790854962929231813, guid: c66b57c1724babc43857fc891db759eb, type: 3}
   asteroidType: 0

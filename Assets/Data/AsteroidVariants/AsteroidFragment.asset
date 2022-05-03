@@ -13,5 +13,7 @@ MonoBehaviour:
   m_Name: AsteroidFragment
   m_EditorClassIdentifier: 
   variants:
-  - {fileID: 6730954748657685325, guid: 2970e1ef01282f64ba2da2f34c1f7c62, type: 3}
+  - {fileID: 5333508822324034483, guid: cfe03ca5afbd81a418225640bb4cb771, type: 3}
+  - {fileID: 2866777046719446112, guid: 31100625af9080b4898e85455c6ad4a5, type: 3}
+  - {fileID: 7957694999435451297, guid: 237353c84cb2cad429edba4d606bd02f, type: 3}
   asteroidType: 1

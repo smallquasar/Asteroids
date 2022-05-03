@@ -10,6 +10,7 @@ namespace Assets.Scripts.Player
         [SerializeField] private float acceleration = 2f;
         [SerializeField] private float deceleration = 3f;
         [SerializeField] private Transform weaponTransform;
+        [SerializeField] private SpriteRenderer spriteRenderer;
 
         public Action OnPlayerUpdate;
         public Action<Collider2D> OnPlayerCrossObject;
@@ -19,6 +20,7 @@ namespace Assets.Scripts.Player
         public float Acceleration => acceleration;
         public float Deceleration => deceleration;
         public Transform WeaponTransform => weaponTransform;
+        public SpriteRenderer SpriteRenderer => spriteRenderer;
 
         public void Update()
         {
