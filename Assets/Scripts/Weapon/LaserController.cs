@@ -6,10 +6,7 @@ namespace Assets.Scripts.Weapon
 {
     public class LaserController : WeaponController
     {
-        public int AmmunitionMaxCount => _ammunitionMaxCount;
         public int AmmunitionCurrentCount => _ammunitionCurrentCount;
-
-        public float LaserOneShotRefillTimeCounter => Mathf.Max(0, _ammunitionMaxCount - _ammunitionCurrentCount - 1) * 3 + _laserOneShotRefillTimeCounter;
 
         private int _ammunitionMaxCount;
         private int _ammunitionCurrentCount;
@@ -66,6 +63,11 @@ namespace Assets.Scripts.Weapon
             }
         }
 
+        public float LaserAmmunitionRefillTimeCounterCalculate()
+        {
+            return Mathf.Max(0, _ammunitionMaxCount - _ammunitionCurrentCount - 1) * 3 + _laserOneShotRefillTimeCounter;
+        }
+
         private void SetAmmunitionCurrentCount(int newValue)
         {
             //только начали стрелять из лазера, максимально заполненного снарядами
@@ -80,7 +82,7 @@ namespace Assets.Scripts.Weapon
             {
                 _laserOneShotRefillTimeCounter = 0;
             }
-        }
+        }        
 
         private void InitProjectile(ProjectileController projectile, Vector3 direction)
         {

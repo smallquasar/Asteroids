@@ -5,7 +5,7 @@ namespace Assets.Scripts.Spaceships
 {
     public class Spaceship : MonoBehaviour
     {
-        [SerializeField] private float speed = 0.7f;
+        [SerializeField] private float speed = 1f;
         [SerializeField] private float maxLifeTime = 30f;
 
         public Action OnSpaceshipUpdate;

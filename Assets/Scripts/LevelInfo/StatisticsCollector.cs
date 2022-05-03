@@ -18,11 +18,11 @@ namespace Assets.Scripts.LevelInfo
 
         public PlayerStatistics GetStatistics()
         {
-            Vector2 playerCoords = _playerController.Coordinates;
-            float playerVelocity = _playerController.Velocity;
+            Vector2 playerCoords = _playerController.GetPlayerPositionWithOffset();
+            float playerVelocity = Mathf.Abs(_playerController.Velocity);
             float playerAngle = _playerController.Angle;
             int laserCount = _laserController.AmmunitionCurrentCount;
-            float cooldown = _laserController.LaserOneShotRefillTimeCounter;
+            float cooldown = _laserController.LaserAmmunitionRefillTimeCounterCalculate();
 
             return new PlayerStatistics()
             {

@@ -13,7 +13,6 @@ namespace Assets.Scripts.Player
         public Transform WeaponTransform => _weaponTransform;
         public Transform PlayerTransform => _playerTransform;
 
-        public Vector2 Coordinates => _playerTransform.position;
         public float Velocity => _speed;
         public float Angle => _playerTransform.eulerAngles.z;
 
@@ -29,12 +28,12 @@ namespace Assets.Scripts.Player
         private float _acceleration;
         private float _deceleration;
 
-        private float _worldHeight;
-        private float _worldWidth;
+        private float _worldHeightHalf;
+        private float _worldWidthHalf;
 
         private Vector2 _currentMovement = Vector2.zero;
         private float _speed = 0f;
-        private float _playerHeightHalf;// = 0.25f;
+        private float _playerHeightHalf;
         private float _delta = 0.5f;
 
         public PlayerController(GameObject playerObject, PlayerInput playerInput, float worldHeight, float worldWidth)
@@ -58,8 +57,8 @@ namespace Assets.Scripts.Player
             _playerInput.Gameplay.Shoot_MachineGun.performed += OnMachineGunShoot;
             _playerInput.Gameplay.Shoot_Laser.performed += OnLaserShoot;
 
-            _worldHeight = worldHeight;
-            _worldWidth = worldWidth;
+            _worldHeightHalf = worldHeight / 2;
+            _worldWidthHalf = worldWidth / 2;
 
             _player.OnPlayerUpdate += Update;
             _player.OnPlayerCrossObject += OnPlayerCrossObject;
@@ -69,7 +68,12 @@ namespace Assets.Scripts.Player
         {
             _playerTransform.position = newPosition;
             _playerTransform.eulerAngles = newRotation;
-        }        
+        }
+
+        public Vector2 GetPlayerPositionWithOffset()
+        {
+            return new Vector3(_playerTransform.position.x + _worldWidthHalf, _playerTransform.position.y + _worldHeightHalf, 0);
+        }
 
         private void Update()
         {
@@ -87,17 +91,17 @@ namespace Assets.Scripts.Player
             float currentX = _playerTransform.position.x;
             float currentY = _playerTransform.position.y;
 
-            if (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) + _playerHeightHalf))
+            if (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidthHalf) + _playerHeightHalf))
             {
-                float newY = (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) - _delta))
+                float newY = (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeightHalf) - _delta))
                     ? -currentY
                     : currentY;
 
                 _playerTransform.position = new Vector3(-currentX, newY, 0);
             }
-            else if (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeight / 2) + _playerHeightHalf))
+            else if (Mathf.Abs(currentY) > (Mathf.Abs(_worldHeightHalf) + _playerHeightHalf))
             {
-                float newX = (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidth / 2) - _delta))
+                float newX = (Mathf.Abs(currentX) > (Mathf.Abs(_worldWidthHalf) - _delta))
                     ? -currentX
                     : currentX;
 

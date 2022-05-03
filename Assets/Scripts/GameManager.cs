@@ -20,8 +20,8 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Vector3 playerStartRotation;
 
     [Header("Asteroids")]
-    [SerializeField] private int asteroidsInitialCount = 5;
-    [SerializeField] private int asteroidAppearanceTime = 5;
+    [SerializeField] private int asteroidsInitialCount = 10;
+    [SerializeField] private float asteroidAppearanceTime = 0.2f;
     [SerializeField] private Transform wholeAsteroidsContainer;
     [SerializeField] private Transform asteroidFragmentsContainer;
 
@@ -34,10 +34,10 @@ public class GameManager : MonoBehaviour
 
     [Header("Weapon")]
     [SerializeField] private Transform machineGunContainer;
-    [SerializeField] private int machineGunAmmunitionCount = 30;
+    [SerializeField] private int machineGunAmmunitionInitialCount = 30;
     [Space(10)]
     [SerializeField] private Transform laserContainer;
-    [SerializeField] private int laserAmmunitionInitialCount = 10;    
+    [SerializeField] private int laserAmmunitionInitialCount = 5;    
     [SerializeField] private int laserOneShotRefillTime = 3;
 
     [Header("UI")]
@@ -125,7 +125,7 @@ public class GameManager : MonoBehaviour
 
     private void CreateWeapon(Transform playerTransform, Transform weaponTransform)
     {
-        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionCount, weaponTypes);
+        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionInitialCount, weaponTypes);
         _laserController = new LaserController(laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount, laserOneShotRefillTime, weaponTypes);
     }
 

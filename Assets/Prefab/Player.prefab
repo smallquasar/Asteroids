@@ -101,10 +101,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49b16674d700d984f87905af633227b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 4
-  rotationSpeed: 80
-  acceleration: 2
-  deceleration: 3
+  maxSpeed: 5
+  rotationSpeed: 140
+  acceleration: 3
+  deceleration: 4
   weaponTransform: {fileID: 7477505788060618914}
   spriteRenderer: {fileID: 4914109159351014336}
 --- !u!50 &-4251305000829810724
