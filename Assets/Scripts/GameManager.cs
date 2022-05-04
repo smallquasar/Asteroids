@@ -188,7 +188,7 @@ public class GameManager : MonoBehaviour
 
     private void ReloadGame()
     {
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     private void ContinueGame()
