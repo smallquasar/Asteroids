@@ -1,5 +1,5 @@
 {
-    "name": "AsteroidsAssembly",
+    "name": "SpaceObjectsAssembly",
     "rootNamespace": "",
     "references": [
         "GUID:33dd5dc973898d24fb131b9d2f29b932",

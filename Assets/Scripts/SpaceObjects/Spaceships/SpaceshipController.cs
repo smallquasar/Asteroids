@@ -59,21 +59,26 @@ namespace Assets.Scripts.Spaceships
         {
             if (eventType == EventType.Update)
             {
-                _timeLeft -= Time.deltaTime;
-
-                if (_timeLeft < 0)
-                {
-                    OnSpaceshipDestroy(isDestroyByPlayer: false);
-                    return;
-                }
-
-                _spaceshipTransform.position = Vector3.MoveTowards(_spaceshipTransform.position, _playerTransform.position, _speed * Time.deltaTime);
+                OnUpdateEvent();
             }
 
             if (eventType == EventType.Destroy)
             {
                 OnSpaceshipDestroy(isDestroyByPlayer: true);
             }
+        }
+
+        private void OnUpdateEvent()
+        {
+            _timeLeft -= Time.deltaTime;
+
+            if (_timeLeft < 0)
+            {
+                OnSpaceshipDestroy(isDestroyByPlayer: false);
+                return;
+            }
+
+            _spaceshipTransform.position = Vector3.MoveTowards(_spaceshipTransform.position, _playerTransform.position, _speed * Time.deltaTime);
         }
 
         private void OnSpaceshipDestroy(bool isDestroyByPlayer)

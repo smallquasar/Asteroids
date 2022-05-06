@@ -63,15 +63,7 @@ namespace Assets.Scripts.Asteroids
         {
             if (eventType == EventType.Update)
             {
-                _timeLeft -= Time.deltaTime;
-
-                if (_timeLeft < 0)
-                {
-                    OnAsteroidDestroy(AsteroidDisappearingType.GotAway);
-                    return;
-                }
-
-                _asteroidObject.transform.position += _direction * _speed * Time.deltaTime;
+                OnUpdateEvent();
             }
 
             if (eventType == EventType.Destroy)
@@ -80,12 +72,25 @@ namespace Assets.Scripts.Asteroids
 
                 if (destroyEvent != null)
                 {
-                    OnAsteroidDestroy(destroyEvent.GetParameter());
+                    AsteroidDestroy(destroyEvent.GetParameter());
                 }
             }
         }
 
-        private void OnAsteroidDestroy(AsteroidDisappearingType asteroidDisappearingType)
+        private void OnUpdateEvent()
+        {
+            _timeLeft -= Time.deltaTime;
+
+            if (_timeLeft < 0)
+            {
+                AsteroidDestroy(AsteroidDisappearingType.GotAway);
+                return;
+            }
+
+            _asteroidObject.transform.position += _direction * _speed * Time.deltaTime;
+        }
+
+        private void AsteroidDestroy(AsteroidDisappearingType asteroidDisappearingType)
         {
             OnDestroy?.Invoke(this, asteroidDisappearingType);
         }

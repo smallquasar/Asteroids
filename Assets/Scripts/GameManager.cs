@@ -4,6 +4,7 @@ using Assets.Scripts.Generation;
 using Assets.Scripts.LevelInfo;
 using Assets.Scripts.Player;
 using Assets.Scripts.PlayerInfo;
+using Assets.Scripts.SpaceObjects;
 using Assets.Scripts.SpaceObjectsInfo;
 using Assets.Scripts.Spaceships;
 using Assets.Scripts.UI;
@@ -68,9 +69,8 @@ public class GameManager : MonoBehaviour
 
     private PlayerInput _playerInput;
 
-    private EventManager _eventManager;
-    private DestroyEventManager _destroyEventManager;
-    private DestroyEventManagerWithParameters<AsteroidDisappearingType> _destroyEventManagerWithParameters;
+    private EventManager _updateEventManager;
+    private DestroySpaceObjectEvents _destroySpaceObjectEvents;
 
     public void Awake()
     {
@@ -79,9 +79,8 @@ public class GameManager : MonoBehaviour
 
     public void Start()
     {
-        _eventManager = new EventManager();
-        _destroyEventManager = new DestroyEventManager();
-        _destroyEventManagerWithParameters = new DestroyEventManagerWithParameters<AsteroidDisappearingType>();
+        _updateEventManager = new EventManager();
+        _destroySpaceObjectEvents = new DestroySpaceObjectEvents();
 
         GenerationUtils.SetSpawnZones(initSpawnZones, spawnZones);
 
@@ -107,11 +106,9 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        _eventManager.Notify();
-
+        _updateEventManager.Notify();
         
         _laserController.LaserAmmunitionCounterUpdate();
-
         _gameUIController.Update(_statisticsCollector.GetStatistics());
     }
 
@@ -123,27 +120,28 @@ public class GameManager : MonoBehaviour
 
         GameObject player = Instantiate(playerPrefab);
         _playerController = new PlayerController(player, _playerInput, worldHeight, worldWidth);
-        _eventManager.Attach(_playerController);
+        _updateEventManager.Attach(_playerController);
         _playerController.SetPlayerPosition(playerStartPosition, playerStartRotation);        
     }
 
     private void CreateSpaceObjectGenerators(Transform playerTransform)
     {
-        _asteroidsGenerator = new AsteroidsGenerator(wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount, asteroidVariants, _eventManager,
-            _destroyEventManagerWithParameters);
+        _asteroidsGenerator = new AsteroidsGenerator(wholeAsteroidsContainer, asteroidFragmentsContainer, asteroidsInitialCount, asteroidVariants,
+            _updateEventManager, _destroySpaceObjectEvents.DestroyAsteroidsEventManager);
         _asteroidsGenerator.OnGotAchievement += OnGotAchievement;
         _asteroidsGenerator.Start();
 
-        _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipsContainer, playerTransform, spaceshipsInitialCount, spaceshipVariants, _eventManager, _destroyEventManager);
+        _spaceshipsGenerator = new SpaceshipsGenerator(spaceshipsContainer, playerTransform, spaceshipsInitialCount, spaceshipVariants,
+            _updateEventManager, _destroySpaceObjectEvents.DestroySpaceshipsEventManager);
         _spaceshipsGenerator.OnGotAchievement += OnGotAchievement;
     }
 
     private void CreateWeapon(Transform playerTransform, Transform weaponTransform)
     {
-        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionInitialCount, weaponTypes, _eventManager,
-            _destroyEventManager, _destroyEventManagerWithParameters);
+        _machineGunController = new MachineGunController(machineGunContainer, weaponTransform, machineGunAmmunitionInitialCount, weaponTypes, _updateEventManager,
+            _destroySpaceObjectEvents);
         _laserController = new LaserController(laserContainer, weaponTransform, playerTransform, laserAmmunitionInitialCount, laserOneShotRefillTime,
-            weaponTypes, _eventManager, _destroyEventManager, _destroyEventManagerWithParameters);
+            weaponTypes, _updateEventManager, _destroySpaceObjectEvents);
     }
 
     private void CreateGameUI()

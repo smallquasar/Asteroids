@@ -17,13 +17,13 @@ namespace Assets.Scripts.Asteroids
         private Pool<AsteroidController> _asteroidFragmentsPool;
 
         public AsteroidsGenerator(Transform asteroidsContainer, Transform fragmentsContainer, int initialCount, List<AsteroidVariants> asteroidVariants,
-            EventManager eventManager, DestroyEventManagerWithParameters<AsteroidDisappearingType> destroyEventManagerWithParameters)
+            EventManager updateEventManager, DestroyEventManagerWithParameters<AsteroidDisappearingType> destroyEventManagerWithParameters)
         {
             _initialCount = initialCount;
 
-            AsteroidCreator asteroidsCreator = new AsteroidCreator(AsteroidType.Asteroid, asteroidsContainer, asteroidVariants, eventManager,
+            AsteroidCreator asteroidsCreator = new AsteroidCreator(AsteroidType.Asteroid, asteroidsContainer, asteroidVariants, updateEventManager,
                 destroyEventManagerWithParameters);
-            AsteroidCreator asteroidFragments = new AsteroidCreator(AsteroidType.AsteroidFragment, fragmentsContainer, asteroidVariants, eventManager,
+            AsteroidCreator asteroidFragments = new AsteroidCreator(AsteroidType.AsteroidFragment, fragmentsContainer, asteroidVariants, updateEventManager,
                 destroyEventManagerWithParameters);
 
             _asteroidsPool = new Pool<AsteroidController>(asteroidsCreator, _initialCount, canExpandPool: true);

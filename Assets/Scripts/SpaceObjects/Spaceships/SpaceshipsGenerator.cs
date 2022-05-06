@@ -14,9 +14,9 @@ namespace Assets.Scripts.Spaceships
         private Pool<SpaceshipController> _spaceshipsPool;
 
         public SpaceshipsGenerator(Transform spaceshipsContainer, Transform playerTransform, int initialCount, SpaceObjectVariants spaceshipVariants,
-            EventManager eventManager, DestroyEventManager destroyEventManager)
+            EventManager updateEventManager, DestroyEventManager destroyEventManager)
         {
-            SpaceshipCreator creator = new SpaceshipCreator(playerTransform, spaceshipsContainer, spaceshipVariants, eventManager, destroyEventManager);
+            SpaceshipCreator creator = new SpaceshipCreator(playerTransform, spaceshipsContainer, spaceshipVariants, updateEventManager, destroyEventManager);
             _spaceshipsPool = new Pool<SpaceshipController>(creator, initialCount, canExpandPool: true);
         }
 

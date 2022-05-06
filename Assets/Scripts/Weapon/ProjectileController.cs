@@ -80,9 +80,9 @@ namespace Assets.Scripts.Weapon
                 if (collisionObject.TryGetComponent(out Asteroid asteroid))
                 {
                     bool isTotallyDestroy = !(_weaponType == WeaponType.MachineGun && asteroid.AsteroidType == AsteroidType.Asteroid);
-                    //asteroid.DestroyAsteroid(isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);
-                    OnDestroyAsteroid?.Invoke(asteroid.gameObject.GetInstanceID(),
-                        isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);
+                    AsteroidDisappearingType disappearingType = isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred;
+
+                    OnDestroyAsteroid?.Invoke(asteroid.gameObject.GetInstanceID(), disappearingType);
                 }
 
                 if (collisionObject.TryGetComponent(out Spaceship spaceship))

@@ -1,6 +1,6 @@
-﻿using Assets.Scripts.Asteroids;
-using Assets.Scripts.Events;
+﻿using Assets.Scripts.Events;
 using Assets.Scripts.Generation;
+using Assets.Scripts.SpaceObjects;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +9,10 @@ namespace Assets.Scripts.Weapon
     public class MachineGunController : WeaponController
     {
         public MachineGunController(Transform prefabContainer, Transform weaponPosition, int initialCount, List<WeaponTypeInfo> weaponTypes,
-            EventManager eventManager, DestroyEventManager destroyEventManager, DestroyEventManagerWithParameters<AsteroidDisappearingType> destroyEventManagerWithParameters)
-            :base(prefabContainer, weaponPosition, destroyEventManager, destroyEventManagerWithParameters)
+            EventManager updateEventManager, DestroySpaceObjectEvents destroySpaceObjectEvents)
+            :base(prefabContainer, weaponPosition, destroySpaceObjectEvents)
         {
-            ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer, weaponTypes, eventManager);
+            ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer, weaponTypes, updateEventManager);
             _projectilesPool = new Pool<ProjectileController>(creator, initialCount, canExpandPool: true);
         }
 
