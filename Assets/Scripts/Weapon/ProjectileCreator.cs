@@ -1,4 +1,5 @@
-﻿using Assets.Scripts.Generation;
+﻿using Assets.Scripts.Events;
+using Assets.Scripts.Generation;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -10,17 +11,22 @@ namespace Assets.Scripts.Weapon
         public WeaponType _weaponType;
         private Transform _parentContainer;
         private WeaponTypeInfo _weaponInfo;
+        private EventManager _eventManager;
 
-        public ProjectileCreator(WeaponType weaponType, Transform parentContainer, List<WeaponTypeInfo> weaponTypes)
+        public ProjectileCreator(WeaponType weaponType, Transform parentContainer, List<WeaponTypeInfo> weaponTypes, EventManager eventManager)
         {
             _weaponType = weaponType;
             _parentContainer = parentContainer;
             _weaponInfo = weaponTypes.FirstOrDefault(x => x.WeaponType == _weaponType);
+            _eventManager = eventManager;
         }
 
         public ProjectileController Create()
         {
-            return new ProjectileController(_weaponType, GetPrefab(), _parentContainer);
+            ProjectileController newProjectile = new ProjectileController(_weaponType, GetPrefab(), _parentContainer);
+            _eventManager.Attach(newProjectile);
+
+            return newProjectile;
         }
 
         private GameObject GetPrefab()

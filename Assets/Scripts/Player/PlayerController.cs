@@ -1,11 +1,13 @@
-﻿using Assets.Scripts.Weapon;
+﻿using Assets.Scripts.Events;
+using Assets.Scripts.Weapon;
 using System;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using EventType = Assets.Scripts.Events.EventType;
 
 namespace Assets.Scripts.Player
 {
-    public class PlayerController
+    public class PlayerController : IObserver
     {
         public Action<Vector3, WeaponType> OnWeaponShot;
         public Action OnDie;
@@ -60,7 +62,6 @@ namespace Assets.Scripts.Player
             _worldHeightHalf = worldHeight / 2;
             _worldWidthHalf = worldWidth / 2;
 
-            _player.OnPlayerUpdate += Update;
             _player.OnPlayerCrossObject += OnPlayerCrossObject;
         }
 
@@ -75,15 +76,18 @@ namespace Assets.Scripts.Player
             return new Vector3(_playerTransform.position.x + _worldWidthHalf, _playerTransform.position.y + _worldHeightHalf, 0);
         }
 
-        private void Update()
+        public void Update(INotifier notifier, EventType eventType)
         {
-            CheckLevelBounds();
+            if (eventType == EventType.Update)
+            {
+                CheckLevelBounds();
 
-            CalculateSpeed();
+                CalculateSpeed();
 
-            Rotate();
+                Rotate();
 
-            _playerTransform.position += _playerTransform.up * _speed * Time.deltaTime;
+                _playerTransform.position += _playerTransform.up * _speed * Time.deltaTime;
+            }
         }        
 
         private void CheckLevelBounds()

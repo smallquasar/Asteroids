@@ -12,7 +12,6 @@ namespace Assets.Scripts.Player
         [SerializeField] private Transform weaponTransform;
         [SerializeField] private SpriteRenderer spriteRenderer;
 
-        public Action OnPlayerUpdate;
         public Action<Collider2D> OnPlayerCrossObject;
 
         public float MaxSpeed => maxSpeed;
@@ -21,11 +20,6 @@ namespace Assets.Scripts.Player
         public float Deceleration => deceleration;
         public Transform WeaponTransform => weaponTransform;
         public SpriteRenderer SpriteRenderer => spriteRenderer;
-
-        public void Update()
-        {
-            OnPlayerUpdate?.Invoke();
-        }
 
         public void OnTriggerEnter2D(Collider2D collision)
         {

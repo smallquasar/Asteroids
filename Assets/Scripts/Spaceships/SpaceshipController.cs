@@ -1,10 +1,12 @@
-﻿using Assets.Scripts.Generation;
+﻿using Assets.Scripts.Events;
+using Assets.Scripts.Generation;
 using System;
 using UnityEngine;
+using EventType = Assets.Scripts.Events.EventType;
 
 namespace Assets.Scripts.Spaceships
 {
-    public class SpaceshipController : ICanSetActive
+    public class SpaceshipController : ICanSetActive, IObserver
     {
         public Action<SpaceshipController, bool> OnDestroy; //true - уничтожен игроком
 
@@ -18,6 +20,8 @@ namespace Assets.Scripts.Spaceships
 
         private float _timeLeft = 0;
 
+        private int _id;
+
         public SpaceshipController(Transform playerTransform, GameObject prefab, Transform parentContainer)
         {
             _spaceshipObject = UnityEngine.Object.Instantiate(prefab, parentContainer);
@@ -28,8 +32,12 @@ namespace Assets.Scripts.Spaceships
             _speed = _spaceship.Speed;
             _maxLifeTime = _spaceship.MaxLifeTime;
 
-            _spaceship.OnSpaceshipUpdate += Update;
-            _spaceship.OnSpaceshipDestroy += OnSpaceshipDestroy;
+            _id = _spaceshipObject.GetInstanceID();
+        }
+
+        public int GetId()
+        {
+            return _id;
         }
 
         public void Init(Vector3 initPosition)
@@ -47,22 +55,30 @@ namespace Assets.Scripts.Spaceships
             }
         }
 
-        private void Update()
+        public void Update(INotifier notifier, EventType eventType)
         {
-            _timeLeft -= Time.deltaTime;
-
-            if (_timeLeft < 0)
+            if (eventType == EventType.Update)
             {
-                OnDestroy?.Invoke(this, false);
-                return;
+                _timeLeft -= Time.deltaTime;
+
+                if (_timeLeft < 0)
+                {
+                    OnSpaceshipDestroy(isDestroyByPlayer: false);
+                    return;
+                }
+
+                _spaceshipTransform.position = Vector3.MoveTowards(_spaceshipTransform.position, _playerTransform.position, _speed * Time.deltaTime);
             }
 
-            _spaceshipTransform.position = Vector3.MoveTowards(_spaceshipTransform.position, _playerTransform.position, _speed * Time.deltaTime);
+            if (eventType == EventType.Destroy)
+            {
+                OnSpaceshipDestroy(isDestroyByPlayer: true);
+            }
         }
 
-        private void OnSpaceshipDestroy()
+        private void OnSpaceshipDestroy(bool isDestroyByPlayer)
         {
-            OnDestroy?.Invoke(this, true);
+            OnDestroy?.Invoke(this, isDestroyByPlayer);
         }
     }
 }

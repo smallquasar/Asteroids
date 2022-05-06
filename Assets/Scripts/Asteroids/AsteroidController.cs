@@ -1,10 +1,12 @@
-﻿using Assets.Scripts.Generation;
+﻿using Assets.Scripts.Events;
+using Assets.Scripts.Generation;
 using System;
 using UnityEngine;
+using EventType = Assets.Scripts.Events.EventType;
 
 namespace Assets.Scripts.Asteroids
 {
-    public class AsteroidController : ICanSetActive
+    public class AsteroidController : ICanSetActive, IObserver
     {
         public Action<AsteroidController, AsteroidDisappearingType> OnDestroy;
 
@@ -21,6 +23,8 @@ namespace Assets.Scripts.Asteroids
         private float _maxLifeTime;
         private float _timeLeft = 0;
 
+        private int _id;
+
         public AsteroidController(AsteroidType asteroidType, GameObject prefab, Transform parentContainer)
         {
             _asteroidObject = UnityEngine.Object.Instantiate(prefab, parentContainer);
@@ -31,8 +35,12 @@ namespace Assets.Scripts.Asteroids
             _maxLifeTime = _asteroid.MaxLifeTime;
             _asteroid.AsteroidType = _asteroidType;
 
-            _asteroid.OnAsteroidUpdate += Update;
-            _asteroid.OnAsteroidDestroy += OnAsteroidDestroy;
+            _id = _asteroidObject.GetInstanceID();
+        }
+
+        public int GetId()
+        {
+            return _id;
         }
 
         public void Init(Vector3 initPosition)
@@ -51,17 +59,30 @@ namespace Assets.Scripts.Asteroids
             }
         }
 
-        private void Update()
+        public void Update(INotifier notifier, EventType eventType)
         {
-            _timeLeft -= Time.deltaTime;
-
-            if (_timeLeft < 0)
+            if (eventType == EventType.Update)
             {
-                OnDestroy?.Invoke(this, AsteroidDisappearingType.GotAway);
-                return;
+                _timeLeft -= Time.deltaTime;
+
+                if (_timeLeft < 0)
+                {
+                    OnAsteroidDestroy(AsteroidDisappearingType.GotAway);
+                    return;
+                }
+
+                _asteroidObject.transform.position += _direction * _speed * Time.deltaTime;
             }
 
-            _asteroidObject.transform.position += _direction * _speed * Time.deltaTime;
+            if (eventType == EventType.Destroy)
+            {
+                IHaveParameter<AsteroidDisappearingType> destroyEvent = notifier as IHaveParameter<AsteroidDisappearingType>;
+
+                if (destroyEvent != null)
+                {
+                    OnAsteroidDestroy(destroyEvent.GetParameter());
+                }
+            }
         }
 
         private void OnAsteroidDestroy(AsteroidDisappearingType asteroidDisappearingType)

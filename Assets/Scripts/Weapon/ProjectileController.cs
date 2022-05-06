@@ -1,15 +1,20 @@
 ﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Events;
 using Assets.Scripts.Generation;
 using Assets.Scripts.Spaceships;
 using System;
 using UnityEngine;
+using EventType = Assets.Scripts.Events.EventType;
 
 namespace Assets.Scripts.Weapon
 {
-    public class ProjectileController : ICanSetActive
+    public class ProjectileController : ICanSetActive, IObserver
     {
         public Vector3 Direction { get; set; }
+
         public Action<ProjectileController> OnDestroy;
+        public Action<int> OnDestroySpaceship;
+        public Action<int, AsteroidDisappearingType> OnDestroyAsteroid;
 
         private GameObject _projectileObject;
         private Projectile _projectile;
@@ -29,7 +34,6 @@ namespace Assets.Scripts.Weapon
 
             _weaponType = weaponType;
 
-            _projectile.OnProjectileUpdate += Update;
             _projectile.OnProjectileCrossObject += OnProjectileCrossObject;
         }
 
@@ -53,17 +57,20 @@ namespace Assets.Scripts.Weapon
             _projectileObject.transform.eulerAngles = rotation;
         }
 
-        private void Update()
+        public void Update(INotifier notifier, EventType eventType)
         {
-            _timeLeft -= Time.deltaTime;
-
-            if (_timeLeft < 0)
+            if (eventType == EventType.Update)
             {
-                OnDestroy?.Invoke(this);
-                return;
-            }
+                _timeLeft -= Time.deltaTime;
 
-            _projectileObject.transform.position += Direction * _speed * Time.deltaTime;
+                if (_timeLeft < 0)
+                {
+                    OnDestroy?.Invoke(this);
+                    return;
+                }
+
+                _projectileObject.transform.position += Direction * _speed * Time.deltaTime;
+            }
         }
 
         private void OnProjectileCrossObject(Collider2D collisionObject)
@@ -73,12 +80,14 @@ namespace Assets.Scripts.Weapon
                 if (collisionObject.TryGetComponent(out Asteroid asteroid))
                 {
                     bool isTotallyDestroy = !(_weaponType == WeaponType.MachineGun && asteroid.AsteroidType == AsteroidType.Asteroid);
-                    asteroid.DestroyAsteroid(isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);
+                    //asteroid.DestroyAsteroid(isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);
+                    OnDestroyAsteroid?.Invoke(asteroid.gameObject.GetInstanceID(),
+                        isTotallyDestroy ? AsteroidDisappearingType.TotallyDestroyed : AsteroidDisappearingType.Shaterred);
                 }
 
                 if (collisionObject.TryGetComponent(out Spaceship spaceship))
                 {
-                    spaceship.DestroySpaceship();
+                    OnDestroySpaceship?.Invoke(spaceship.gameObject.GetInstanceID());
                 }
 
                 OnDestroy?.Invoke(this);

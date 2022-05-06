@@ -1,4 +1,6 @@
-﻿using Assets.Scripts.Generation;
+﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Events;
+using Assets.Scripts.Generation;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,17 +15,19 @@ namespace Assets.Scripts.Weapon
         private int _laserOneShotRefillTime;
         private float _laserOneShotRefillTimeCounter;
 
-        private Transform _playerPosition;        
+        private Transform _playerPosition;
 
-        public LaserController(Transform prefabContainer, Transform weaponPosition, Transform playerPosition, int initialCount, int laserOneShotRefillTime, List<WeaponTypeInfo> weaponTypes)
-            :base(prefabContainer, weaponPosition)
+        public LaserController(Transform prefabContainer, Transform weaponPosition, Transform playerPosition, int initialCount,
+            int laserOneShotRefillTime, List<WeaponTypeInfo> weaponTypes, EventManager eventManager, DestroyEventManager destroyEventManager,
+            DestroyEventManagerWithParameters<AsteroidDisappearingType> destroyEventManagerWithParameters)
+            :base(prefabContainer, weaponPosition, destroyEventManager, destroyEventManagerWithParameters)
         {
             _ammunitionMaxCount = initialCount;
             _ammunitionCurrentCount = initialCount;
             _playerPosition = playerPosition;
             _laserOneShotRefillTime = laserOneShotRefillTime;
 
-            ProjectileCreator creator = new ProjectileCreator(WeaponType.Laser, _prefabContainer, weaponTypes);
+            ProjectileCreator creator = new ProjectileCreator(WeaponType.Laser, _prefabContainer, weaponTypes, eventManager);
             _projectilesPool = new Pool<ProjectileController>(creator, _ammunitionMaxCount, canExpandPool: false);
         }
 
@@ -59,6 +63,9 @@ namespace Assets.Scripts.Weapon
 
                 projectile.SetActive(true);
                 projectile.OnDestroy += DestroyProjectile;
+                projectile.OnDestroySpaceship += DestroySpaceship;
+                projectile.OnDestroyAsteroid += DestroyAsteroid;
+
                 SetAmmunitionCurrentCount(_ammunitionCurrentCount - 1);
             }
         }
@@ -97,6 +104,8 @@ namespace Assets.Scripts.Weapon
         private void DestroyProjectile(ProjectileController projectile)
         {
             _projectilesPool.ReturnToPool(projectile);
+            projectile.OnDestroySpaceship -= DestroySpaceship;
+            projectile.OnDestroyAsteroid -= DestroyAsteroid;
             projectile.OnDestroy -= DestroyProjectile;
         }
     }
