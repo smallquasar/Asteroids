@@ -11,20 +11,20 @@ namespace Assets.Scripts.Weapon
         public WeaponType _weaponType;
         private Transform _parentContainer;
         private WeaponTypeInfo _weaponInfo;
-        private EventManager _eventManager;
+        private EventNotifier _eventNotifier;
 
-        public ProjectileCreator(WeaponType weaponType, Transform parentContainer, List<WeaponTypeInfo> weaponTypes, EventManager eventManager)
+        public ProjectileCreator(WeaponType weaponType, Transform parentContainer, List<WeaponTypeInfo> weaponTypes, EventNotifier eventNotifier)
         {
             _weaponType = weaponType;
             _parentContainer = parentContainer;
             _weaponInfo = weaponTypes.FirstOrDefault(x => x.WeaponType == _weaponType);
-            _eventManager = eventManager;
+            _eventNotifier = eventNotifier;
         }
 
         public ProjectileController Create()
         {
             ProjectileController newProjectile = new ProjectileController(_weaponType, GetPrefab(), _parentContainer);
-            _eventManager.Attach(newProjectile);
+            _eventNotifier.Attach(newProjectile);
 
             return newProjectile;
         }

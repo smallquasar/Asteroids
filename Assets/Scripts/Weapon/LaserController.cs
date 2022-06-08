@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Events;
 using Assets.Scripts.Generation;
-using Assets.Scripts.SpaceObjects;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -18,15 +17,15 @@ namespace Assets.Scripts.Weapon
         private Transform _playerPosition;
 
         public LaserController(Transform prefabContainer, Transform weaponPosition, Transform playerPosition, int initialCount,
-            int laserOneShotRefillTime, List<WeaponTypeInfo> weaponTypes, EventManager updateEventManager, DestroySpaceObjectEvents destroySpaceObjectEvents)
-            :base(prefabContainer, weaponPosition, destroySpaceObjectEvents)
+            int laserOneShotRefillTime, List<WeaponTypeInfo> weaponTypes, EventNotifier eventNotifier)
+            :base(prefabContainer, weaponPosition, eventNotifier)
         {
             _ammunitionMaxCount = initialCount;
             _ammunitionCurrentCount = initialCount;
             _playerPosition = playerPosition;
             _laserOneShotRefillTime = laserOneShotRefillTime;
 
-            ProjectileCreator creator = new ProjectileCreator(WeaponType.Laser, _prefabContainer, weaponTypes, updateEventManager);
+            ProjectileCreator creator = new ProjectileCreator(WeaponType.Laser, _prefabContainer, weaponTypes, eventNotifier);
             _projectilesPool = new Pool<ProjectileController>(creator, _ammunitionMaxCount, canExpandPool: false);
         }
 

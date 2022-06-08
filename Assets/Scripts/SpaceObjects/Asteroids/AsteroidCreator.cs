@@ -11,24 +11,20 @@ namespace Assets.Scripts.Asteroids
         private AsteroidType _asteroidType;
         private Transform _parentContainer;
         private AsteroidVariants _asteroidInfo;
-        private EventManager _updateEventManager;
-        private DestroyEventManagerWithParameters<AsteroidDisappearingType> _destroyEventManagerWithParameters;
+        private EventNotifier _eventNotifier;
 
-        public AsteroidCreator(AsteroidType type, Transform parentContainer, List<AsteroidVariants> asteroidVariants, EventManager updateEventManager,
-            DestroyEventManagerWithParameters<AsteroidDisappearingType> destroyEventManagerWithParameters)
+        public AsteroidCreator(AsteroidType type, Transform parentContainer, List<AsteroidVariants> asteroidVariants, EventNotifier eventNotifier)
         {
             _asteroidType = type;
             _parentContainer = parentContainer;
             _asteroidInfo = asteroidVariants.FirstOrDefault(x => x.AsteroidType == _asteroidType);
-            _updateEventManager = updateEventManager;
-            _destroyEventManagerWithParameters = destroyEventManagerWithParameters;
+            _eventNotifier = eventNotifier;
         }
 
         public AsteroidController Create()
         {
             AsteroidController newAsteroid = new AsteroidController(_asteroidType, GetPrefab(), _parentContainer);
-            _updateEventManager.Attach(newAsteroid);
-            _destroyEventManagerWithParameters.Attach(newAsteroid, newAsteroid.GetId());
+            _eventNotifier.Attach(newAsteroid);
 
             return newAsteroid;
         }

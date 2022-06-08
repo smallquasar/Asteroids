@@ -1,6 +1,5 @@
 ﻿using Assets.Scripts.Events;
 using Assets.Scripts.Generation;
-using Assets.Scripts.SpaceObjects;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,10 +8,10 @@ namespace Assets.Scripts.Weapon
     public class MachineGunController : WeaponController
     {
         public MachineGunController(Transform prefabContainer, Transform weaponPosition, int initialCount, List<WeaponTypeInfo> weaponTypes,
-            EventManager updateEventManager, DestroySpaceObjectEvents destroySpaceObjectEvents)
-            :base(prefabContainer, weaponPosition, destroySpaceObjectEvents)
+            EventNotifier eventNotifier)
+            :base(prefabContainer, weaponPosition, eventNotifier)
         {
-            ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer, weaponTypes, updateEventManager);
+            ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer, weaponTypes, eventNotifier);
             _projectilesPool = new Pool<ProjectileController>(creator, initialCount, canExpandPool: true);
         }
 

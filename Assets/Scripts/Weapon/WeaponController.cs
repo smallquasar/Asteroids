@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Events;
+using Assets.Scripts.Events.DestroyEventArgs;
 using Assets.Scripts.Generation;
-using Assets.Scripts.SpaceObjects;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Assets.Scripts.Weapon
@@ -13,36 +13,25 @@ namespace Assets.Scripts.Weapon
 
         protected Pool<ProjectileController> _projectilesPool;
 
-        protected DestroySpaceObjectEvents _destroySpaceObjectEvents;
+        protected EventNotifier _eventNotifier;
 
-        public WeaponController(Transform prefabContainer, Transform weaponPosition, DestroySpaceObjectEvents destroySpaceObjectEvents)
+        public WeaponController(Transform prefabContainer, Transform weaponPosition, EventNotifier eventNotifier)
         {
             _prefabContainer = prefabContainer;
             _weaponPosition = weaponPosition;
-            _destroySpaceObjectEvents = destroySpaceObjectEvents;
+            _eventNotifier = eventNotifier;
         }
 
         public abstract void OnWeaponShot(Vector3 direction);
 
         protected virtual void DestroySpaceship(int spaceshipId)
         {
-            List<int> spaceshipsToDestroy = new List<int>();
-            spaceshipsToDestroy.Add(spaceshipId);
-
-            var destroySpaceshipsEventManager = _destroySpaceObjectEvents.DestroySpaceshipsEventManager;
-            destroySpaceshipsEventManager.SetCurrentObserversIdForNotify(spaceshipsToDestroy);
-            destroySpaceshipsEventManager.Notify();
+            _eventNotifier.Notify(Events.EventType.Destroy, new DestroyEventArgs(spaceshipId));
         }
 
         protected virtual void DestroyAsteroid(int asteroidId, AsteroidDisappearingType asteroidDisappearingType)
         {
-            List<int> asteroidsToDestroy = new List<int>();
-            asteroidsToDestroy.Add(asteroidId);
-
-            var destroyAsteroidsEventManager = _destroySpaceObjectEvents.DestroyAsteroidsEventManager;
-            destroyAsteroidsEventManager.SetCurrentObserversIdForNotify(asteroidsToDestroy);
-            destroyAsteroidsEventManager.SetParameter(asteroidDisappearingType);
-            destroyAsteroidsEventManager.Notify();
+            _eventNotifier.Notify(Events.EventType.Destroy, new DestroyAsteroidEventArgs(asteroidId, asteroidDisappearingType));
         }
     }
 }

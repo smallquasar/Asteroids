@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.DestroyEventArgs;
 using Assets.Scripts.Generation;
 using System;
 using UnityEngine;
@@ -59,7 +60,7 @@ namespace Assets.Scripts.Asteroids
             }
         }
 
-        public void Update(INotifier notifier, EventType eventType)
+        public void Update(EventType eventType, EventArgs param)
         {
             if (eventType == EventType.Update)
             {
@@ -68,11 +69,13 @@ namespace Assets.Scripts.Asteroids
 
             if (eventType == EventType.Destroy)
             {
-                IHaveParameter<AsteroidDisappearingType> destroyEvent = notifier as IHaveParameter<AsteroidDisappearingType>;
+                Debug.Log("Destroy!");
 
-                if (destroyEvent != null)
+                DestroyAsteroidEventArgs args = param as DestroyAsteroidEventArgs;
+
+                if (args != null && args.ObjectToDestroyId == _id)
                 {
-                    AsteroidDestroy(destroyEvent.GetParameter());
+                    AsteroidDestroy(args.AsteroidDisappearingType);
                 }
             }
         }

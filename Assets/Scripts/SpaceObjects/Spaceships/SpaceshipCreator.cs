@@ -10,24 +10,20 @@ namespace Assets.Scripts.Spaceships
         private Transform _playerTransform;
         private Transform _parentContainer;
         private SpaceObjectVariants _spaceshipVariants;
-        private EventManager _updateEventManager;
-        private DestroyEventManager _destroyEventManager;
+        private EventNotifier _eventNotifier;
 
-        public SpaceshipCreator(Transform playerTransform, Transform parentContainer, SpaceObjectVariants spaceshipVariants, EventManager updateEventManager,
-            DestroyEventManager destroyEventManager)
+        public SpaceshipCreator(Transform playerTransform, Transform parentContainer, SpaceObjectVariants spaceshipVariants, EventNotifier eventNotifier)
         {
             _playerTransform = playerTransform;
             _parentContainer = parentContainer;
             _spaceshipVariants = spaceshipVariants;
-            _updateEventManager = updateEventManager;
-            _destroyEventManager = destroyEventManager;
+            _eventNotifier = eventNotifier;
         }
 
         public SpaceshipController Create()
         {
             SpaceshipController newSpaceship = new SpaceshipController(_playerTransform, GetPrefab(), _parentContainer);
-            _updateEventManager.Attach(newSpaceship);
-            _destroyEventManager.Attach(newSpaceship, newSpaceship.GetId());
+            _eventNotifier.Attach(newSpaceship);
 
             return newSpaceship;
         }

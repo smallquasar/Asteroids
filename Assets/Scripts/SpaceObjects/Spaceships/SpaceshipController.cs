@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.DestroyEventArgs;
 using Assets.Scripts.Generation;
 using System;
 using UnityEngine;
@@ -55,7 +56,7 @@ namespace Assets.Scripts.Spaceships
             }
         }
 
-        public void Update(INotifier notifier, EventType eventType)
+        public void Update(EventType eventType, EventArgs param)
         {
             if (eventType == EventType.Update)
             {
@@ -64,7 +65,12 @@ namespace Assets.Scripts.Spaceships
 
             if (eventType == EventType.Destroy)
             {
-                OnSpaceshipDestroy(isDestroyByPlayer: true);
+                DestroyEventArgs args = param as DestroyEventArgs;
+
+                if (args != null && args.ObjectToDestroyId == _id)
+                {
+                    OnSpaceshipDestroy(isDestroyByPlayer: true);
+                }
             }
         }
 

@@ -76,19 +76,21 @@ namespace Assets.Scripts.Player
             return new Vector3(_playerTransform.position.x + _worldWidthHalf, _playerTransform.position.y + _worldHeightHalf, 0);
         }
 
-        public void Update(INotifier notifier, EventType eventType)
+        public void Update(EventType eventType, EventArgs param)
         {
-            if (eventType == EventType.Update)
+            if (eventType != EventType.Update)
             {
-                CheckLevelBounds();
-
-                CalculateSpeed();
-
-                Rotate();
-
-                _playerTransform.position += _playerTransform.up * _speed * Time.deltaTime;
+                return;
             }
-        }        
+
+            CheckLevelBounds();
+
+            CalculateSpeed();
+
+            Rotate();
+
+            _playerTransform.position += _playerTransform.up * _speed * Time.deltaTime;
+        }
 
         private void CheckLevelBounds()
         {

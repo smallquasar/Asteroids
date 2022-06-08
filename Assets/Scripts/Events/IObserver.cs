@@ -1,7 +1,9 @@
-﻿namespace Assets.Scripts.Events
+﻿using System;
+
+namespace Assets.Scripts.Events
 {
     public interface IObserver
     {
-        void Update(INotifier notifier, EventType eventType);
+        void Update(EventType eventType, EventArgs param);
     }
 }

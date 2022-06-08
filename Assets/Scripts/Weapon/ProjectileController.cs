@@ -57,20 +57,22 @@ namespace Assets.Scripts.Weapon
             _projectileObject.transform.eulerAngles = rotation;
         }
 
-        public void Update(INotifier notifier, EventType eventType)
+        public void Update(EventType eventType, EventArgs param)
         {
-            if (eventType == EventType.Update)
+            if (eventType != EventType.Update)
             {
-                _timeLeft -= Time.deltaTime;
-
-                if (_timeLeft < 0)
-                {
-                    OnDestroy?.Invoke(this);
-                    return;
-                }
-
-                _projectileObject.transform.position += Direction * _speed * Time.deltaTime;
+                return;
             }
+
+            _timeLeft -= Time.deltaTime;
+
+            if (_timeLeft < 0)
+            {
+                OnDestroy?.Invoke(this);
+                return;
+            }
+
+            _projectileObject.transform.position += Direction * _speed * Time.deltaTime;
         }
 
         private void OnProjectileCrossObject(Collider2D collisionObject)
