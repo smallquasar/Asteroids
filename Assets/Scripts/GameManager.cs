@@ -118,7 +118,7 @@ public class GameManager : MonoBehaviour
 
         GameObject player = Instantiate(playerPrefab);
         _playerController = new PlayerController(player, _playerInput, worldHeight, worldWidth);
-        _eventNotifier.Attach(_playerController);
+        _eventNotifier.Attach(_playerController, EventType.Update);
         _playerController.SetPlayerPosition(playerStartPosition, playerStartRotation);        
     }
 

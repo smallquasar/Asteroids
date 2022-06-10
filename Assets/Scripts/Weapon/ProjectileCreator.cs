@@ -24,7 +24,7 @@ namespace Assets.Scripts.Weapon
         public ProjectileController Create()
         {
             ProjectileController newProjectile = new ProjectileController(_weaponType, GetPrefab(), _parentContainer);
-            _eventNotifier.Attach(newProjectile);
+            _eventNotifier.Attach(newProjectile, Events.EventType.Update);
 
             return newProjectile;
         }

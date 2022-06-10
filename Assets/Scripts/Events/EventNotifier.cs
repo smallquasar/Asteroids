@@ -1,27 +1,34 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Assets.Scripts.Events
 {
     public class EventNotifier: INotifier
     {
-        private List<IObserver> _observers = new List<IObserver>();
+        private List<ObserverInfo> _observers = new List<ObserverInfo>();
 
-        public void Attach(IObserver observer)
+        public void Attach(IObserver observer, EventType eventType)
         {
-            _observers.Add(observer);
+            _observers.Add(new ObserverInfo() { Observer = observer, EventType = eventType });
         }
 
-        public void Detach(IObserver observer)
+        public void Detach(IObserver observer, EventType eventType)
         {
-            _observers.Remove(observer);
+            ObserverInfo obInfo = _observers.FirstOrDefault(x => x.Observer == observer && x.EventType == eventType);
+            if (obInfo == null)
+            {
+                return;
+            }
+
+            _observers.Remove(obInfo);
         }
 
         public void Notify(EventType eventType, EventArgs param)
         {
-            foreach (var observer in _observers)
+            foreach (var observerInfo in _observers.Where(x => x.EventType == eventType))
             {
-                observer.Update(eventType, param);
+                observerInfo.Observer.Update(eventType, param);
             }
         }
     }

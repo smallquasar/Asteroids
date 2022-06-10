@@ -24,7 +24,8 @@ namespace Assets.Scripts.Asteroids
         public AsteroidController Create()
         {
             AsteroidController newAsteroid = new AsteroidController(_asteroidType, GetPrefab(), _parentContainer);
-            _eventNotifier.Attach(newAsteroid);
+            _eventNotifier.Attach(newAsteroid, Events.EventType.Update);
+            _eventNotifier.Attach(newAsteroid, Events.EventType.Destroy);
 
             return newAsteroid;
         }

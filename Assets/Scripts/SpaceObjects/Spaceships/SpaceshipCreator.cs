@@ -23,7 +23,8 @@ namespace Assets.Scripts.Spaceships
         public SpaceshipController Create()
         {
             SpaceshipController newSpaceship = new SpaceshipController(_playerTransform, GetPrefab(), _parentContainer);
-            _eventNotifier.Attach(newSpaceship);
+            _eventNotifier.Attach(newSpaceship, Events.EventType.Update);
+            _eventNotifier.Attach(newSpaceship, Events.EventType.Destroy);
 
             return newSpaceship;
         }
