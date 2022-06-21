@@ -69,8 +69,6 @@ namespace Assets.Scripts.Asteroids
 
             if (eventType == EventType.Destroy)
             {
-                Debug.Log("Destroy!");
-
                 DestroyAsteroidEventArgs args = param as DestroyAsteroidEventArgs;
 
                 if (args != null && args.ObjectToDestroyId == _id)

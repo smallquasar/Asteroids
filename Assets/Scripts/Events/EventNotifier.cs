@@ -13,15 +13,9 @@ namespace Assets.Scripts.Events
             _observers.Add(new ObserverInfo() { Observer = observer, EventType = eventType });
         }
 
-        public void Detach(IObserver observer, EventType eventType)
+        public void Detach(IObserver observer)
         {
-            ObserverInfo obInfo = _observers.FirstOrDefault(x => x.Observer == observer && x.EventType == eventType);
-            if (obInfo == null)
-            {
-                return;
-            }
-
-            _observers.Remove(obInfo);
+            _observers.RemoveAll(x => x.Observer == observer);
         }
 
         public void Notify(EventType eventType, EventArgs param)

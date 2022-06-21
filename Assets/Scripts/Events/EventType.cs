@@ -3,6 +3,7 @@
     public enum EventType
     {
         Update,
-        Destroy
+        Destroy,
+        WeaponShot
     }
 }

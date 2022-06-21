@@ -3589,23 +3589,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a82a71b69696e7244961046da7222701, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerPrefab: {fileID: 4914109159351014337, guid: dce1e393597d775429ae4eee18688c46, type: 3}
-  playerStartPosition: {x: 0, y: 0, z: 0}
-  playerStartRotation: {x: 0, y: 0, z: 0}
-  asteroidsInitialCount: 10
-  asteroidAppearanceTime: 0.2
   wholeAsteroidsContainer: {fileID: 322945751}
   asteroidFragmentsContainer: {fileID: 110681439}
-  spaceshipsInitialCount: 2
   spaceshipsContainer: {fileID: 1215770878}
-  spaceshipAppearanceTimeFrom: 7
-  spaceshipAppearanceTimeTo: 25
   machineGunContainer: {fileID: 1640364295}
-  machineGunAmmunitionInitialCount: 30
   laserContainer: {fileID: 570991515}
-  laserAmmunitionInitialCount: 5
-  laserOneShotRefillTime: 3
   gameUIView: {fileID: 1023105893}
+  levelSettings: {fileID: 11400000, guid: 1ab3c2a0ccff6a146827bd7517f96d18, type: 2}
   spaceshipVariants: {fileID: 11400000, guid: 59b1e211cbb93b5408614ed023bdf9a7, type: 2}
   asteroidVariants:
   - {fileID: 11400000, guid: 2a606f0d9dc112844bf869a6d2880337, type: 2}

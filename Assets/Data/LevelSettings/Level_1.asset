@@ -1,0 +1,47 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93948b0316b72404f9b3fba6f4592b4d, type: 3}
+  m_Name: Level_1
+  m_EditorClassIdentifier: 
+  playerPrefab: {fileID: 4914109159351014337, guid: dce1e393597d775429ae4eee18688c46, type: 3}
+  playerStartPosition: {x: 0, y: 0, z: 0}
+  playerStartRotation: {x: 0, y: 0, z: 0}
+  asteroidsInitialCount: 10
+  asteroidAppearanceTime: 0.2
+  spaceshipsInitialCount: 2
+  spaceshipAppearanceTimeFrom: 7
+  spaceshipAppearanceTimeTo: 25
+  machineGunAmmunitionInitialCount: 30
+  laserAmmunitionInitialCount: 5
+  laserOneShotRefillTime: 3
+  spaceshipVariants: {fileID: 11400000, guid: 59b1e211cbb93b5408614ed023bdf9a7, type: 2}
+  asteroidVariants:
+  - {fileID: 11400000, guid: 2a606f0d9dc112844bf869a6d2880337, type: 2}
+  - {fileID: 11400000, guid: 29b971b980375f6418cf2cec821fbf35, type: 2}
+  weaponTypes:
+  - {fileID: 11400000, guid: 3c989eca541d78143a233dea23feefc9, type: 2}
+  - {fileID: 11400000, guid: 0db3abf8e66306e44bc1592ab0b6b3c0, type: 2}
+  destroyPoints:
+  - {fileID: 11400000, guid: 29069dc3828bf7045a9c51c3e861d28c, type: 2}
+  - {fileID: 11400000, guid: 19401ff80c995234e8f7d6e5dacc9412, type: 2}
+  - {fileID: 11400000, guid: e4cc3e9c2396e164986437132212eff2, type: 2}
+  - {fileID: 11400000, guid: cb03427f43d11274faf2ab131cf551bd, type: 2}
+  spawnZones:
+  - {fileID: 11400000, guid: 19510ab3171aac048b643a0222e90b6d, type: 2}
+  - {fileID: 11400000, guid: 36307c4235eed2045904579eefc61855, type: 2}
+  - {fileID: 11400000, guid: c3677c0c618c76f4db75270903228826, type: 2}
+  - {fileID: 11400000, guid: 53e7c5a8ec4964a4b9b6c428cc2c9784, type: 2}
+  initSpawnZones:
+  - {fileID: 11400000, guid: 947a53b9a028ce3498a52f73294ee6be, type: 2}
+  - {fileID: 11400000, guid: fae4b90a707e68c49940af7540673c3c, type: 2}
+  - {fileID: 11400000, guid: 65688937adb9d40428fa2b90046ae136, type: 2}
+  - {fileID: 11400000, guid: 925bf9e2d1733974281cc0f8cf24cf34, type: 2}
