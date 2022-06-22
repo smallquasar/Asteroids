@@ -1,21 +1,23 @@
 ﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.SpaceEventArgs;
 using Assets.Scripts.Generation;
 using Assets.Scripts.PlayerInfo;
 using Assets.Scripts.SpaceObjectsInfo;
-using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Spaceships
 {
     public class SpaceshipsGenerator
     {
-        public Action<Achievement> OnGotAchievement;
+        private EventNotifier _eventNotifier;
 
         private Pool<SpaceshipController> _spaceshipsPool;
 
         public SpaceshipsGenerator(Transform spaceshipsContainer, Transform playerTransform, int initialCount, SpaceObjectVariants spaceshipVariants,
             EventNotifier eventNotifier)
         {
+            _eventNotifier = eventNotifier;
+
             SpaceshipCreator creator = new SpaceshipCreator(playerTransform, spaceshipsContainer, spaceshipVariants, eventNotifier);
             _spaceshipsPool = new Pool<SpaceshipController>(creator, initialCount, canExpandPool: true);
         }
@@ -36,7 +38,7 @@ namespace Assets.Scripts.Spaceships
 
             if (isDestroyedByPlayer)
             {
-                OnGotAchievement?.Invoke(Achievement.DestroySpaceShip);
+                _eventNotifier.Notify(Events.EventType.GotAchievement, new AchievementEventArgs(Achievement.DestroySpaceShip));
             }
         }
     }

@@ -4,6 +4,7 @@
     {
         Update,
         Destroy,
-        WeaponShot
+        WeaponShot,
+        GotAchievement
     }
 }

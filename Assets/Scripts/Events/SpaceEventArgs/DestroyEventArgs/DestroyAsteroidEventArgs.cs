@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Asteroids;
 
-namespace Assets.Scripts.Events.DestroyEventArgs
+namespace Assets.Scripts.Events.SpaceEventArgs
 {
     public class DestroyAsteroidEventArgs : DestroyEventArgs
     {

@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Assets.Scripts.Events.DestroyEventArgs
+namespace Assets.Scripts.Events.SpaceEventArgs
 {
     public class DestroyEventArgs : EventArgs
     {

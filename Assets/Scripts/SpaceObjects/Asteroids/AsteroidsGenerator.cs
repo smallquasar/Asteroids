@@ -1,7 +1,7 @@
 ﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.SpaceEventArgs;
 using Assets.Scripts.Generation;
 using Assets.Scripts.PlayerInfo;
-using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,7 +9,7 @@ namespace Assets.Scripts.Asteroids
 {
     public class AsteroidsGenerator
     {
-        public Action<Achievement> OnGotAchievement;
+        private EventNotifier _eventNotifier;
 
         private int _initialCount;
 
@@ -20,6 +20,7 @@ namespace Assets.Scripts.Asteroids
             EventNotifier eventNotifier)
         {
             _initialCount = initialCount;
+            _eventNotifier = eventNotifier;
 
             AsteroidCreator asteroidsCreator = new AsteroidCreator(AsteroidType.Asteroid, asteroidsContainer, asteroidVariants, eventNotifier);
             AsteroidCreator asteroidFragmentsCreator = new AsteroidCreator(AsteroidType.AsteroidFragment, fragmentsContainer, asteroidVariants, eventNotifier);
@@ -69,7 +70,7 @@ namespace Assets.Scripts.Asteroids
             Achievement achievement = DefineAchievement(asteroidType, asteroidDisappearingType);
             if (achievement != Achievement.None)
             {
-                OnGotAchievement?.Invoke(achievement);
+                _eventNotifier.Notify(Events.EventType.GotAchievement, new AchievementEventArgs(achievement));
             }
         }
 

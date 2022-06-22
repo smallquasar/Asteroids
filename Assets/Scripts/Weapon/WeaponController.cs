@@ -1,6 +1,6 @@
 ﻿using Assets.Scripts.Asteroids;
 using Assets.Scripts.Events;
-using Assets.Scripts.Events.DestroyEventArgs;
+using Assets.Scripts.Events.SpaceEventArgs;
 using Assets.Scripts.Generation;
 using UnityEngine;
 

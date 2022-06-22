@@ -1,10 +1,13 @@
-﻿using Assets.Scripts.PlayerInfo;
+﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.SpaceEventArgs;
+using Assets.Scripts.PlayerInfo;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Assets.Scripts.LevelInfo
 {
-    public class PointsController
+    public class PointsController : IObserver
     {
         public int Points { get; private set; }
 
@@ -15,7 +18,20 @@ namespace Assets.Scripts.LevelInfo
             _destroyPoints = destroyPoints;
         }
 
-        public void CalculatePoints(Achievement achievement)
+        public void Update(EventType eventType, EventArgs param)
+        {
+            if (eventType == EventType.GotAchievement)
+            {
+                AchievementEventArgs args = param as AchievementEventArgs;
+
+                if (args != null)
+                {
+                    CalculatePoints(args.Achievement);
+                }
+            }
+        }
+
+        private void CalculatePoints(Achievement achievement)
         {
             int points = GetDestroyPointsForAchievement(achievement);
             Points += points;
@@ -25,6 +41,6 @@ namespace Assets.Scripts.LevelInfo
         {
             DestroyPoints destroyPoints = _destroyPoints.FirstOrDefault(x => x.Achievement == achievement);
             return destroyPoints?.Points ?? 0;
-        }
+        }        
     }
 }

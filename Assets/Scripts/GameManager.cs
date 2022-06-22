@@ -57,11 +57,11 @@ public class GameManager : MonoBehaviour
 
         CreateLevel(worldHeight, worldWidth);
 
-        _level.AsteroidsGenerator.OnGotAchievement += OnGotAchievement; //fix
         _level.AsteroidsGenerator.Start(); //fix
-        _level.SpaceshipsGenerator.OnGotAchievement += OnGotAchievement; //fix
 
         _pointsController = new PointsController(levelSettings.DestroyPoints);
+        _eventNotifier.Attach(_pointsController, EventType.GotAchievement);
+
         _statisticsCollector = new StatisticsCollector(_level.PlayerController, _level.LaserController);
 
         CreateGameUI();
@@ -104,11 +104,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_level.SpawnAsteroids());
         StartCoroutine(_level.SpawnSpaceships());
     }    
-
-    private void OnGotAchievement(Achievement achievement)
-    {
-        _pointsController.CalculatePoints(achievement);
-    }
 
     private void OnWeaponShot(Vector3 direction, WeaponType weaponType)
     {
