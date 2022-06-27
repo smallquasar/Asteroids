@@ -34,6 +34,11 @@ namespace Assets.Scripts.Weapon
 
         public override void Update(EventType eventType, EventArgs param)
         {
+            if (eventType == EventType.Update)
+            {
+                LaserAmmunitionCounterUpdate();
+            }
+
             if (eventType == EventType.WeaponShot)
             {
                 WeaponShotEventArgs args = param as WeaponShotEventArgs;
@@ -43,25 +48,7 @@ namespace Assets.Scripts.Weapon
                     OnWeaponShot(args.Direction);
                 }
             }
-        }
-
-        public void LaserAmmunitionCounterUpdate()
-        {
-            if (_laserOneShotRefillTimeCounter < float.Epsilon)
-            {
-                return;
-            }
-
-            _laserOneShotRefillTimeCounter -= Time.deltaTime;
-            if (_laserOneShotRefillTimeCounter < 0)
-            {
-                SetAmmunitionCurrentCount(_ammunitionCurrentCount + 1);
-                if (_ammunitionCurrentCount < _ammunitionMaxCount)
-                {
-                    _laserOneShotRefillTimeCounter = _laserOneShotRefillTime;
-                }
-            }
-        }
+        }        
 
         public override void OnWeaponShot(Vector3 direction)
         {
@@ -87,6 +74,24 @@ namespace Assets.Scripts.Weapon
         public float LaserAmmunitionRefillTimeCounterCalculate()
         {
             return Mathf.Max(0, _ammunitionMaxCount - _ammunitionCurrentCount - 1) * 3 + _laserOneShotRefillTimeCounter;
+        }
+
+        private void LaserAmmunitionCounterUpdate()
+        {
+            if (_laserOneShotRefillTimeCounter < float.Epsilon)
+            {
+                return;
+            }
+
+            _laserOneShotRefillTimeCounter -= Time.deltaTime;
+            if (_laserOneShotRefillTimeCounter < 0)
+            {
+                SetAmmunitionCurrentCount(_ammunitionCurrentCount + 1);
+                if (_ammunitionCurrentCount < _ammunitionMaxCount)
+                {
+                    _laserOneShotRefillTimeCounter = _laserOneShotRefillTime;
+                }
+            }
         }
 
         private void SetAmmunitionCurrentCount(int newValue)

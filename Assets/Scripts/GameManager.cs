@@ -73,7 +73,6 @@ public class GameManager : MonoBehaviour
     {
         _eventNotifier.Notify(EventType.Update, null);
 
-        _level.LaserController.LaserAmmunitionCounterUpdate();
         _gameUIController.Update(_statisticsCollector.GetStatistics());
     }
 

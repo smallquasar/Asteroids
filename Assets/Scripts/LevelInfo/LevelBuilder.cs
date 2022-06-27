@@ -73,6 +73,7 @@ namespace Assets.Scripts.LevelInfo
 
             _eventNotifier.Attach(_machineGunController, EventType.WeaponShot);
             _eventNotifier.Attach(_laserController, EventType.WeaponShot);
+            _eventNotifier.Attach(_laserController, EventType.Update);
         }
 
         public Level GetResult()
