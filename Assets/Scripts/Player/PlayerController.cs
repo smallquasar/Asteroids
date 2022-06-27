@@ -1,4 +1,5 @@
 ﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.SpaceEventArgs;
 using Assets.Scripts.Weapon;
 using System;
 using UnityEngine;
@@ -9,7 +10,6 @@ namespace Assets.Scripts.Player
 {
     public class PlayerController : IObserver
     {
-        public Action<Vector3, WeaponType> OnWeaponShot;
         public Action OnDie;
 
         public Transform WeaponTransform => _weaponTransform;
@@ -38,7 +38,9 @@ namespace Assets.Scripts.Player
         private float _playerHeightHalf;
         private float _delta = 0.5f;
 
-        public PlayerController(GameObject playerObject, PlayerInput playerInput, float worldHeight, float worldWidth)
+        private EventNotifier _eventNotifier;
+
+        public PlayerController(GameObject playerObject, PlayerInput playerInput, float worldHeight, float worldWidth, EventNotifier eventNotifier)
         {
             _playerObject = playerObject;
             _playerTransform = _playerObject.transform;
@@ -61,6 +63,8 @@ namespace Assets.Scripts.Player
 
             _worldHeightHalf = worldHeight / 2;
             _worldWidthHalf = worldWidth / 2;
+
+            _eventNotifier = eventNotifier;
 
             _player.OnPlayerCrossObject += OnPlayerCrossObject;
         }
@@ -172,7 +176,7 @@ namespace Assets.Scripts.Player
 
         private void Shoot(Vector3 playerDirection, WeaponType weaponType)
         {
-            OnWeaponShot?.Invoke(playerDirection, weaponType);
+            _eventNotifier.Notify(EventType.WeaponShot, new WeaponShotEventArgs(playerDirection, weaponType));
         }
 
         private void OnPlayerCrossObject(Collider2D collisionObject)

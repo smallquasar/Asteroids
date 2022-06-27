@@ -1,7 +1,10 @@
 ﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.SpaceEventArgs;
 using Assets.Scripts.Generation;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using EventType = Assets.Scripts.Events.EventType;
 
 namespace Assets.Scripts.Weapon
 {
@@ -13,6 +16,21 @@ namespace Assets.Scripts.Weapon
         {
             ProjectileCreator creator = new ProjectileCreator(WeaponType.MachineGun, _prefabContainer, weaponTypes, eventNotifier);
             _projectilesPool = new Pool<ProjectileController>(creator, initialCount, canExpandPool: true);
+        }
+
+        public override void Update(EventType eventType, EventArgs param)
+        {
+            if (eventType != EventType.WeaponShot)
+            {
+                return;
+            }
+
+            WeaponShotEventArgs args = param as WeaponShotEventArgs;
+
+            if (args != null && args.WeaponType == WeaponType.MachineGun)
+            {
+                OnWeaponShot(args.Direction);
+            }
         }
 
         public override void OnWeaponShot(Vector3 direction)
@@ -29,7 +47,7 @@ namespace Assets.Scripts.Weapon
             projectile.OnDestroy += DestroyProjectile;
             projectile.OnDestroySpaceship += DestroySpaceship;
             projectile.OnDestroyAsteroid += DestroyAsteroid;
-        }
+        }        
 
         private void DestroyProjectile(ProjectileController projectile)
         {

@@ -3,6 +3,7 @@ using Assets.Scripts.Events;
 using Assets.Scripts.Player;
 using Assets.Scripts.Spaceships;
 using Assets.Scripts.Weapon;
+using System.Collections.Generic;
 using UnityEngine;
 using EventType = Assets.Scripts.Events.EventType;
 
@@ -15,6 +16,8 @@ namespace Assets.Scripts.LevelInfo
 
         private LevelSettings _levelSettings;
         private PlayerController _playerController;
+        private MachineGunController _machineGunController;
+        private LaserController _laserController;
 
         public LevelBuilder(EventNotifier eventNotifier)
         {
@@ -25,13 +28,12 @@ namespace Assets.Scripts.LevelInfo
         public void Reset()
         {
             _level = new Level();
-
             _levelSettings = null;
-            if (_playerController != null)
-            {
-                _eventNotifier.Detach(_playerController);
-                _playerController = null;
-            }
+
+            _eventNotifier.Detach(new List<IObserver> { _playerController, _machineGunController, _laserController });
+            _playerController = null;
+            _machineGunController = null;
+            _laserController = null;
         }
 
         public void SetLevelSettings(LevelSettings levelSettings)
@@ -43,9 +45,10 @@ namespace Assets.Scripts.LevelInfo
 
         public void CreatePlayer(float worldHeight, float worldWidth, GameObject player, PlayerInput playerInput)
         {
-            _playerController = new PlayerController(player, playerInput, worldHeight, worldWidth);
-            _eventNotifier.Attach(_playerController, EventType.Update);
+            _playerController = new PlayerController(player, playerInput, worldHeight, worldWidth, _eventNotifier);
             _playerController.SetPlayerPosition(_levelSettings.PlayerStartPosition, _levelSettings.PlayerStartRotation);
+
+            _eventNotifier.Attach(_playerController, EventType.Update);
 
             _level.PlayerController = _playerController;
         }
@@ -60,10 +63,16 @@ namespace Assets.Scripts.LevelInfo
 
         public void CreateWeapon(Transform machineGunContainer, Transform laserContainer)
         {
-            _level.MachineGunController = new MachineGunController(machineGunContainer, _playerController.WeaponTransform,
+            _machineGunController = new MachineGunController(machineGunContainer, _playerController.WeaponTransform,
                 _levelSettings.MachineGunAmmunitionInitialCount, _levelSettings.WeaponTypes, _eventNotifier);
-            _level.LaserController = new LaserController(laserContainer, _playerController.WeaponTransform, _playerController.PlayerTransform,
+            _laserController = new LaserController(laserContainer, _playerController.WeaponTransform, _playerController.PlayerTransform,
                 _levelSettings.LaserAmmunitionInitialCount, _levelSettings.LaserOneShotRefillTime, _levelSettings.WeaponTypes, _eventNotifier);
+
+            _level.MachineGunController = _machineGunController;
+            _level.LaserController = _laserController;
+
+            _eventNotifier.Attach(_machineGunController, EventType.WeaponShot);
+            _eventNotifier.Attach(_laserController, EventType.WeaponShot);
         }
 
         public Level GetResult()

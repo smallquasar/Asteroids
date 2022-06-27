@@ -1,9 +1,7 @@
 using Assets.Scripts.Events;
 using Assets.Scripts.Generation;
 using Assets.Scripts.LevelInfo;
-using Assets.Scripts.PlayerInfo;
 using Assets.Scripts.UI;
-using Assets.Scripts.Weapon;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using EventType = Assets.Scripts.Events.EventType;
@@ -66,7 +64,6 @@ public class GameManager : MonoBehaviour
 
         CreateGameUI();
 
-        _level.PlayerController.OnWeaponShot += OnWeaponShot;
         _level.PlayerController.OnDie += GameOver;        
 
         StartGameTimers();
@@ -104,19 +101,6 @@ public class GameManager : MonoBehaviour
         StartCoroutine(_level.SpawnAsteroids());
         StartCoroutine(_level.SpawnSpaceships());
     }    
-
-    private void OnWeaponShot(Vector3 direction, WeaponType weaponType)
-    {
-        switch (weaponType)
-        {
-            case WeaponType.MachineGun:
-                _level.MachineGunController.OnWeaponShot(direction);
-                break;
-            case WeaponType.Laser:
-                _level.LaserController.OnWeaponShot(direction);
-                break;
-        }
-    }
 
     private void GameOver()
     {

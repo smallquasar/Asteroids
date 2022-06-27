@@ -18,6 +18,11 @@ namespace Assets.Scripts.Events
             _observers.RemoveAll(x => x.Observer == observer);
         }
 
+        public void Detach(List<IObserver> observers)
+        {
+            _observers.RemoveAll(x => observers.Contains(x.Observer));
+        }
+
         public void Notify(EventType eventType, EventArgs param)
         {
             foreach (var observerInfo in _observers.Where(x => x.EventType == eventType))

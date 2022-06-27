@@ -2,11 +2,12 @@
 using Assets.Scripts.Events;
 using Assets.Scripts.Events.SpaceEventArgs;
 using Assets.Scripts.Generation;
+using System;
 using UnityEngine;
 
 namespace Assets.Scripts.Weapon
 {
-    public abstract class WeaponController
+    public abstract class WeaponController : IObserver
     {
         protected Transform _prefabContainer;
         protected Transform _weaponPosition;
@@ -22,6 +23,8 @@ namespace Assets.Scripts.Weapon
             _eventNotifier = eventNotifier;
         }
 
+        public abstract void Update(Events.EventType eventType, EventArgs param);
+
         public abstract void OnWeaponShot(Vector3 direction);
 
         protected virtual void DestroySpaceship(int spaceshipId)
@@ -32,6 +35,6 @@ namespace Assets.Scripts.Weapon
         protected virtual void DestroyAsteroid(int asteroidId, AsteroidDisappearingType asteroidDisappearingType)
         {
             _eventNotifier.Notify(Events.EventType.Destroy, new DestroyAsteroidEventArgs(asteroidId, asteroidDisappearingType));
-        }
+        }        
     }
 }

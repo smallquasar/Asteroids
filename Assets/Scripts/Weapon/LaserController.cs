@@ -1,7 +1,10 @@
 ﻿using Assets.Scripts.Events;
+using Assets.Scripts.Events.SpaceEventArgs;
 using Assets.Scripts.Generation;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
+using EventType = Assets.Scripts.Events.EventType;
 
 namespace Assets.Scripts.Weapon
 {
@@ -27,6 +30,19 @@ namespace Assets.Scripts.Weapon
 
             ProjectileCreator creator = new ProjectileCreator(WeaponType.Laser, _prefabContainer, weaponTypes, eventNotifier);
             _projectilesPool = new Pool<ProjectileController>(creator, _ammunitionMaxCount, canExpandPool: false);
+        }
+
+        public override void Update(EventType eventType, EventArgs param)
+        {
+            if (eventType == EventType.WeaponShot)
+            {
+                WeaponShotEventArgs args = param as WeaponShotEventArgs;
+
+                if (args != null && args.WeaponType == WeaponType.Laser)
+                {
+                    OnWeaponShot(args.Direction);
+                }
+            }
         }
 
         public void LaserAmmunitionCounterUpdate()
@@ -105,6 +121,6 @@ namespace Assets.Scripts.Weapon
             projectile.OnDestroySpaceship -= DestroySpaceship;
             projectile.OnDestroyAsteroid -= DestroyAsteroid;
             projectile.OnDestroy -= DestroyProjectile;
-        }
+        }        
     }
 }
