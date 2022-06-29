@@ -1,14 +1,14 @@
 ﻿using Assets.Scripts.Asteroids;
+using Assets.Scripts.Events;
 using Assets.Scripts.Player;
 using Assets.Scripts.Spaceships;
 using Assets.Scripts.Weapon;
-using System.Collections;
 using UnityEngine;
 using Random = UnityEngine.Random;
 
 namespace Assets.Scripts.LevelInfo
 {
-    public class Level
+    public class Level : IObserver
     {
         public LevelSettings LevelSettings { get; set; }
         public AsteroidsGenerator AsteroidsGenerator { get; set; }
@@ -17,24 +17,44 @@ namespace Assets.Scripts.LevelInfo
         public MachineGunController MachineGunController { get; set; }
         public LaserController LaserController { get; set; }
 
-        public IEnumerator SpawnAsteroids()
+        private bool _isLevelStarted = false;
+
+        private float _spawnAsteroidTimeLeft = 0;
+        private float _spawnSpaceshipTimeLeft = 0;
+
+        public void StartLevel()
         {
-            while (true)
+            _spawnAsteroidTimeLeft = LevelSettings.AsteroidAppearanceTime;
+            _spawnSpaceshipTimeLeft = GetTimeForSpaceshipWait();
+            _isLevelStarted = true;
+        }
+
+        public void Update(Events.EventType eventType, System.EventArgs param)
+        {
+            if (!_isLevelStarted || eventType != Events.EventType.SpawnObjects)
+            {
+                return;
+            }
+
+            _spawnAsteroidTimeLeft -= Time.deltaTime;
+            if (_spawnAsteroidTimeLeft < 0)
             {
                 AsteroidsGenerator.SpawnNewAsteroid(isInitSpawn: false);
-                yield return new WaitForSeconds(LevelSettings.AsteroidAppearanceTime);
+                _spawnAsteroidTimeLeft = LevelSettings.AsteroidAppearanceTime;
+            }
+
+            _spawnSpaceshipTimeLeft -= Time.deltaTime;
+            if (_spawnSpaceshipTimeLeft < 0)
+            {
+                SpaceshipsGenerator.SpawnNewShip();
+                _spawnSpaceshipTimeLeft = GetTimeForSpaceshipWait();
             }
         }
 
-        public IEnumerator SpawnSpaceships()
+        private float GetTimeForSpaceshipWait()
         {
-            while (true)
-            {
-                int timeForWait = Random.Range(LevelSettings.SpaceshipAppearanceTimeFrom, LevelSettings.SpaceshipAppearanceTimeTo + 1);
-                yield return new WaitForSeconds(timeForWait);
-
-                SpaceshipsGenerator.SpawnNewShip();
-            }
+            float timeForWait = Random.Range(LevelSettings.SpaceshipAppearanceTimeFrom, LevelSettings.SpaceshipAppearanceTimeTo + 1);
+            return timeForWait;
         }
     }
 }

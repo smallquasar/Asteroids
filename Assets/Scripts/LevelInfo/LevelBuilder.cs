@@ -30,7 +30,7 @@ namespace Assets.Scripts.LevelInfo
             _level = new Level();
             _levelSettings = null;
 
-            _eventNotifier.Detach(new List<IObserver> { _playerController, _machineGunController, _laserController });
+            _eventNotifier.Detach(new List<IObserver> { _playerController, _machineGunController, _laserController, _level });
             _playerController = null;
             _machineGunController = null;
             _laserController = null;
@@ -78,6 +78,7 @@ namespace Assets.Scripts.LevelInfo
 
         public Level GetResult()
         {
+            _eventNotifier.Attach(_level, EventType.SpawnObjects);
             return _level;
         }
     }

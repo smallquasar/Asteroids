@@ -25,7 +25,8 @@ namespace Assets.Scripts.Events
 
         public void Notify(EventType eventType, EventArgs param)
         {
-            foreach (var observerInfo in _observers.Where(x => x.EventType == eventType))
+            var observerInfos = _observers.Where(x => x.EventType == eventType).ToList();
+            foreach (var observerInfo in observerInfos)
             {
                 observerInfo.Observer.Update(eventType, param);
             }

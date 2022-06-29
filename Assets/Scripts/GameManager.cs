@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         float worldHeight = mainCamera.orthographicSize * 2;
         float worldWidth = worldHeight * mainCamera.aspect;
 
-        CreateLevel(worldHeight, worldWidth);
+        CreateLevel(worldHeight, worldWidth);        
 
         _level.AsteroidsGenerator.Start(); //fix
 
@@ -66,11 +66,12 @@ public class GameManager : MonoBehaviour
 
         _level.PlayerController.OnDie += GameOver;        
 
-        StartGameTimers();
+        StartGame();
     }
 
     public void Update()
     {
+        _eventNotifier.Notify(EventType.SpawnObjects, null);
         _eventNotifier.Notify(EventType.Update, null);
 
         _gameUIController.Update(_statisticsCollector.GetStatistics());
@@ -95,10 +96,9 @@ public class GameManager : MonoBehaviour
         _gameUIController.OnExitGame += ExitGame;
     }
 
-    private void StartGameTimers()
+    private void StartGame()
     {
-        StartCoroutine(_level.SpawnAsteroids());
-        StartCoroutine(_level.SpawnSpaceships());
+        _level.StartLevel();      
     }    
 
     private void GameOver()
