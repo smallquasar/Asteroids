@@ -29,11 +29,6 @@ namespace Assets.Scripts.Asteroids
             _asteroidFragmentsPool = new Pool<AsteroidController>(asteroidFragmentsCreator, _initialCount * 2, canExpandPool: true);
         }
 
-        public void Start()
-        {
-            SpawnInitialAsteroidsCount();
-        }
-
         public void SpawnInitialAsteroidsCount()
         {
             for (int i = 0; i < _initialCount; i++)

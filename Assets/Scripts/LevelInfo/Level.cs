@@ -27,6 +27,7 @@ namespace Assets.Scripts.LevelInfo
             _spawnAsteroidTimeLeft = LevelSettings.AsteroidAppearanceTime;
             _spawnSpaceshipTimeLeft = GetTimeForSpaceshipWait();
             _isLevelStarted = true;
+            AsteroidsGenerator.SpawnInitialAsteroidsCount();
         }
 
         public void Update(Events.EventType eventType, System.EventArgs param)

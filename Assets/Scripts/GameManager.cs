@@ -1,6 +1,7 @@
 using Assets.Scripts.Events;
 using Assets.Scripts.Generation;
 using Assets.Scripts.LevelInfo;
+using Assets.Scripts.PlayerInfo;
 using Assets.Scripts.UI;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -29,7 +30,7 @@ public class GameManager : MonoBehaviour
     private LevelBuilder _levelBuilder;
 
     private PointsController _pointsController;
-    private StatisticsCollector _statisticsCollector;
+    private PlayerStatistics _playerStatistics;
 
     private GameUIController _gameUIController;
 
@@ -53,14 +54,12 @@ public class GameManager : MonoBehaviour
         float worldHeight = mainCamera.orthographicSize * 2;
         float worldWidth = worldHeight * mainCamera.aspect;
 
-        CreateLevel(worldHeight, worldWidth);        
-
-        _level.AsteroidsGenerator.Start(); //fix
+        CreateLevel(worldHeight, worldWidth);
 
         _pointsController = new PointsController(levelSettings.DestroyPoints);
         _eventNotifier.Attach(_pointsController, EventType.GotAchievement);
 
-        _statisticsCollector = new StatisticsCollector(_level.PlayerController, _level.LaserController);
+        _playerStatistics = new PlayerStatistics(_level);
 
         CreateGameUI();
 
@@ -74,7 +73,8 @@ public class GameManager : MonoBehaviour
         _eventNotifier.Notify(EventType.SpawnObjects, null);
         _eventNotifier.Notify(EventType.Update, null);
 
-        _gameUIController.Update(_statisticsCollector.GetStatistics());
+        _playerStatistics.UpdateStatistics();
+        _gameUIController.Update(_playerStatistics);
     }
 
     private void CreateLevel(float worldHeight, float worldWidth)

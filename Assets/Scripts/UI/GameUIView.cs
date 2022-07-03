@@ -25,7 +25,7 @@ namespace Assets.Scripts.UI
 
         public void Update()
         {
-            if (gameOverPanel.activeSelf)
+            if (gameOverPanel.activeSelf || PlayerStatistics == null)
             {
                 return;
             }
